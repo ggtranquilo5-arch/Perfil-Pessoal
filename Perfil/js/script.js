@@ -48,8 +48,8 @@ document.addEventListener("DOMContentLoaded", () => {
       titleName: "Deus da Guerra T6",
       titleDesc: "provante de alcançar a classificação mais alta na Zona de Risco, Temporada War Albaze!",
       
-      // Foto de perfil oficial atualizável via CDN da Steam (Square Capsule Art)
-      avatarUrl: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2507950/capsule_sm_120.jpg",
+      // Foto de perfil oficial (local)
+      avatarUrl: "img/deltaforce_avatar.jpg",
 
       // 8 emblemas equipados com shapes e cores
       equippedEmblems: [
@@ -123,8 +123,8 @@ document.addEventListener("DOMContentLoaded", () => {
       titleName: "Rei do AK",
       titleDesc: "Conquistou o domínio absoluto dos monumentos mais disputados do mapa.",
       
-      // Foto de perfil do Rust (Steam square capsule)
-      avatarUrl: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/252490/capsule_sm_120.jpg",
+      // Foto de perfil do Rust (local)
+      avatarUrl: "img/rust_avatar.jpg",
 
       equippedEmblems: [
         { name: "Sobrevivente", icon: "fa-radiation", shape: "shape-circle", color: "red-emb" },
@@ -164,8 +164,8 @@ document.addEventListener("DOMContentLoaded", () => {
       titleName: "Clutch Master",
       titleDesc: "Venceu mais de 100 rodadas jogando sozinho contra mais de 3 inimigos.",
       
-      // Foto de perfil do Valorant (Wikimedia Commons high-resolution PNG V logo)
-      avatarUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Valorant_logo_V.svg/300px-Valorant_logo_V.svg.png",
+      // Foto de perfil do Valorant (local)
+      avatarUrl: "img/valorant_avatar.jpg",
 
       equippedEmblems: [
         { name: "Precisão", icon: "fa-crosshairs", shape: "shape-shield", color: "red-emb" },
@@ -206,8 +206,8 @@ document.addEventListener("DOMContentLoaded", () => {
       titleName: "Defusal Veteran",
       titleDesc: "Desarmou 50 bombas com menos de 2 segundos restantes.",
       
-      // Foto de perfil do CS2 (Steam square capsule)
-      avatarUrl: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/730/capsule_sm_120.jpg",
+      // Foto de perfil do CS2 (local)
+      avatarUrl: "img/Cs2 perfil.jpg",
 
       equippedEmblems: [
         { name: "Tactical", icon: "fa-bomb", shape: "shape-circle", color: "gold-emb" },
@@ -233,6 +233,44 @@ document.addEventListener("DOMContentLoaded", () => {
       history: [
         { mode: "PREMIER", desc: "Partida ranqueada (Mirage - Terrorista)", status: "VITÓRIA", resultClass: "victory" },
         { mode: "PREMIER", desc: "Partida ranqueada (Inferno - CT)", status: "VITÓRIA", resultClass: "victory" }
+      ]
+    },
+    gta5: {
+      name: "Grand Theft Auto V",
+      rankTitle: "Chefe do Crime Organizado",
+      rankScore: "Pontuação: $120.4M",
+      hours: "250h",
+      battles: "150 Golpes",
+      assets: "$120.4M",
+      extractionRate: "82.4%",
+      opLevel: "120",
+      titleName: "Heist Mastermind",
+      titleDesc: "Completou todos os golpes na dificuldade máxima com a mesma equipe e sem mortes.",
+      avatarUrl: "img/Gta 5 avatar.jpg",
+      equippedEmblems: [
+        { name: "Motorista", icon: "fa-car", shape: "shape-circle", color: "gold-emb" },
+        { name: "Pistoleiro", icon: "fa-gun", shape: "shape-shield", color: "red-emb" },
+        { name: "Planejador", icon: "fa-mask", shape: "shape-shield", color: "cyan-emb" },
+        { name: "Magnata", icon: "fa-money-bill-wave", shape: "shape-diamond", color: "green-emb" }
+      ],
+      allEmblems: [
+        { name: "Motorista", icon: "fa-car", equipped: true, desc: "Venceu 50 corridas urbanas.", shape: "shape-circle", color: "gold-emb" },
+        { name: "Pistoleiro", icon: "fa-gun", equipped: true, desc: "Eliminou 200 inimigos com headshots.", shape: "shape-shield", color: "red-emb" },
+        { name: "Planejador", icon: "fa-mask", equipped: true, desc: "Planejou e executou o golpe sem alarmar.", shape: "shape-shield", color: "cyan-emb" },
+        { name: "Magnata", icon: "fa-money-bill-wave", equipped: true, desc: "Acumulou mais de 100 milhões no banco.", shape: "shape-diamond", color: "green-emb" }
+      ],
+      detailsStats: [
+        { key: "Golpes Concluídos", val: "150" },
+        { key: "Horas Jogadas", val: "250h" },
+        { key: "K/D Geral no Online", val: "1.45" },
+        { key: "Propriedades Adquiridas", val: "12" },
+        { key: "Carros na Garagem", val: "45" },
+        { key: "Nível de Procurado Máximo", val: "5 Estrelas" }
+      ],
+      radarPoints: "100,32 165,75 138,150 62,148 26,75",
+      history: [
+        { mode: "GOLPE", desc: "Golpe a Cayo Perico (Elite)", status: "VITÓRIA", resultClass: "victory" },
+        { mode: "GOLPE", desc: "Golpe ao Casino Diamond (Dinheiro)", status: "VITÓRIA", resultClass: "victory" }
       ]
     }
   };
@@ -269,24 +307,24 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById('dfOpLevel').textContent = data.opLevel;
     document.getElementById('dfProfileTitle').textContent = data.titleName;
 
-    // Atualizar avatares na barra lateral esquerda e na aba Perfil
-    const mainAvatar = document.querySelector('.hud-avatar-img');
-    if (mainAvatar) {
-      mainAvatar.src = data.avatarUrl;
-    }
+    // Atualizar avatar na aba Perfil
     const charAvatar = document.querySelector('.char-avatar-render');
     if (charAvatar) {
       charAvatar.src = data.avatarUrl;
     }
 
-    // Grid de emblemas equipados com design 3D
+    // Grid de emblemas equipados com design de patch militar real
     const equippedGrid = document.getElementById('dfEquippedGrid');
     equippedGrid.innerHTML = '';
     data.equippedEmblems.forEach(emb => {
       const slot = document.createElement('div');
-      slot.className = `df-ee-slot ${emb.shape} ${emb.color}`;
+      slot.className = `df-ee-slot`;
       slot.title = emb.name;
-      slot.innerHTML = `<i class="fas ${emb.icon}"></i>`;
+      slot.innerHTML = `
+        <div class="emblem-patch ${emb.shape} ${emb.color}">
+          <i class="fas ${emb.icon}"></i>
+        </div>
+      `;
       equippedGrid.appendChild(slot);
     });
 
@@ -314,16 +352,20 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById('dfTitleName').textContent = data.titleName;
     document.getElementById('dfTitleDesc').textContent = data.titleDesc;
 
-    // Grid de 18 emblemas com visual 3D real
+    // Grid de 18 emblemas com visual de patch militar real
     const allEmblemsGrid = document.getElementById('dfAllEmblemsGrid');
     allEmblemsGrid.innerHTML = '';
     
     const emblemsToLoad = data.allEmblems || [];
     emblemsToLoad.forEach(emb => {
       const card = document.createElement('div');
-      card.className = `emblem-card-grid ${emb.shape} ${emb.color} ${emb.equipped ? 'equipped' : ''}`;
+      card.className = `emblem-card-grid ${emb.equipped ? 'equipped' : ''}`;
       card.title = `${emb.name}: ${emb.desc}`;
-      card.innerHTML = `<i class="fas ${emb.icon}"></i>`;
+      card.innerHTML = `
+        <div class="emblem-patch ${emb.shape} ${emb.color}">
+          <i class="fas ${emb.icon}"></i>
+        </div>
+      `;
       
       // Clique para exibir detalhes
       card.addEventListener('click', () => {
@@ -357,14 +399,10 @@ document.addEventListener("DOMContentLoaded", () => {
     if (backToGamesBtn) backToGamesBtn.classList.add('hidden');
     gameTabs.forEach(tab => tab.classList.add('hidden'));
 
-    // Reverter avatares para a imagem padrão do operador
-    const mainAvatar = document.querySelector('.hud-avatar-img');
-    if (mainAvatar) {
-      mainAvatar.src = '29231.png';
-    }
+    // Reverter avatar na aba Perfil (local)
     const charAvatar = document.querySelector('.char-avatar-render');
     if (charAvatar) {
-      charAvatar.src = '29231.png';
+      charAvatar.src = 'img/29231.png';
     }
 
     activateTab('jogos');
@@ -441,41 +479,10 @@ document.addEventListener("DOMContentLoaded", () => {
   setInterval(updateClock, 1000);
 
   // ══════════════════════════
-  // EFEITO 3D HOLOGRÁFICO (TILT COM O MOUSE)
+  // EFEITO SPOTLIGHT AMBIENTE (SEGUIR CURSOR)
   // ══════════════════════════
-  const container = document.getElementById('hudContainer');
-  
-  let mouseX = 0;
-  let mouseY = 0;
-  let targetRotateX = 0;
-  let targetRotateY = 0;
-  let currentRotateX = 0;
-  let currentRotateY = 0;
-
   document.addEventListener('mousemove', (event) => {
-    const normX = (event.clientX / window.innerWidth) * 2 - 1;
-    const normY = (event.clientY / window.innerHeight) * 2 - 1;
-
-    // Ângulo de inclinação em graus
-    targetRotateY = normX * 12;
-    targetRotateX = -normY * 12;
-  });
-
-  const updateTilt = () => {
-    currentRotateX += (targetRotateX - currentRotateX) * 0.08;
-    currentRotateY += (targetRotateY - currentRotateY) * 0.08;
-
-    if (container) {
-      container.style.transform = `rotateX(${currentRotateX}deg) rotateY(${currentRotateY}deg)`;
-    }
-
-    requestAnimationFrame(updateTilt);
-  };
-
-  updateTilt();
-
-  document.addEventListener('mouseleave', () => {
-    targetRotateX = 0;
-    targetRotateY = 0;
+    document.documentElement.style.setProperty('--mouse-x', `${event.clientX}px`);
+    document.documentElement.style.setProperty('--mouse-y', `${event.clientY}px`);
   });
 });
