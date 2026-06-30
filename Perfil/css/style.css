@@ -176,6 +176,62 @@ body::before {
 }
 
 /* ═══════════════════════════════════════════════════
+   COLUNA ESQUERDA - NOVO TERMINAL HUD (MOCKUP CANVA)
+   ═══════════════════════════════════════════════════ */
+.left-hud-console {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  align-items: center;
+  justify-content: flex-start;
+  transform-style: preserve-3d;
+}
+
+/* Moldura do Telão de Vídeo */
+.video-terminal-frame {
+  background: rgba(8, 12, 20, 0.65);
+  border: 2.5px solid rgba(0, 85, 255, 0.35);
+  border-radius: 12px;
+  padding: 12px;
+  box-shadow: 
+    0 0 30px rgba(0, 85, 255, 0.2), 
+    inset 0 0 15px rgba(0, 85, 255, 0.1);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  width: 100%;
+  max-width: 400px;
+  transform: translateZ(40px);
+  overflow: hidden;
+  transition: var(--transition);
+}
+.video-terminal-frame:hover {
+  border-color: rgba(0, 191, 255, 0.6);
+  box-shadow: 0 0 40px rgba(0, 191, 255, 0.35), inset 0 0 20px rgba(0, 191, 255, 0.15);
+}
+
+.vt-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'Space Grotesk', monospace;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: rgba(255, 255, 255, 0.45);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  padding-bottom: 6px;
+  margin-bottom: 10px;
+}
+.vt-blink {
+  color: #ff3b30;
+  animation: recBlink 1.5s steps(2, start) infinite;
+}
+@keyframes recBlink {
+  to { visibility: hidden; }
+}
+.vt-title {
+  text-transform: uppercase;
+}
    COLUNA ESQUERDA (Left HUD - Réplica Canva)
    ═══════════════════════════════════════════════════ */
 .left-hud {
@@ -184,25 +240,6 @@ body::before {
   align-items: flex-start;
   gap: 25px;
   transform-style: preserve-3d;
-}
-
-/* Tags de texto empilhadas verticalmente (Amarelas) */
-.hud-vertical-tags {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  transform: translateZ(50px);
-}
-.hud-tag-item {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 2.1rem;
-  font-weight: 800;
-  letter-spacing: 2.5px;
-  line-height: 1;
-}
-.tag-yellow {
-  color: var(--secondary);
-  text-shadow: 0 0 10px rgba(255, 215, 0, 0.25);
 }
 
 /* Avatar de perfil - Círculos Giratórios Vibrantes (Azul Marinho, Neon e Neve Branca) */
