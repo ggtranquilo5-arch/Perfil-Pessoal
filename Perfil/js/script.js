@@ -402,7 +402,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Reverter avatar na aba Perfil (local)
     const charAvatar = document.querySelector('.char-avatar-render');
     if (charAvatar) {
-      charAvatar.src = 'img/29231.png';
+      charAvatar.src = 'img/operator_render.png';
     }
 
     activateTab('jogos');

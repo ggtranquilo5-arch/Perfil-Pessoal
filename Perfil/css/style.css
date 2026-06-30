@@ -205,45 +205,140 @@ body::before {
   text-shadow: 0 0 10px rgba(255, 215, 0, 0.25);
 }
 
-/* Avatar de perfil Oval (Réplica exata do Canva) */
+/* Avatar de perfil - Círculos Giratórios Vibrantes (Azul Marinho, Neon e Neve Branca) */
 .hud-avatar-wrapper {
   position: relative;
-  width: 170px;
-  height: 125px; /* Tamanho proporcional para gerar o visual oval horizontal */
+  width: 140px;
+  height: 140px;
   transform: translateZ(90px);
-  margin-left: 10px;
-}
-.hud-avatar-glow {
-  position: absolute;
-  inset: -15px;
-  background: radial-gradient(circle, rgba(0, 229, 255, 0.15) 0%, transparent 70%);
-  border-radius: 50%;
-  pointer-events: none;
-  animation: glowPulse 4s infinite alternate;
-}
-@keyframes glowPulse {
-  0% { transform: scale(0.9); opacity: 0.5; }
-  100% { transform: scale(1.1); opacity: 1; }
+  margin-left: 20px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
+/* Anéis de Órbita Concêntricos (Centralização Perfeita) */
+.hud-avatar-rings {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 220px;
+  height: 220px;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: -1;
+}
+.spinning-circle {
+  position: absolute;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  transition: var(--transition);
+}
+
+/* Anel Externo - Azul Neon Vibrante */
+.circle-outer {
+  width: 190px;
+  height: 190px;
+  border: 2px dashed #0077ff;
+  filter: drop-shadow(0 0 10px rgba(0, 119, 255, 0.75));
+  animation: rotateClockwise 20s linear infinite;
+}
+
+/* Anel Central - Neve Branca (Textura Fina de Flocos de Neve) */
+.circle-middle {
+  width: 166px;
+  height: 166px;
+  border: 1.8px dashed rgba(255, 255, 255, 0.9);
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 1));
+  animation: rotateCounterClockwise 12s linear infinite;
+}
+
+/* Anel Interno - Azul Marinho Escuro Holográfico */
+.circle-inner {
+  width: 148px;
+  height: 148px;
+  border: 3px double #0022aa;
+  filter: drop-shadow(0 0 6px rgba(0, 34, 170, 0.8));
+  animation: rotateClockwise 7s linear infinite;
+}
+
+@keyframes rotateClockwise {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+@keyframes rotateCounterClockwise {
+  from { transform: rotate(360deg); }
+  to { transform: rotate(0deg); }
+}
+
+/* Aura de Brilho de Fundo */
+.hud-avatar-glow {
+  position: absolute;
+  inset: -20px;
+  background: radial-gradient(circle, rgba(0, 85, 255, 0.35) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: glowPulse 3s infinite alternate;
+  z-index: -2;
+}
+@keyframes glowPulse {
+  0% { transform: scale(0.95); opacity: 0.5; }
+  100% { transform: scale(1.08); opacity: 0.95; }
+}
+
+/* Moldura Circular do Avatar (Limpa e Sólida) */
 .hud-avatar-border {
   width: 100%;
   height: 100%;
   border-radius: 50%;
-  border: 3.5px solid rgba(255, 255, 255, 0.15);
-  box-shadow: 0 0 20px rgba(0, 229, 255, 0.35);
+  border: 3px solid #0066ff;
+  box-shadow: 0 0 22px rgba(0, 102, 255, 0.5), inset 0 0 15px rgba(0, 0, 0, 0.7);
   overflow: hidden;
+  position: relative;
+  background: #050609;
   transition: var(--transition);
+  z-index: 2;
 }
 .hud-avatar-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+  z-index: 1;
+}
+
+/* Efeito Hover nos Círculos e Avatar */
+.hud-avatar-wrapper:hover {
+  transform: translateZ(100px) scale(1.04);
 }
 .hud-avatar-wrapper:hover .hud-avatar-border {
-  border-color: var(--primary);
-  box-shadow: 0 0 30px rgba(0, 229, 255, 0.6);
-  transform: scale(1.05);
+  border-color: #ffffff;
+  box-shadow: 0 0 35px rgba(0, 102, 255, 0.7), 0 0 18px #ffffff;
+}
+.hud-avatar-wrapper:hover .hud-avatar-img {
+  transform: scale(1.1);
+}
+.hud-avatar-wrapper:hover .circle-outer {
+  border-color: #00bfff;
+  filter: drop-shadow(0 0 14px rgba(0, 191, 255, 0.9));
+  animation-duration: 10s;
+}
+.hud-avatar-wrapper:hover .circle-middle {
+  filter: drop-shadow(0 0 12px rgba(255, 255, 255, 1));
+  animation-duration: 6s;
+}
+.hud-avatar-wrapper:hover .circle-inner {
+  border-color: #0077ff;
+  filter: drop-shadow(0 0 10px rgba(0, 119, 255, 0.9));
+  animation-duration: 3.5s;
 }
 
 /* Bloco do nome CLOUTCH (Laranja Canva) */
