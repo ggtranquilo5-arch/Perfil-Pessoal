@@ -15,15 +15,15 @@ document.addEventListener("DOMContentLoaded", () => {
     "Screenshot_2026-07-01-14-21-25-047_com.garena.game.df.png", // 4: Rosa Negra
     "Screenshot_2026-07-01-14-22-20-482_com.garena.game.df.png", // 5: Elite de Combate
     "Screenshot_2026-07-01-14-23-02-857_com.garena.game.df.png", // 6: Escudo Verde
-    "Screenshot_2026-07-01-14-23-27-863_com.garena.game.df.png", // 7: Medalha de Honra
-    "Screenshot_2026-07-01-14-23-44-577_com.garena.game.df.png", // 8: Mestre da Tática
-    "Screenshot_2026-07-01-14-24-26-561_com.garena.game.df.png", // 9: Pérola do Mar
-    "Screenshot_2026-07-01-14-24-41-377_com.garena.game.df.png", // 10: Sniper Fuzileiro
-    "Screenshot_2026-07-01-14-24-56-169_com.garena.game.df.png", // 11: Lâmina Silenciosa
-    "Screenshot_2026-07-01-14-25-33-336_com.garena.game.df.png", // 12: Lobo Cenográfico
-    "Screenshot_2026-07-01-14-25-54-147_com.garena.game.df.png", // 13: Leão de Bronze
-    "Screenshot_2026-07-01-14-28-41-731_com.garena.game.df.png", // 14: Leão de Ouro
-    "IMG_20260701_143443.png"  // 15: Cavaleiro de Ferro
+    "Screenshot_2026-07-01-14-23-27-863_com.garena.game.df.png", // 7: Pérola do Mar
+    "Screenshot_2026-07-01-14-23-44-577_com.garena.game.df.png", // 8: Sniper Fuzileiro
+    "Screenshot_2026-07-01-14-24-26-561_com.garena.game.df.png", // 9: Lâmina Silenciosa
+    "Screenshot_2026-07-01-14-24-41-377_com.garena.game.df.png", // 10: Lobo Cenográfico
+    "Screenshot_2026-07-01-14-24-56-169_com.garena.game.df.png", // 11: Leão de Bronze
+    "Screenshot_2026-07-01-14-25-33-336_com.garena.game.df.png", // 12: Engenharia Militar
+    "Screenshot_2026-07-01-14-25-54-147_com.garena.game.df.png", // 13: Cavaleiro de Ferro
+    "Screenshot_2026-07-01-14-28-41-731_com.garena.game.df.png", // 14: Adagas Cruzadas
+    "IMG_20260701_143443.png"  // 15: Leão de Ouro
   ];
 
   const slicedEmblems = dfEmblemFiles.map(file => `img/emblemas/${file}`);
@@ -156,7 +156,7 @@ document.addEventListener("DOMContentLoaded", () => {
         { name: "Elite de Combate", icon: "fa-skull-crossbones", shape: "shape-shield", color: "red-emb", spriteIndex: 5 }
       ],
 
-      // Todos os 18 emblemas com formas 3D e cores correspondentes à imagem do jogo
+      // Todos os 16 emblemas com formas 3D e cores correspondentes à imagem do jogo
       allEmblems: [
         { name: "Boas-vindas à FD", icon: "fa-crosshairs", equipped: true, desc: "Força Delta. Registro oficial de operador.", shape: "shape-shield", color: "cyan-emb", spriteIndex: 0 },
         { name: "Asas de Resgate", icon: "fa-helicopter", equipped: true, desc: "Apoio tático e extração de helicóptero.", shape: "shape-shield", color: "cyan-emb", spriteIndex: 1 },
@@ -165,15 +165,15 @@ document.addEventListener("DOMContentLoaded", () => {
         { name: "Rosa Negra", icon: "fa-seedling", equipped: true, desc: "Conclusão de operações silenciosas.", shape: "shape-diamond", color: "blue-emb", spriteIndex: 4 },
         { name: "Elite de Combate", icon: "fa-skull-crossbones", equipped: true, desc: "Letalidade máxima contra alvos hostis.", shape: "shape-shield", color: "red-emb", spriteIndex: 5 },
         { name: "Escudo Verde", icon: "fa-shield-halved", equipped: true, desc: "Defesa bem-sucedida de pontos críticos.", shape: "shape-shield", color: "green-emb", spriteIndex: 6 },
-        { name: "Medalha de Honra", icon: "fa-award", equipped: true, desc: "Honraria por bravura em combate.", shape: "shape-shield", color: "gold-emb", spriteIndex: 7 },
-        { name: "Mestre da Tática", icon: "fa-star-of-david", equipped: false, desc: "Estratégia de flanqueamento avançado.", shape: "shape-shield", color: "green-emb", spriteIndex: 8 },
-        { name: "Pérola do Mar", icon: "fa-gem", equipped: true, desc: "Extração bem-sucedida de tesouros.", shape: "shape-circle", color: "gold-emb", spriteIndex: 9 },
-        { name: "Sniper Fuzileiro", icon: "fa-bullseye", equipped: false, desc: "Precisão de longo alcance com rifles.", shape: "shape-shield", color: "blue-emb", spriteIndex: 10 },
-        { name: "Lâmina Silenciosa", icon: "fa-slash", equipped: false, desc: "Eliminações furtivas corpo a corpo.", shape: "shape-shield", color: "blue-emb", spriteIndex: 11 },
-        { name: "Lobo Cenográfico", icon: "fa-paw", equipped: false, desc: "Táticas de caça solo.", shape: "shape-diamond", color: "gold-emb", spriteIndex: 12 },
-        { name: "Leão de Bronze", icon: "fa-cat", equipped: false, desc: "Defesa sob cerco pesado.", shape: "shape-shield", color: "gold-emb", spriteIndex: 13 },
-        { name: "Leão de Ouro", icon: "fa-crown", equipped: false, desc: "Vitórias consecutivas na arena.", shape: "shape-shield", color: "gold-emb", spriteIndex: 14 },
-        { name: "Cavaleiro de Ferro", icon: "fa-horse", equipped: false, desc: "Mobilidade tática rápida.", shape: "shape-diamond", color: "gold-emb", spriteIndex: 15 }
+        { name: "Pérola do Mar", icon: "fa-gem", equipped: false, desc: "Extração bem-sucedida de tesouros.", shape: "shape-circle", color: "gold-emb", spriteIndex: 7 },
+        { name: "Sniper Fuzileiro", icon: "fa-bullseye", equipped: false, desc: "Precisão de longo alcance com rifles.", shape: "shape-shield", color: "blue-emb", spriteIndex: 8 },
+        { name: "Lâmina Silenciosa", icon: "fa-slash", equipped: false, desc: "Eliminações furtivas corpo a corpo.", shape: "shape-shield", color: "blue-emb", spriteIndex: 9 },
+        { name: "Lobo Cenográfico", icon: "fa-paw", equipped: false, desc: "Táticas de caça solo.", shape: "shape-diamond", color: "gold-emb", spriteIndex: 10 },
+        { name: "Leão de Bronze", icon: "fa-cat", equipped: false, desc: "Defesa sob cerco pesado.", shape: "shape-shield", color: "gold-emb", spriteIndex: 11 },
+        { name: "Engenharia Militar", icon: "fa-gear", equipped: false, desc: "Hacking e decodificação.", shape: "shape-circle", color: "gold-emb", spriteIndex: 12 },
+        { name: "Cavaleiro de Ferro", icon: "fa-horse", equipped: false, desc: "Mobilidade tática rápida.", shape: "shape-diamond", color: "gold-emb", spriteIndex: 13 },
+        { name: "Adagas Cruzadas", icon: "fa-bezier-curve", equipped: false, desc: "Coordenação de ataques em pinça.", shape: "shape-shield", color: "red-emb", spriteIndex: 14 },
+        { name: "Leão de Ouro", icon: "fa-crown", equipped: false, desc: "Vitórias consecutivas na arena.", shape: "shape-shield", color: "gold-emb", spriteIndex: 15 }
       ],
 
       detailsStats: [
@@ -659,10 +659,8 @@ document.addEventListener("DOMContentLoaded", () => {
   updateClock();
   setInterval(updateClock, 1000);
 
-  // Inicializar o jogo padrão na carga da página
-  if (currentActiveGame) {
-    selectGame(currentActiveGame);
-  }
+  // Inicializar a página na tela inicial (Launcher de Jogos)
+  resetToLauncher();
 
   // ══════════════════════════
   // EFEITO SPOTLIGHT AMBIENTE (SEGUIR CURSOR)
