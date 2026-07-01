@@ -5,6 +5,50 @@ document.addEventListener("DOMContentLoaded", () => {
   const audioLabel = document.getElementById('audioLabel');
   let isPlaying = false;
 
+  // Variáveis para recorte dinâmico de emblemas
+  let currentActiveGame = 'deltaforce';
+  const slicedEmblems = [];
+  let isEmblemSheetLoaded = false;
+
+  const emblemSheet = new Image();
+  emblemSheet.src = 'img/Emblemas.png';
+  emblemSheet.onload = () => {
+    const cols = 5;
+    const rows = 4;
+    const cellW = emblemSheet.width / cols;
+    const cellH = emblemSheet.height / rows;
+
+    // Recuo de 11% de cada lado para eliminar as linhas de seleção brancas e as bordas cinzas do jogo
+    const offsetX = cellW * 0.11;
+    const offsetY = cellH * 0.11;
+    const cropW = cellW - offsetX * 2;
+    const cropH = cellH - offsetY * 2;
+
+    const canvas = document.createElement('canvas');
+    canvas.width = cropW;
+    canvas.height = cropH;
+    const ctx = canvas.getContext('2d');
+
+    for (let i = 0; i < 18; i++) {
+      const col = i % cols;
+      const row = Math.floor(i / cols);
+
+      const sx = col * cellW + offsetX;
+      const sy = row * cellH + offsetY;
+
+      ctx.clearRect(0, 0, cropW, cropH);
+      ctx.drawImage(emblemSheet, sx, sy, cropW, cropH, 0, 0, cropW, cropH);
+      slicedEmblems.push(canvas.toDataURL('image/png'));
+    }
+
+    isEmblemSheetLoaded = true;
+
+    // Recarregar os emblemas do jogo selecionado assim que terminar o processamento
+    if (currentActiveGame) {
+      selectGame(currentActiveGame);
+    }
+  };
+
   if (audio) {
     audio.volume = 0.45;
   }
@@ -51,38 +95,36 @@ document.addEventListener("DOMContentLoaded", () => {
       // Foto de perfil oficial (local)
       avatarUrl: "img/deltaforce_avatar.jpg",
 
-      // 8 emblemas equipados com shapes e cores
+      // 6 emblemas equipados com shapes e cores (reduzido para economizar espaço e evitar overflow)
       equippedEmblems: [
-        { name: "Boas-vindas à FD", icon: "fa-crosshairs", shape: "shape-shield", color: "cyan-emb" },
-        { name: "Asas de Resgate", icon: "fa-helicopter", shape: "shape-shield", color: "cyan-emb" },
-        { name: "Pioneiro da Linha", icon: "fa-medal", shape: "shape-triangle", color: "gold-emb" },
-        { name: "Trabalho de Equipe", icon: "fa-users", shape: "shape-shield", color: "gold-emb" },
-        { name: "Rosa Negra", icon: "fa-spa", shape: "shape-diamond", color: "blue-emb" },
-        { name: "Elite de Combate", icon: "fa-skull-crossbones", shape: "shape-shield", color: "red-emb" },
-        { name: "Escudo Verde", icon: "fa-shield-halved", shape: "shape-shield", color: "green-emb" },
-        { name: "Medalha de Honra", icon: "fa-award", shape: "shape-shield", color: "gold-emb" }
+        { name: "Boas-vindas à FD", icon: "fa-crosshairs", shape: "shape-shield", color: "cyan-emb", spriteIndex: 0 },
+        { name: "Asas de Resgate", icon: "fa-helicopter", shape: "shape-shield", color: "cyan-emb", spriteIndex: 1 },
+        { name: "Pioneiro da Linha", icon: "fa-medal", shape: "shape-triangle", color: "gold-emb", spriteIndex: 2 },
+        { name: "Trabalho de Equipe", icon: "fa-users", shape: "shape-shield", color: "gold-emb", spriteIndex: 3 },
+        { name: "Rosa Negra", icon: "fa-spa", shape: "shape-diamond", color: "blue-emb", spriteIndex: 4 },
+        { name: "Elite de Combate", icon: "fa-skull-crossbones", shape: "shape-shield", color: "red-emb", spriteIndex: 5 }
       ],
 
       // Todos os 18 emblemas com formas 3D e cores correspondentes à imagem do jogo
       allEmblems: [
-        { name: "Boas-vindas à FD", icon: "fa-crosshairs", equipped: true, desc: "Força Delta. Registro oficial de operador.", shape: "shape-shield", color: "cyan-emb" },
-        { name: "Asas de Resgate", icon: "fa-helicopter", equipped: true, desc: "Apoio tático e extração de helicóptero.", shape: "shape-shield", color: "cyan-emb" },
-        { name: "Pioneiro da Linha", icon: "fa-font", equipped: true, desc: "Conquista de vanguarda no front.", shape: "shape-triangle", color: "gold-emb" },
-        { name: "Trabalho de Equipe", icon: "fa-users", equipped: true, desc: "Cooperação ativa com esquadrão tático.", shape: "shape-shield", color: "gold-emb" },
-        { name: "Rosa Negra", icon: "fa-seedling", equipped: true, desc: "Conclusão de operações silenciosas.", shape: "shape-diamond", color: "blue-emb" },
-        { name: "Elite de Combate", icon: "fa-skull-crossbones", equipped: true, desc: "Letalidade máxima contra alvos hostis.", shape: "shape-shield", color: "red-emb" },
-        { name: "Escudo Verde", icon: "fa-shield-halved", equipped: true, desc: "Defesa bem-sucedida de pontos críticos.", shape: "shape-shield", color: "green-emb" },
-        { name: "Medalha de Honra", icon: "fa-award", equipped: true, desc: "Honraria por bravura em combate.", shape: "shape-shield", color: "gold-emb" },
-        { name: "Mestre da Tática", icon: "fa-star-of-david", equipped: false, desc: "Estratégia de flanqueamento avançado.", shape: "shape-shield", color: "green-emb" },
-        { name: "Pérola do Mar", icon: "fa-gem", equipped: true, desc: "Extração bem-sucedida de tesouros.", shape: "shape-circle", color: "gold-emb" },
-        { name: "Sniper Fuzileiro", icon: "fa-bullseye", equipped: false, desc: "Precisão de longo alcance com rifles.", shape: "shape-shield", color: "blue-emb" },
-        { name: "Lâmina Silenciosa", icon: "fa-slash", equipped: false, desc: "Eliminações furtivas corpo a corpo.", shape: "shape-shield", color: "blue-emb" },
-        { name: "Lobo Cenográfico", icon: "fa-paw", equipped: false, desc: "Táticas de caça solo.", shape: "shape-diamond", color: "gold-emb" },
-        { name: "Leão de Bronze", icon: "fa-cat", equipped: false, desc: "Defesa sob cerco pesado.", shape: "shape-shield", color: "gold-emb" },
-        { name: "Leão de Ouro", icon: "fa-crown", equipped: false, desc: "Vitórias consecutivas na arena.", shape: "shape-shield", color: "gold-emb" },
-        { name: "Engenharia Militar", icon: "fa-gear", equipped: true, desc: "Hacking e decodificação.", shape: "shape-circle", color: "gold-emb" },
-        { name: "Cavaleiro de Ferro", icon: "fa-horse", equipped: false, desc: "Mobilidade tática rápida.", shape: "shape-diamond", color: "gold-emb" },
-        { name: "Adagas Cruzadas", icon: "fa-bezier-curve", equipped: false, desc: "Coordenação de ataques em pinça.", shape: "shape-shield", color: "red-emb" }
+        { name: "Boas-vindas à FD", icon: "fa-crosshairs", equipped: true, desc: "Força Delta. Registro oficial de operador.", shape: "shape-shield", color: "cyan-emb", spriteIndex: 0 },
+        { name: "Asas de Resgate", icon: "fa-helicopter", equipped: true, desc: "Apoio tático e extração de helicóptero.", shape: "shape-shield", color: "cyan-emb", spriteIndex: 1 },
+        { name: "Pioneiro da Linha", icon: "fa-font", equipped: true, desc: "Conquista de vanguarda no front.", shape: "shape-triangle", color: "gold-emb", spriteIndex: 2 },
+        { name: "Trabalho de Equipe", icon: "fa-users", equipped: true, desc: "Cooperação ativa com esquadrão tático.", shape: "shape-shield", color: "gold-emb", spriteIndex: 3 },
+        { name: "Rosa Negra", icon: "fa-seedling", equipped: true, desc: "Conclusão de operações silenciosas.", shape: "shape-diamond", color: "blue-emb", spriteIndex: 4 },
+        { name: "Elite de Combate", icon: "fa-skull-crossbones", equipped: true, desc: "Letalidade máxima contra alvos hostis.", shape: "shape-shield", color: "red-emb", spriteIndex: 5 },
+        { name: "Escudo Verde", icon: "fa-shield-halved", equipped: true, desc: "Defesa bem-sucedida de pontos críticos.", shape: "shape-shield", color: "green-emb", spriteIndex: 6 },
+        { name: "Medalha de Honra", icon: "fa-award", equipped: true, desc: "Honraria por bravura em combate.", shape: "shape-shield", color: "gold-emb", spriteIndex: 7 },
+        { name: "Mestre da Tática", icon: "fa-star-of-david", equipped: false, desc: "Estratégia de flanqueamento avançado.", shape: "shape-shield", color: "green-emb", spriteIndex: 8 },
+        { name: "Pérola do Mar", icon: "fa-gem", equipped: true, desc: "Extração bem-sucedida de tesouros.", shape: "shape-circle", color: "gold-emb", spriteIndex: 9 },
+        { name: "Sniper Fuzileiro", icon: "fa-bullseye", equipped: false, desc: "Precisão de longo alcance com rifles.", shape: "shape-shield", color: "blue-emb", spriteIndex: 10 },
+        { name: "Lâmina Silenciosa", icon: "fa-slash", equipped: false, desc: "Eliminações furtivas corpo a corpo.", shape: "shape-shield", color: "blue-emb", spriteIndex: 11 },
+        { name: "Lobo Cenográfico", icon: "fa-paw", equipped: false, desc: "Táticas de caça solo.", shape: "shape-diamond", color: "gold-emb", spriteIndex: 12 },
+        { name: "Leão de Bronze", icon: "fa-cat", equipped: false, desc: "Defesa sob cerco pesado.", shape: "shape-shield", color: "gold-emb", spriteIndex: 13 },
+        { name: "Leão de Ouro", icon: "fa-crown", equipped: false, desc: "Vitórias consecutivas na arena.", shape: "shape-shield", color: "gold-emb", spriteIndex: 14 },
+        { name: "Engenharia Militar", icon: "fa-gear", equipped: true, desc: "Hacking e decodificação.", shape: "shape-circle", color: "gold-emb", spriteIndex: 15 },
+        { name: "Cavaleiro de Ferro", icon: "fa-horse", equipped: false, desc: "Mobilidade tática rápida.", shape: "shape-diamond", color: "gold-emb", spriteIndex: 16 },
+        { name: "Adagas Cruzadas", icon: "fa-bezier-curve", equipped: false, desc: "Coordenação de ataques em pinça.", shape: "shape-shield", color: "red-emb", spriteIndex: 17 }
       ],
 
       detailsStats: [
@@ -287,6 +329,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const launcherCards = document.querySelectorAll('.launcher-game-card');
 
   const selectGame = (gameId) => {
+    currentActiveGame = gameId;
     const data = gameData[gameId];
     if (!data) return;
 
@@ -320,11 +363,19 @@ document.addEventListener("DOMContentLoaded", () => {
       const slot = document.createElement('div');
       slot.className = `df-ee-slot`;
       slot.title = emb.name;
-      slot.innerHTML = `
-        <div class="emblem-patch ${emb.shape} ${emb.color}">
-          <i class="fas ${emb.icon}"></i>
-        </div>
-      `;
+      if (emb.spriteIndex !== undefined && slicedEmblems[emb.spriteIndex]) {
+        slot.innerHTML = `
+          <div class="emblem-patch has-image">
+            <img src="${slicedEmblems[emb.spriteIndex]}" alt="${emb.name}" class="emblem-img">
+          </div>
+        `;
+      } else {
+        slot.innerHTML = `
+          <div class="emblem-patch ${emb.shape} ${emb.color}">
+            <i class="fas ${emb.icon}"></i>
+          </div>
+        `;
+      }
       equippedGrid.appendChild(slot);
     });
 
@@ -361,11 +412,19 @@ document.addEventListener("DOMContentLoaded", () => {
       const card = document.createElement('div');
       card.className = `emblem-card-grid ${emb.equipped ? 'equipped' : ''}`;
       card.title = `${emb.name}: ${emb.desc}`;
-      card.innerHTML = `
-        <div class="emblem-patch ${emb.shape} ${emb.color}">
-          <i class="fas ${emb.icon}"></i>
-        </div>
-      `;
+      if (emb.spriteIndex !== undefined && slicedEmblems[emb.spriteIndex]) {
+        card.innerHTML = `
+          <div class="emblem-patch has-image">
+            <img src="${slicedEmblems[emb.spriteIndex]}" alt="${emb.name}" class="emblem-img">
+          </div>
+        `;
+      } else {
+        card.innerHTML = `
+          <div class="emblem-patch ${emb.shape} ${emb.color}">
+            <i class="fas ${emb.icon}"></i>
+          </div>
+        `;
+      }
       
       // Clique para exibir detalhes
       card.addEventListener('click', () => {
