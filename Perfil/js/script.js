@@ -33,6 +33,68 @@ document.addEventListener("DOMContentLoaded", () => {
     audio.volume = 0.45;
   }
 
+  // Tooltip Helper
+  const tooltipEl = document.getElementById('hudTooltip');
+  const setupTooltip = (element, title, desc, status) => {
+    if (!tooltipEl || !element) return;
+
+    const positionTooltip = (e) => {
+      const offset = 15;
+      let clientX = e.clientX;
+      let clientY = e.clientY;
+
+      // Fallback para getBoundingClientRect caso clientX/Y sejam nulos ou zero (comum em testes automatizados)
+      if (clientX === undefined || clientY === undefined || (clientX === 0 && clientY === 0)) {
+        const rect = element.getBoundingClientRect();
+        clientX = rect.left + rect.width / 2;
+        clientY = rect.top + rect.height;
+      }
+
+      const x = clientX + offset;
+      const y = clientY + offset;
+
+      const tooltipW = tooltipEl.offsetWidth;
+      const tooltipH = tooltipEl.offsetHeight;
+      const windowW = window.innerWidth;
+      const windowH = window.innerHeight;
+
+      let finalX = x;
+      let finalY = y;
+
+      if (x + tooltipW > windowW) {
+        finalX = e.clientX - tooltipW - offset;
+      }
+      if (y + tooltipH > windowH) {
+        finalY = e.clientY - tooltipH - offset;
+      }
+
+      tooltipEl.style.left = `${finalX}px`;
+      tooltipEl.style.top = `${finalY}px`;
+    };
+
+    element.addEventListener('mouseenter', (e) => {
+      let statusHtml = '';
+      if (status) {
+        statusHtml = `<div class="tooltip-status ${status.toLowerCase()}">${status}</div>`;
+      }
+      tooltipEl.innerHTML = `
+        <div class="tooltip-title">${title}</div>
+        <div class="tooltip-desc">${desc}</div>
+        ${statusHtml}
+      `;
+      tooltipEl.classList.add('active');
+      positionTooltip(e);
+    });
+
+    element.addEventListener('mousemove', (e) => {
+      positionTooltip(e);
+    });
+
+    element.addEventListener('mouseleave', () => {
+      tooltipEl.classList.remove('active');
+    });
+  };
+
   // ══════════════════════════
   // CONTROLE DE ÁUDIO (HUD)
   // ══════════════════════════
@@ -71,6 +133,15 @@ document.addEventListener("DOMContentLoaded", () => {
       opLevel: "60",
       titleName: "Deus da Guerra T6",
       titleDesc: "provante de alcançar a classificação mais alta na Zona de Risco, Temporada War Albaze!",
+      titles: [
+        { name: "S9 God of War", id: "t9", file: "Screenshot_2026-07-01-15-17-13-442_com.garena.game.df.png", desc: "Temporada 9 - Classificação Deus da Guerra" },
+        { name: "Deus da Guerra T8", id: "t8", file: "Screenshot_2026-07-01-15-17-50-703_com.garena.game.df.png", desc: "Temporada 8 - Classificação Deus da Guerra" },
+        { name: "Deus da Guerra T7", id: "t7", file: "Screenshot_2026-07-01-15-17-28-310_com.garena.game.df.png", desc: "Temporada 7 - Classificação Deus da Guerra" },
+        { name: "Deus da Guerra T6", id: "t6", file: "Screenshot_2026-07-01-15-18-04-634_com.garena.game.df.png", desc: "Temporada 6 - Classificação Deus da Guerra" },
+        { name: "Deus da Guerra T5", id: "t5", file: "Screenshot_2026-07-01-15-18-17-734_com.garena.game.df.png", desc: "Temporada 5 - Classificação Deus da Guerra" },
+        { name: "Deus da Guerra T4", id: "t4", file: "Screenshot_2026-07-01-15-18-32-566_com.garena.game.df.png", desc: "Temporada 4 - Classificação Deus da Guerra" }
+      ],
+      activeTitleId: "t6",
       
       // Foto de perfil oficial (local)
       avatarUrl: "img/deltaforce_avatar.jpg",
@@ -325,7 +396,10 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById('dfBattles').textContent = data.battles;
     document.getElementById('dfAssets').textContent = data.assets;
     document.getElementById('dfExtractRate').textContent = data.extractionRate;
-    document.getElementById('dfOpLevel').textContent = data.opLevel;
+    const opLevelEl = document.getElementById('dfOpLevel');
+    if (opLevelEl) {
+      opLevelEl.innerHTML = `<strong>Lv ${data.opLevel}</strong>`;
+    }
     document.getElementById('dfProfileTitle').textContent = data.titleName;
 
     // Atualizar avatar na aba Perfil
@@ -340,7 +414,11 @@ document.addEventListener("DOMContentLoaded", () => {
     data.equippedEmblems.forEach(emb => {
       const slot = document.createElement('div');
       slot.className = `df-ee-slot`;
-      slot.title = emb.name;
+      
+      const matchingEmb = data.allEmblems ? data.allEmblems.find(ae => ae.name === emb.name) : null;
+      const desc = matchingEmb ? matchingEmb.desc : "Emblema militar equipado.";
+      setupTooltip(slot, emb.name, desc, "EQUIPADO");
+
       if (emb.spriteIndex !== undefined && slicedEmblems[emb.spriteIndex]) {
         slot.innerHTML = `
           <div class="emblem-patch has-image">
@@ -378,8 +456,77 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // 4. Carregar informações na aba CONQUISTAS
-    document.getElementById('dfTitleName').textContent = data.titleName;
-    document.getElementById('dfTitleDesc').textContent = data.titleDesc;
+    const titleDisplay = document.getElementById('dfTitleDisplay');
+    const allTitlesSection = document.getElementById('dfAllTitlesSection');
+    const titlesGrid = document.getElementById('dfTitlesGrid');
+
+    if (data.titles && data.titles.length > 0) {
+      if (allTitlesSection) allTitlesSection.classList.remove('hidden');
+      
+      // Encontrar título ativo
+      const activeTitle = data.titles.find(t => t.id === data.activeTitleId) || data.titles[0];
+
+      // Renderizar o banner ativo
+      if (titleDisplay) {
+        titleDisplay.innerHTML = `
+          <img src="img/titulos/${activeTitle.file}" alt="${activeTitle.name}" class="df-title-banner-img">
+        `;
+        const activeTitleImg = titleDisplay.querySelector('.df-title-banner-img');
+        if (activeTitleImg) {
+          setupTooltip(activeTitleImg, activeTitle.name, activeTitle.desc, "EQUIPADO");
+        }
+      }
+
+      // Renderizar o grid de seleção de títulos
+      if (titlesGrid) {
+        titlesGrid.innerHTML = '';
+        data.titles.forEach(title => {
+          const titleCard = document.createElement('div');
+          titleCard.className = `df-title-card-selector ${title.id === data.activeTitleId ? 'active' : ''}`;
+          titleCard.innerHTML = `
+            <img src="img/titulos/${title.file}" alt="${title.name}">
+          `;
+
+          setupTooltip(titleCard, title.name, title.desc, title.id === data.activeTitleId ? "EQUIPADO" : "DISPONÍVEL");
+
+          titleCard.addEventListener('click', () => {
+            // Atualizar ID ativo
+            data.activeTitleId = title.id;
+            data.titleName = title.name;
+
+            // Atualizar o nome do título no perfil
+            const profileTitleEl = document.getElementById('dfProfileTitle');
+            if (profileTitleEl) profileTitleEl.textContent = title.name;
+
+            // Esconder tooltip ativo antes de recarregar
+            if (tooltipEl) tooltipEl.classList.remove('active');
+
+            // Re-renderizar a aba inteira do jogo de forma limpa e consistente
+            selectGame(gameId);
+          });
+
+          titlesGrid.appendChild(titleCard);
+        });
+      }
+    } else {
+      // Fallback para outros jogos que usam texto comum
+      if (allTitlesSection) allTitlesSection.classList.add('hidden');
+      if (titleDisplay) {
+        titleDisplay.innerHTML = `
+          <div class="df-title-display-fallback" id="dfTitleDisplayFallback">
+            <i class="fas fa-ribbon"></i>
+            <div class="df-td-info">
+              <div class="df-td-name" id="dfTitleName">${data.titleName}</div>
+              <div class="df-td-desc" id="dfTitleDesc">${data.titleDesc || ''}</div>
+            </div>
+          </div>
+        `;
+        const fallbackDisplay = document.getElementById('dfTitleDisplayFallback');
+        if (fallbackDisplay) {
+          setupTooltip(fallbackDisplay, data.titleName, data.titleDesc || "Título militar ativo.", "EQUIPADO");
+        }
+      }
+    }
 
     // Grid de 18 emblemas com visual de patch militar real
     const allEmblemsGrid = document.getElementById('dfAllEmblemsGrid');
@@ -389,7 +536,9 @@ document.addEventListener("DOMContentLoaded", () => {
     emblemsToLoad.forEach(emb => {
       const card = document.createElement('div');
       card.className = `emblem-card-grid ${emb.equipped ? 'equipped' : ''}`;
-      card.title = `${emb.name}: ${emb.desc}`;
+      
+      setupTooltip(card, emb.name, emb.desc, emb.equipped ? "ADQUIRIDO" : "BLOQUEADO");
+
       if (emb.spriteIndex !== undefined && slicedEmblems[emb.spriteIndex]) {
         card.innerHTML = `
           <div class="emblem-patch has-image">
@@ -403,11 +552,6 @@ document.addEventListener("DOMContentLoaded", () => {
           </div>
         `;
       }
-      
-      // Clique para exibir detalhes
-      card.addEventListener('click', () => {
-        alert(`${emb.name}\n${emb.desc}`);
-      });
       allEmblemsGrid.appendChild(card);
     });
 

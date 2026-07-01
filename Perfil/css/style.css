@@ -954,12 +954,12 @@ COLUNA ESQUERDA (Left HUD - Réplica Canva) ════════════
 .df-op-badge {
   display: flex;
   align-items: center;
-  gap: 6px;
+  justify-content: center;
   font-family: 'Oxanium', sans-serif;
   font-size: 1.15rem;
   font-weight: 800;
-  color: var(--primary);
-  text-shadow: 0 0 6px var(--primary);
+  color: #ffffff;
+  text-shadow: none;
 }
 
 .df-equipped-emblems {
@@ -1521,6 +1521,144 @@ COLUNA ESQUERDA (Left HUD - Réplica Canva) ════════════
   background: rgba(255, 255, 255, 0.05);
 }
 
+
+/* ═══════════════════════════════════════════════════
+   TOOLTIP CUSTOMIZADO DO HUD (HOVER DETALHADO)
+   ═══════════════════════════════════════════════════ */
+.hud-tooltip {
+  position: fixed;
+  background: rgba(10, 15, 25, 0.94);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  padding: 10px 14px;
+  color: #ffffff;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 11px;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.15s ease-out, transform 0.15s ease-out;
+  z-index: 10000;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.9);
+  backdrop-filter: blur(12px);
+}
+
+.hud-tooltip.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.tooltip-title {
+  font-family: 'Oxanium', sans-serif;
+  font-weight: 800;
+  font-size: 13px;
+  color: var(--primary);
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.tooltip-desc {
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.4;
+  margin-bottom: 6px;
+}
+
+.tooltip-status {
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  display: inline-block;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.tooltip-status.equipado,
+.tooltip-status.adquirido,
+.tooltip-status.disponível {
+  background: rgba(0, 229, 255, 0.12);
+  color: var(--primary);
+}
+
+.tooltip-status.bloqueado {
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* ═══════════════════════════════════════════════════
+   SELETOR DE TÍTULOS MILITARES (CONQUISTAS)
+   ═══════════════════════════════════════════════════ */
+.df-title-banner-img {
+  width: 100%;
+  max-width: 420px;
+  height: auto;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  display: block;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+  transition: var(--transition);
+}
+
+.df-title-banner-img:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: scale(1.01);
+}
+
+.df-all-titles-section {
+  margin-bottom: 25px;
+  transition: var(--transition);
+}
+
+.df-titles-selector-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 15px;
+}
+
+.df-title-card-selector {
+  cursor: pointer;
+  border: 1.5px solid #232d36;
+  border-radius: 6px;
+  background: rgba(10, 15, 25, 0.4);
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: var(--transition);
+}
+
+.df-title-card-selector img {
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.df-title-card-selector:hover {
+  border-color: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.df-title-card-selector.active {
+  border-color: rgba(255, 255, 255, 0.5) !important;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.df-title-display-fallback {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 10px;
+}
+
+.df-title-display-fallback i {
+  font-size: 20px;
+  color: var(--orange);
+  text-shadow: 0 0 8px var(--orange);
+}
+
 /* ═══════════════════════════════════════════════════
    RESPONSIVIDADE E ADAPTAÇÕES MOBILE
    ═══════════════════════════════════════════════════ */
@@ -1596,6 +1734,10 @@ COLUNA ESQUERDA (Left HUD - Réplica Canva) ════════════
   .social-hud-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+
+  .df-titles-selector-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 @media (max-width: 480px) {
@@ -1633,5 +1775,9 @@ COLUNA ESQUERDA (Left HUD - Réplica Canva) ════════════
 
   .df-emblems-grid {
     grid-template-columns: repeat(3, 1fr);
+  }
+
+  .df-titles-selector-grid {
+    grid-template-columns: 1fr;
   }
 }

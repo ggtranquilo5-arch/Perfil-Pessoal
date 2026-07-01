@@ -225,9 +225,8 @@
                   <div class="df-equipped-section">
                     <div class="df-op-level-card">
                       <span class="df-op-lbl">NÍVEL OPERAÇÃO</span>
-                      <div class="df-op-badge">
-                        <i class="fas fa-helicopter"></i>
-                        <span id="dfOpLevel">60</span>
+                      <div class="df-op-badge" id="dfOpLevel">
+                        <!-- Lv 60 (Dinamizado por JS) -->
                       </div>
                     </div>
                     <div class="df-equipped-emblems">
@@ -309,12 +308,16 @@
                 <!-- Título Militar Equipado -->
                 <div class="df-active-title-card">
                   <div class="pd-header">// TÍTULO MILITAR EM USO</div>
-                  <div class="df-title-display">
-                    <i class="fas fa-ribbon"></i>
-                    <div class="df-td-info">
-                      <div class="df-td-name" id="dfTitleName">Deus da Guerra T6</div>
-                      <div class="df-td-desc" id="dfTitleDesc">Atingiu o prestígio máximo da temporada de assalto.</div>
-                    </div>
+                  <div class="df-title-display" id="dfTitleDisplay">
+                    <!-- Dinamizado por JS -->
+                  </div>
+                </div>
+
+                <!-- Lista de Títulos Adquiridos -->
+                <div class="df-all-titles-section" id="dfAllTitlesSection">
+                  <div class="pd-header">// TÍTULOS MILITARES ADQUIRIDOS</div>
+                  <div class="df-titles-selector-grid" id="dfTitlesGrid">
+                    <!-- Dinamizado por JS -->
                   </div>
                 </div>
 
@@ -386,6 +389,9 @@
     </section>
 
   </div>
+
+  <!-- Tooltip customizado do HUD -->
+  <div class="hud-tooltip" id="hudTooltip"></div>
 
   <script src="js/script.js"></script>
 </body>
