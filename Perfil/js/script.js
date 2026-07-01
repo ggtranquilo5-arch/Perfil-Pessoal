@@ -5,49 +5,29 @@ document.addEventListener("DOMContentLoaded", () => {
   const audioLabel = document.getElementById('audioLabel');
   let isPlaying = false;
 
-  // Variáveis para recorte dinâmico de emblemas
+  // Emblemas otimizados do Delta Force fornecidos pelo usuário
   let currentActiveGame = 'deltaforce';
-  const slicedEmblems = [];
-  let isEmblemSheetLoaded = false;
+  const dfEmblemFiles = [
+    "IMG_20260701_143542.png", // 0: Boas-vindas à FD
+    "Screenshot_2026-07-01-14-20-40-467_com.garena.game.df.png", // 1: Asas de Resgate
+    "IMG_20260701_143528.png", // 2: Pioneiro da Linha
+    "Screenshot_2026-07-01-14-21-16-787_com.garena.game.df.png", // 3: Trabalho de Equipe
+    "Screenshot_2026-07-01-14-21-25-047_com.garena.game.df.png", // 4: Rosa Negra
+    "Screenshot_2026-07-01-14-22-20-482_com.garena.game.df.png", // 5: Elite de Combate
+    "Screenshot_2026-07-01-14-23-02-857_com.garena.game.df.png", // 6: Escudo Verde
+    "Screenshot_2026-07-01-14-23-27-863_com.garena.game.df.png", // 7: Medalha de Honra
+    "Screenshot_2026-07-01-14-23-44-577_com.garena.game.df.png", // 8: Mestre da Tática
+    "Screenshot_2026-07-01-14-24-26-561_com.garena.game.df.png", // 9: Pérola do Mar
+    "Screenshot_2026-07-01-14-24-41-377_com.garena.game.df.png", // 10: Sniper Fuzileiro
+    "Screenshot_2026-07-01-14-24-56-169_com.garena.game.df.png", // 11: Lâmina Silenciosa
+    "Screenshot_2026-07-01-14-25-33-336_com.garena.game.df.png", // 12: Lobo Cenográfico
+    "Screenshot_2026-07-01-14-25-54-147_com.garena.game.df.png", // 13: Leão de Bronze
+    "Screenshot_2026-07-01-14-28-41-731_com.garena.game.df.png", // 14: Leão de Ouro
+    "IMG_20260701_143443.png"  // 15: Cavaleiro de Ferro
+  ];
 
-  const emblemSheet = new Image();
-  emblemSheet.src = 'img/Emblemas.png';
-  emblemSheet.onload = () => {
-    const cols = 5;
-    const rows = 4;
-    const cellW = emblemSheet.width / cols;
-    const cellH = emblemSheet.height / rows;
-
-    // Recuo de 11% de cada lado para eliminar as linhas de seleção brancas e as bordas cinzas do jogo
-    const offsetX = cellW * 0.11;
-    const offsetY = cellH * 0.11;
-    const cropW = cellW - offsetX * 2;
-    const cropH = cellH - offsetY * 2;
-
-    const canvas = document.createElement('canvas');
-    canvas.width = cropW;
-    canvas.height = cropH;
-    const ctx = canvas.getContext('2d');
-
-    for (let i = 0; i < 18; i++) {
-      const col = i % cols;
-      const row = Math.floor(i / cols);
-
-      const sx = col * cellW + offsetX;
-      const sy = row * cellH + offsetY;
-
-      ctx.clearRect(0, 0, cropW, cropH);
-      ctx.drawImage(emblemSheet, sx, sy, cropW, cropH, 0, 0, cropW, cropH);
-      slicedEmblems.push(canvas.toDataURL('image/png'));
-    }
-
-    isEmblemSheetLoaded = true;
-
-    // Recarregar os emblemas do jogo selecionado assim que terminar o processamento
-    if (currentActiveGame) {
-      selectGame(currentActiveGame);
-    }
-  };
+  const slicedEmblems = dfEmblemFiles.map(file => `img/emblemas/${file}`);
+  let isEmblemSheetLoaded = true;
 
   if (audio) {
     audio.volume = 0.45;
@@ -122,9 +102,7 @@ document.addEventListener("DOMContentLoaded", () => {
         { name: "Lobo Cenográfico", icon: "fa-paw", equipped: false, desc: "Táticas de caça solo.", shape: "shape-diamond", color: "gold-emb", spriteIndex: 12 },
         { name: "Leão de Bronze", icon: "fa-cat", equipped: false, desc: "Defesa sob cerco pesado.", shape: "shape-shield", color: "gold-emb", spriteIndex: 13 },
         { name: "Leão de Ouro", icon: "fa-crown", equipped: false, desc: "Vitórias consecutivas na arena.", shape: "shape-shield", color: "gold-emb", spriteIndex: 14 },
-        { name: "Engenharia Militar", icon: "fa-gear", equipped: true, desc: "Hacking e decodificação.", shape: "shape-circle", color: "gold-emb", spriteIndex: 15 },
-        { name: "Cavaleiro de Ferro", icon: "fa-horse", equipped: false, desc: "Mobilidade tática rápida.", shape: "shape-diamond", color: "gold-emb", spriteIndex: 16 },
-        { name: "Adagas Cruzadas", icon: "fa-bezier-curve", equipped: false, desc: "Coordenação de ataques em pinça.", shape: "shape-shield", color: "red-emb", spriteIndex: 17 }
+        { name: "Cavaleiro de Ferro", icon: "fa-horse", equipped: false, desc: "Mobilidade tática rápida.", shape: "shape-diamond", color: "gold-emb", spriteIndex: 15 }
       ],
 
       detailsStats: [
@@ -536,6 +514,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   updateClock();
   setInterval(updateClock, 1000);
+
+  // Inicializar o jogo padrão na carga da página
+  if (currentActiveGame) {
+    selectGame(currentActiveGame);
+  }
 
   // ══════════════════════════
   // EFEITO SPOTLIGHT AMBIENTE (SEGUIR CURSOR)

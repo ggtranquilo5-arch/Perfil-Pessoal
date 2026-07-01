@@ -982,19 +982,20 @@ COLUNA ESQUERDA (Left HUD - Réplica Canva) ════════════
 .df-ee-slot {
   width: 35px;
   height: 35px;
-  background: rgba(0, 0, 0, 0.25);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(0, 0, 0, 0.35);
+  border: 1.5px solid #232d36;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: var(--transition);
   cursor: help;
   overflow: hidden;
+  border-radius: 4px;
 }
 
 .df-ee-slot:hover {
-  border-color: var(--primary);
-  box-shadow: 0 0 8px var(--primary);
+  border-color: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.03);
 }
 
 /* Render do Personagem Lado Direito (CONTER AVATAR) */
@@ -1223,7 +1224,7 @@ COLUNA ESQUERDA (Left HUD - Réplica Canva) ════════════
 /* Grade com todos os 18 Emblemas do Jogo estilizados em 3D (9 colunas para economizar espaço vertical e horizontal) */
 .df-emblems-grid {
   display: grid;
-  grid-template-columns: repeat(9, 1fr);
+  grid-template-columns: repeat(8, 1fr);
   gap: 10px;
   margin-top: 15px;
 }
@@ -1240,16 +1241,17 @@ COLUNA ESQUERDA (Left HUD - Réplica Canva) ════════════
   transition: var(--transition);
   position: relative;
   overflow: hidden;
+  border-radius: 4px;
 }
 
 .emblem-card-grid:hover {
-  border-color: #ffffff;
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.02);
 }
 
 .emblem-card-grid.equipped {
-  border-color: #ffffff !important;
-  box-shadow: 0 0 12px rgba(255, 255, 255, 0.25) !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+  background: rgba(255, 255, 255, 0.01);
 }
 
 /* Patch de Emblema de Tecido Costurado */
