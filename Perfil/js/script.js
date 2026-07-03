@@ -342,6 +342,15 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
+  // Forçar todas as conquistas a estarem adquiridas
+  Object.keys(gameData).forEach(key => {
+    if (gameData[key].allEmblems) {
+      gameData[key].allEmblems.forEach(emb => {
+        emb.equipped = true;
+      });
+    }
+  });
+
   // Elementos do launcher de abas
   const tabsHeader = document.getElementById('tabsHeader');
   const tabGamesBtn = document.getElementById('tabGamesBtn');
