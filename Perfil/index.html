@@ -6,9 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Perfil | CLOUTCH</title>
 
-  <!-- Fontes Gamer -->
+  <!-- Fontes importadas do modelo Gharib -->
   <link
-    href="https://fonts.googleapis.com/css2?family=Oxanium:wght@300;400;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700;800&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Oxanium:wght@300;400;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
     rel="stylesheet">
 
   <link rel="stylesheet" href="css/style.css">
@@ -17,381 +17,245 @@
 
 <body>
 
-  <!-- Vídeo de Fundo Oficial -->
+  <!-- Camada de Cursor de Partículas Interativas (opcional) -->
+  <canvas id="cursor-canvas"></canvas>
+
+  <!-- Background Video Container com Fallbacks -->
   <video id="video-background" autoplay loop muted playsinline>
+    <source src="assets/background.mp4" type="video/mp4">
     <source src="videoplayback (1).webm" type="video/webm">
   </video>
-
-  <!-- Overlays HUD para profundidade -->
   <div class="video-overlay"></div>
   <div class="overlay-gradient"></div>
   <div class="grid-overlay"></div>
   <div class="vignette"></div>
 
-  <!-- Controle de Som HUD -->
-  <div class="audio-hud-control">
-    <button class="audio-fab" id="audBtn" aria-label="Som do Sistema">
-      <i class="fas fa-volume-mute"></i>
-      <span class="afab-pulse"></span>
-    </button>
-    <span class="audio-hud-label" id="audioLabel">ÁUDIO DESATIVADO</span>
+  <!-- ══════════════════════════
+       TELA DE ENTRADA (ENTER SCREEN)
+  ══════════════════════════ -->
+  <div class="enter-screen" id="enterScreen">
+    <div class="es-bg-text">CLOUTCH</div>
+    <div class="es-scanline"></div>
+    <div class="es-content">
+      <div class="es-logo-wrap">
+        <div class="es-ring r1"></div>
+        <div class="es-ring r2"></div>
+        <div class="es-ring r3"></div>
+        <div class="es-logo-img">
+          <!-- Ícone gamer centralizado -->
+          <i class="fas fa-crosshairs fa-2x"
+            style="color: #ffd700; filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.6));"></i>
+        </div>
+      </div>
+      <div class="es-label">GAMER SYSTEM V1.0</div>
+      <div class="es-name">CLOUTCH</div>
+      <div class="es-roles">
+        <span>FPS Player</span><span class="es-dot">·</span>
+        <span>Rust Survivor</span><span class="es-dot">·</span>
+        <span>Moderator</span>
+      </div>
+      <button class="es-btn" id="enterBtn">
+        <span class="es-btn-glow"></span>
+        <i class="fas fa-play"></i> &nbsp;INICIAR PERFIL
+      </button>
+      <div class="es-hint">🔊 A música toca rá automaticamente</div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════
+       MÚSICA & AUDIO PANEL
+  ══════════════════════════ -->
+  <button class="audio-fab" id="audBtn" aria-label="Controle de Áudio">
+    <i class="fas fa-volume-up"></i>
+    <span class="afab-pulse"></span>
+  </button>
+
+  <div class="audio-panel" id="audioPanel">
+    <div class="apanel-head"><i class="fas fa-music"></i> SISTEMA DE ÁUDIO</div>
+    <div class="vol-row">
+      <i class="fas fa-volume-off"></i>
+      <input type="range" id="vol" min="0" max="100" value="50" aria-label="Ajustar Volume">
+      <i class="fas fa-volume-up"></i>
+    </div>
+    <button class="apanel-btn" id="audTog"><i class="fas fa-pause"></i>&nbsp; PAUSAR MÚSICA</button>
   </div>
 
   <audio id="bgAudio" loop preload="auto">
     <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
   </audio>
 
-  <!-- Container Principal com Efeitos 3D -->
-  <div class="container" id="hudContainer">
+  <!-- ══════════════════════════
+       PAINEL PRINCIPAL (DASHBOARD)
+  ══════════════════════════ -->
+  <div class="container">
 
-    <main class="hud-dashboard">
+    <main class="profile-dashboard">
 
-      <!-- COLUNA ESQUERDA (Left HUD - Réplica Canva) -->
-      <section class="left-hud">
+      <!-- COLUNA ESQUERDA: PERFIL E STATUS -->
+      <aside class="profile-sidebar">
 
-        <div class="hud-avatar-wrapper">
-          <!-- Efeitos Holográficos no Fundo -->
-          <div class="hud-avatar-glow"></div>
-
-          <!-- Círculos Giratórios Vibrantes (Azul Marinho, Azul Vibrante e Neve Branca) -->
-          <div class="hud-avatar-rings">
-            <div class="spinning-circle circle-outer"></div>
-            <div class="spinning-circle circle-middle">
-              <div class="orbiting-dot"></div>
-            </div>
-            <div class="spinning-circle circle-inner"></div>
-          </div>
-
-          <!-- Moldura Circular do Avatar -->
-          <div class="hud-avatar-border">
-            <img src="img/Principal avatar.png" alt="Avatar de CLOUTCH" class="hud-avatar-img">
-          </div>
+        <!-- Relógio Ativo Local -->
+        <div class="live-clock-wrap">
+          <div class="lc-label">HORÁRIO DO SISTEMA</div>
+          <div class="lc-time" id="liveClock">00:00:00</div>
+          <div class="lc-date" id="liveDate">—</div>
         </div>
 
-        <div class="hud-name-wrapper">
-          <h1 class="hud-main-name">CLOUTCH</h1>
-          <div class="hud-status-active">
-            <span class="hud-pulse-dot"></span>
-            <span class="hud-status-text">ONLINE // SISTEMA ATIVO</span>
+        <div class="profile-card">
+
+          <!-- Avatar HUD com anéis orbitais e tags flutuantes -->
+          <div class="hero-avatar-wrap">
+            <div class="hav-glow"></div>
+            <div class="hav-orbit o1">
+              <div class="od"></div>
+            </div>
+            <div class="hav-orbit o2">
+              <div class="od"></div>
+            </div>
+            <div class="hav-orbit o3">
+              <div class="od"></div>
+            </div>
+            <div class="hav-img">
+              <img
+                src="https://images.unsplash.com/photo-1542751371-adc38448a05e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
+                alt="Avatar de CLOUTCH">
+            </div>
+
+            <!-- Etiquetas HUD Flutuantes e Conectadas -->
+            <div class="hud-tag tag-loc" data-tooltip="Localização">
+              <i class="fas fa-location-dot"></i> BRASIL
+            </div>
+            <div class="hud-tag tag-user" data-tooltip="Username">
+              <i class="fas fa-user"></i> CLOUTCH
+            </div>
+            <div class="hud-tag tag-gender" data-tooltip="Gênero">
+              <i class="fas fa-mars"></i> MASCULINO
+            </div>
+            <div class="hud-tag tag-live" data-tooltip="Status">
+              <span class="live-dot"></span> ONLINE
+            </div>
           </div>
+
+          <!-- Informações de Identidade Rápidas -->
+          <div class="profile-info">
+            <h1 class="profile-name" data-text="CLOUTCH">CLOUTCH</h1>
+            <div class="hud-status-active">
+              <span class="hud-pulse-dot"></span>
+              <span class="hud-status-text">DIRETRIZ TÁTICA // ATIVA</span>
+            </div>
+            <p class="profile-bio">Focado em FPS, Sobrevivência e Competitivo. Sempre buscando a vitória.</p>
+          </div>
+
         </div>
+      </aside>
 
-      </section>
+      <!-- COLUNA DIREITA: JOGOS, DETALHES E CONEXÕES -->
+      <div class="content-area">
 
-      <!-- COLUNA DIREITA (Right HUD - Launcher & Abas Dinâmicas) -->
-      <section class="right-hud">
-
-        <div class="tabs-card">
-          <!-- Cabeçalho das Abas -->
-          <div class="tabs-header" id="tabsHeader">
-            <!-- Botão de Voltar para Jogos (oculto no início) -->
-            <button class="tab-btn back-to-games hidden" id="backToGamesBtn">
-              <i class="fas fa-arrow-left"></i> JOGOS
-            </button>
-
-            <!-- Aba Inicial de Jogos -->
-            <button class="tab-btn active" data-tab="jogos" id="tabGamesBtn">
-              <i class="fas fa-gamepad"></i> MEUS JOGOS
-            </button>
-
-            <!-- Abas do Jogo Selecionado (ocultas por padrão) -->
-            <button class="tab-btn game-tab hidden" data-tab="perfil">
-              <i class="fas fa-user-astronaut"></i> PERFIL
-            </button>
-            <button class="tab-btn game-tab hidden" data-tab="detalhes">
-              <i class="fas fa-chart-bar"></i> DETALHES
-            </button>
-            <button class="tab-btn game-tab hidden" data-tab="conquistas">
-              <i class="fas fa-trophy"></i> CONQUISTAS
-            </button>
-            <button class="tab-btn game-tab hidden" data-tab="historico">
-              <i class="fas fa-history"></i> HISTÓRICO
-            </button>
+        <!-- SEÇÃO 02: BASE DE JOGOS & NICKNAMES -->
+        <section class="games-section" aria-label="Jogos Relacionados">
+          <div class="dossier-header" style="margin-top: 35px; margin-bottom: 25px;">
+            <span class="sec-tag">// SISTEMA DE JOGOS</span>
+            <span class="sec-line"></span>
+            <span class="sec-title">CONTAS E NICKS</span>
           </div>
 
-          <!-- Conteúdos das Abas -->
-          <div class="tabs-content">
+          <div class="games-list">
 
-            <!-- Aba: Seleção Inicial de Jogos -->
-            <div class="tab-panel active" id="tab-jogos">
-              <div class="pd-header">// SELECIONE UM PERFIL DE JOGO</div>
-
-              <div class="games-selector-grid">
-
-                <!-- Delta Force Card -->
-                <div class="launcher-game-card" data-game="deltaforce"
-                  style="background-image: linear-gradient(90deg, rgba(5, 4, 8, 0.95) 40%, rgba(5, 4, 8, 0.45) 100%), url('img/Delta Force banner.jpg');">
-                  <div class="lgc-icon"
-                    style="background-image: url('img/deltaforce_avatar.jpg'); background-size: cover; background-position: center;">
-                  </div>
-                  <div class="lgc-info">
-                    <div class="lgc-name">Delta Force: Hawk Ops</div>
-                    <div class="lgc-meta">73 Horas Jogadas &bull; Ingressou em 2026</div>
-                  </div>
-                  <div class="lgc-arrow"><i class="fas fa-chevron-right"></i></div>
-                </div>
-
-                <!-- Rust Card -->
-                <div class="launcher-game-card" data-game="rust"
-                  style="background-image: linear-gradient(90deg, rgba(5, 4, 8, 0.95) 40%, rgba(5, 4, 8, 0.45) 100%), url('img/Rust banner.jpg');">
-                  <div class="lgc-icon"
-                    style="background-image: url('img/rust_avatar.jpg'); background-size: cover; background-position: center;">
-                  </div>
-                  <div class="lgc-info">
-                    <div class="lgc-name">Rust</div>
-                    <div class="lgc-meta">1.200 Horas Jogadas &bull; Ingressou em 2022</div>
-                  </div>
-                  <div class="lgc-arrow"><i class="fas fa-chevron-right"></i></div>
-                </div>
-
-                <!-- Valorant Card -->
-                <div class="launcher-game-card" data-game="valorant"
-                  style="background-image: linear-gradient(90deg, rgba(5, 4, 8, 0.95) 40%, rgba(5, 4, 8, 0.45) 100%), url('img/valorent banner.jpg');">
-                  <div class="lgc-icon"
-                    style="background-image: url('img/valorant_avatar.jpg'); background-size: cover; background-position: center;">
-                  </div>
-                  <div class="lgc-info">
-                    <div class="lgc-name">Valorant</div>
-                    <div class="lgc-meta">450 Horas Jogadas &bull; Ingressou em 2023</div>
-                  </div>
-                  <div class="lgc-arrow"><i class="fas fa-chevron-right"></i></div>
-                </div>
-
-                <!-- Counter-Strike 2 Card -->
-                <div class="launcher-game-card" data-game="cs2"
-                  style="background-image: linear-gradient(90deg, rgba(5, 4, 8, 0.95) 40%, rgba(5, 4, 8, 0.45) 100%), url('img/Cs2 banner.jpg');">
-                  <div class="lgc-icon"
-                    style="background-image: url('img/Cs2 perfil.jpg'); background-size: cover; background-position: center;">
-                  </div>
-                  <div class="lgc-info">
-                    <div class="lgc-name">Counter-Strike 2</div>
-                    <div class="lgc-meta">350 Horas Jogadas &bull; Ingressou em 2024</div>
-                  </div>
-                  <div class="lgc-arrow"><i class="fas fa-chevron-right"></i></div>
-                </div>
-
-                <!-- GTA 5 Card -->
-                <div class="launcher-game-card" data-game="gta5"
-                  style="background-image: linear-gradient(90deg, rgba(5, 4, 8, 0.95) 40%, rgba(5, 4, 8, 0.45) 100%), url('img/GTA 5 banner.jpg');">
-                  <div class="lgc-icon"
-                    style="background-image: url('img/Gta 5 avatar.jpg'); background-size: cover; background-position: center;">
-                  </div>
-                  <div class="lgc-info">
-                    <div class="lgc-name">Grand Theft Auto V</div>
-                    <div class="lgc-meta">250 Horas Jogadas &bull; Ingressou em 2021</div>
-                  </div>
-                  <div class="lgc-arrow"><i class="fas fa-chevron-right"></i></div>
-                </div>
-
+            <!-- Game Card 1: Mission Evo -->
+            <div class="game-card card-evo">
+              <div class="game-icon">
+                <i class="fas fa-crosshairs"></i>
               </div>
+              <div class="game-details">
+                <span class="game-tag tag-survival">Survival FPS</span>
+                <div class="game-name">Mission Evo</div>
+                <div class="game-nick"><i class="fas fa-gamepad"></i> Nick: CLOUTCH</div>
+              </div>
+              <div class="card-glow"></div>
             </div>
 
-            <!-- Aba: Perfil do Jogo (Dinamizado por JS) -->
-            <div class="tab-panel" id="tab-perfil">
-              <div class="df-profile-layout">
-
-                <!-- Lado Esquerdo: Estatísticas e Emblemas -->
-                <div class="df-profile-stats">
-                  <div class="pd-header" id="profileHeader">// DADOS GERAIS DO OPERADOR</div>
-
-                  <!-- Classificação & Mini Grid -->
-                  <div class="df-quick-stats-row">
-                    <div class="df-rank-badge-card">
-                      <span class="df-rb-label">MELHOR CLASSIFICAÇÃO</span>
-                      <div class="df-rb-title" id="dfRankTitle">DF Pinnacle 🌟 44</div>
-                      <div class="df-rb-score" id="dfRankScore">Pontuação: 8150</div>
-                    </div>
-                    <div class="df-stats-mini-grid">
-                      <div class="df-sm-item">
-                        <span class="df-sm-lbl">HORAS</span>
-                        <span class="df-sm-val" id="dfHours">73h</span>
-                      </div>
-                      <div class="df-sm-item">
-                        <span class="df-sm-lbl">BATALHAS</span>
-                        <span class="df-sm-val" id="dfBattles">430</span>
-                      </div>
-                      <div class="df-sm-item">
-                        <span class="df-sm-lbl">ATIVOS</span>
-                        <span class="df-sm-val" id="dfAssets">246.8M</span>
-                      </div>
-                      <div class="df-sm-item">
-                        <span class="df-sm-lbl">TAXA EXTRAÇÃO</span>
-                        <span class="df-sm-val" id="dfExtractRate">35.8%</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Nível & Emblemas Equipados -->
-                  <div class="df-equipped-section">
-                    <div class="df-op-level-card">
-                      <span class="df-op-lbl">NÍVEL OPERAÇÃO</span>
-                      <div class="df-op-badge" id="dfOpLevel">
-                        <!-- Lv 60 (Dinamizado por JS) -->
-                      </div>
-                    </div>
-                    <div class="df-equipped-emblems">
-                      <span class="df-ee-lbl">EMBLEMAS EQUIPADOS</span>
-                      <div class="df-ee-grid" id="dfEquippedGrid">
-                        <!-- Carregado via JS -->
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Lado Direito: Render da Conta -->
-                <div class="df-profile-char">
-                  <div class="char-hud-frame">
-                    <div class="char-image-container">
-                      <div class="char-skeleton-glow"></div>
-                      <img src="img/Principal avatar.png" alt="Render do Operador" class="char-avatar-render">
-                    </div>
-                    <div class="char-hud-banner">
-                      <div class="char-hud-name">CLOUTCH</div>
-                      <div class="char-hud-title" id="dfProfileTitle">Deus da Guerra T6</div>
-                    </div>
-                  </div>
-                </div>
-
+            <!-- Game Card 2: Rust -->
+            <div class="game-card card-rust">
+              <div class="game-icon">
+                <i class="fas fa-radiation"></i>
               </div>
+              <div class="game-details">
+                <span class="game-tag tag-crafting">Hardcore Survival</span>
+                <div class="game-name">Rust</div>
+                <div class="game-nick"><i class="fas fa-gamepad"></i> Nick: Cloutch_BR</div>
+              </div>
+              <div class="card-glow"></div>
             </div>
 
-            <!-- Aba: Detalhes do Jogo (Dinamizado por JS) -->
-            <div class="tab-panel" id="tab-detalhes">
-              <div class="df-details-layout">
-
-                <!-- Lado Esquerdo: Estatísticas completas -->
-                <div class="df-details-stats">
-                  <div class="pd-header" id="detailsHeader">// DETALHES DE DESEMPENHO</div>
-                  <div class="details-full-grid" id="dfDetailsGrid">
-                    <!-- Carregado via JS -->
-                  </div>
-                </div>
-
-                <!-- Lado Direito: Gráfico de Radar SVG -->
-                <div class="df-details-radar">
-                  <div class="pd-header" style="text-align: center;">// ATRIBUTOS DE COMBATE</div>
-                  <div class="radar-container-wrap">
-                    <svg viewBox="0 0 200 200" class="hud-radar-svg">
-                      <!-- Grelha -->
-                      <polygon points="100,20 176,75 147,165 53,165 24,75" class="r-grid-line" />
-                      <polygon points="100,40 157,84 135,152 65,152 43,84" class="r-grid-line" />
-                      <polygon points="100,60 138,93 124,139 76,139 62,93" class="r-grid-line" />
-                      <polygon points="100,80 119,102 112,125 88,125 81,102" class="r-grid-line" />
-
-                      <!-- Eixos -->
-                      <line x1="100" y1="100" x2="100" y2="20" class="r-axis-line" />
-                      <line x1="100" y1="100" x2="176" y2="75" class="r-axis-line" />
-                      <line x1="100" y1="100" x2="147" y2="165" class="r-axis-line" />
-                      <line x1="100" y1="100" x2="53" y2="165" class="r-axis-line" />
-                      <line x1="100" y1="100" x2="24" y2="75" class="r-axis-line" />
-
-                      <!-- Polígono dinâmico do radar -->
-                      <polygon points="100,100 100,100 100,100 100,100 100,100" class="r-value-poly" id="dfRadarPoly" />
-                    </svg>
-
-                    <!-- Rótulos -->
-                    <span class="r-label r-lbl-top">COMBATE</span>
-                    <span class="r-label r-lbl-right">SOBREVIVÊNCIA</span>
-                    <span class="r-label r-lbl-botright">COOP (PARTE 1)</span>
-                    <span class="r-label r-lbl-botleft">COOP (PARTE 2)</span>
-                    <span class="r-label r-lbl-left">PATRIMÔNIO</span>
-                  </div>
-                </div>
-
+            <!-- Game Card 3: Valorant -->
+            <div class="game-card card-val">
+              <div class="game-icon">
+                <i class="fas fa-shield-alt"></i>
               </div>
-            </div>
-
-            <!-- Aba: Conquistas / Customização (Dinamizado por JS) -->
-            <div class="tab-panel" id="tab-conquistas">
-              <div class="df-conquistas-layout">
-
-                <!-- Título Militar Equipado -->
-                <div class="df-active-title-card">
-                  <div class="pd-header">// TÍTULO MILITAR EM USO</div>
-                  <div class="df-title-display" id="dfTitleDisplay">
-                    <!-- Dinamizado por JS -->
-                  </div>
-                </div>
-
-                <!-- Lista de Títulos Adquiridos -->
-                <div class="df-all-titles-section" id="dfAllTitlesSection">
-                  <div class="pd-header">// TÍTULOS MILITARES ADQUIRIDOS</div>
-                  <div class="df-titles-selector-grid" id="dfTitlesGrid">
-                    <!-- Dinamizado por JS -->
-                  </div>
-                </div>
-
-                <!-- Painel de Emblemas de Operador -->
-                <div class="df-all-emblems-section">
-                  <div class="pd-header">// COLECIONÁVEIS E EMBLEMAS MILITARES</div>
-                  <div class="df-emblems-grid" id="dfAllEmblemsGrid">
-                    <!-- Carregado via JS -->
-                  </div>
-                </div>
-
+              <div class="game-details">
+                <span class="game-tag tag-tactical">Tactical Shooter</span>
+                <div class="game-name">Valorant</div>
+                <div class="game-nick"><i class="fas fa-gamepad"></i> Nick: Cloutch#BR1</div>
               </div>
-            </div>
-
-            <!-- Aba: Histórico de Partidas (Dinamizado por JS) -->
-            <div class="tab-panel" id="tab-historico">
-              <div class="df-historico-layout">
-                <div class="pd-header">// LOG DE COMBATE E OPERAÇÕES RECENTES</div>
-                <div class="history-list-container" id="dfHistoryList">
-                  <!-- Carregado via JS -->
-                </div>
-              </div>
+              <div class="card-glow"></div>
             </div>
 
           </div>
-        </div>
+        </section>
 
-      </section>
+        <!-- SEÇÃO 03: CONEXÕES / REDES SOCIAIS -->
+        <section class="connect-section" aria-label="Conectar-se">
+          <div class="dossier-header" style="margin-top: 35px; margin-bottom: 25px;">
+            <span class="sec-tag">// DIRETÓRIO DE LINKS</span>
+            <span class="sec-line"></span>
+            <span class="sec-title">REDES & CANAIS</span>
+          </div>
 
-    </main>
+          <div class="platform-grid">
+            <a href="https://www.tiktok.com/" target="_blank" class="platform-card pc-tiktok" aria-label="TikTok">
+              <div class="pc-icon"><i class="fab fa-tiktok"></i></div>
+              <div class="pc-info">
+                <div class="pc-name">TikTok</div>
+                <div class="pc-handle">@cloutch</div>
+              </div>
+              <div class="pc-arrow"><i class="fas fa-arrow-up-right-from-square"></i></div>
+              <div class="pc-glow"></div>
+            </a>
 
-    <!-- Indicador de Rolagem -->
-    <div class="hud-scroll-indicator">
-      <i class="fas fa-chevron-down"></i>
-    </div>
+            <a href="https://discord.gg/" target="_blank" class="platform-card pc-discord" aria-label="Discord">
+              <div class="pc-icon"><i class="fab fa-discord"></i></div>
+              <div class="pc-info">
+                <div class="pc-name">Discord</div>
+                <div class="pc-handle">Servidor Discord</div>
+              </div>
+              <div class="pc-arrow"><i class="fas fa-arrow-up-right-from-square"></i></div>
+              <div class="pc-glow"></div>
+            </a>
 
-    <!-- SEÇÃO DE REDES SOCIAIS (Rodapé Amplo e Holográfico) -->
-    <section class="social-footer-hud" aria-label="Redes Sociais">
-      <div class="social-hud-header">
-        <span class="sh-tag">// CONEXÕES SOCIAIS</span>
-        <span class="sh-line"></span>
+            <a href="https://steamcommunity.com/" target="_blank" class="platform-card pc-steam" aria-label="Steam">
+              <div class="pc-icon"><i class="fab fa-steam"></i></div>
+              <div class="pc-info">
+                <div class="pc-name">Steam</div>
+                <div class="pc-handle">Perfil Steam</div>
+              </div>
+              <div class="pc-arrow"><i class="fas fa-arrow-up-right-from-square"></i></div>
+              <div class="pc-glow"></div>
+            </a>
+          </div>
+        </section>
+
+        <!-- FOOTER INTEGRADO -->
+        <footer class="site-footer">
+          <span>© 2026 CLOUTCH · Perfil Gamer Oficial</span>
+          <span class="footer-dot">·</span>
+          <span>Desenvolvido no Estilo HUD Cyberpunk</span>
+        </footer>
+
       </div>
-      <div class="social-hud-grid">
-        <a href="https://www.tiktok.com/" target="_blank" class="social-hud-card tiktok">
-          <i class="fab fa-tiktok"></i>
-          <span class="sh-name">TikTok</span>
-        </a>
-        <a href="https://discord.gg/" target="_blank" class="social-hud-card discord">
-          <i class="fab fa-discord"></i>
-          <span class="sh-name">Discord</span>
-        </a>
-        <a href="https://steamcommunity.com/" target="_blank" class="social-hud-card steam">
-          <i class="fab fa-steam"></i>
-          <span class="sh-name">Steam</span>
-        </a>
-        <a href="https://youtube.com/" target="_blank" class="social-hud-card youtube">
-          <i class="fab fa-youtube"></i>
-          <span class="sh-name">YouTube</span>
-        </a>
-        <a href="https://instagram.com/" target="_blank" class="social-hud-card instagram">
-          <i class="fab fa-instagram"></i>
-          <span class="sh-name">Instagram</span>
-        </a>
-        <a href="https://x.com/" target="_blank" class="social-hud-card twitter">
-          <i class="fab fa-x-twitter"></i>
-          <span class="sh-name">Twitter / X</span>
-        </a>
-      </div>
-    </section>
-
   </div>
 
-  <!-- Tooltip customizado do HUD -->
-  <div class="hud-tooltip" id="hudTooltip"></div>
+  </main>
 
   <script src="js/script.js"></script>
 </body>

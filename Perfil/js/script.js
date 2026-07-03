@@ -193,14 +193,7 @@ document.addEventListener("DOMContentLoaded", () => {
         { key: "Aliados Ressurgidos", val: "61" }
       ],
 
-      radarPoints: "100,41 155,82 135,148 66,134 27,76",
-
-      history: [
-        { mode: "ZONA DE RISCO", desc: "Extração bem-sucedida (Echo)", status: "VITÓRIA", resultClass: "victory" },
-        { mode: "ZONA DE RISCO", desc: "Extração bem-sucedida (Echo)", status: "VITÓRIA", resultClass: "victory" },
-        { mode: "ZONA DE RISCO", desc: "Operador Eliminado (Echo)", status: "DERROTA", resultClass: "defeat" },
-        { mode: "ZONA DE RISCO", desc: "Extração bem-sucedida (Echo)", status: "VITÓRIA", resultClass: "victory" }
-      ]
+      radarPoints: "100,41 155,82 135,148 66,134 27,76"
     },
     rust: {
       name: "Rust",
@@ -237,11 +230,7 @@ document.addEventListener("DOMContentLoaded", () => {
         { key: "Recursos Coletados", val: "14.5M" },
         { key: "Helicópteros Derrubados", val: "16" }
       ],
-      radarPoints: "100,25 168,75 140,155 60,155 32,75",
-      history: [
-        { mode: "Monument Raid", desc: "Monumento Airfield conquistado", status: "VITÓRIA", resultClass: "victory" },
-        { mode: "Base Defense", desc: "Defesa de raid online bem sucedida", status: "VITÓRIA", resultClass: "victory" }
-      ]
+      radarPoints: "100,25 168,75 140,155 60,155 32,75"
     },
     valorant: {
       name: "Valorant",
@@ -278,12 +267,7 @@ document.addEventListener("DOMContentLoaded", () => {
         { key: "Precisão do Headshot", val: "28.3%" },
         { key: "Dano Médio por Rodada", val: "152" }
       ],
-      radarPoints: "100,30 162,75 142,150 64,148 30,75",
-      history: [
-        { mode: "COMPETITIVO", desc: "Partida ranqueada (Split - Jett)", status: "VITÓRIA", resultClass: "victory" },
-        { mode: "COMPETITIVO", desc: "Partida ranqueada (Ascent - Jett)", status: "VITÓRIA", resultClass: "victory" },
-        { mode: "COMPETITIVO", desc: "Partida ranqueada (Bind - Reyna)", status: "DERROTA", resultClass: "defeat" }
-      ]
+      radarPoints: "100,30 162,75 142,150 64,148 30,75"
     },
     cs2: {
       name: "Counter-Strike 2",
@@ -320,11 +304,7 @@ document.addEventListener("DOMContentLoaded", () => {
         { key: "MVP Total", val: "184" },
         { key: "Clutches Ganhos", val: "42" }
       ],
-      radarPoints: "100,28 160,78 138,154 62,152 28,78",
-      history: [
-        { mode: "PREMIER", desc: "Partida ranqueada (Mirage - Terrorista)", status: "VITÓRIA", resultClass: "victory" },
-        { mode: "PREMIER", desc: "Partida ranqueada (Inferno - CT)", status: "VITÓRIA", resultClass: "victory" }
-      ]
+      radarPoints: "100,28 160,78 138,154 62,152 28,78"
     },
     gta5: {
       name: "Grand Theft Auto V",
@@ -358,11 +338,7 @@ document.addEventListener("DOMContentLoaded", () => {
         { key: "Carros na Garagem", val: "45" },
         { key: "Nível de Procurado Máximo", val: "5 Estrelas" }
       ],
-      radarPoints: "100,32 165,75 138,150 62,148 26,75",
-      history: [
-        { mode: "GOLPE", desc: "Golpe a Cayo Perico (Elite)", status: "VITÓRIA", resultClass: "victory" },
-        { mode: "GOLPE", desc: "Golpe ao Casino Diamond (Dinheiro)", status: "VITÓRIA", resultClass: "victory" }
-      ]
+      radarPoints: "100,32 165,75 138,150 62,148 26,75"
     }
   };
 
@@ -553,20 +529,6 @@ document.addEventListener("DOMContentLoaded", () => {
         `;
       }
       allEmblemsGrid.appendChild(card);
-    });
-
-    // 5. Carregar histórico de partidas
-    const historyList = document.getElementById('dfHistoryList');
-    historyList.innerHTML = '';
-    data.history.forEach(match => {
-      const item = document.createElement('div');
-      item.className = `history-item ${match.resultClass}`;
-      item.innerHTML = `
-        <span class="match-game">${match.mode}</span>
-        <span class="match-desc">${match.desc}</span>
-        <span class="match-status">${match.status}</span>
-      `;
-      historyList.appendChild(item);
     });
 
     // 6. Ativar aba de Perfil por padrão
