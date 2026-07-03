@@ -482,13 +482,10 @@ COLUNA ESQUERDA (Left HUD - Réplica Canva) ════════════
 }
 
 @keyframes ldot {
-
-  0%,
-  100% {
+  0%, 100% {
     opacity: 0.4;
     transform: scale(0.85);
   }
-
   50% {
     opacity: 1;
     transform: scale(1.3);
