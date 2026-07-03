@@ -124,12 +124,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const gameData = {
     deltaforce: {
       name: "Delta Force: Hawk Ops",
-      rankTitle: "DF Pinnacle 🌟 44",
-      rankScore: "Pontuação: 8150",
-      hours: "73h",
-      battles: "430",
-      assets: "246.8M",
-      extractionRate: "35.8%",
+      rankTitle: "DF Pinnacle 🌟 245",
+      rankScore: "Pontuação: 23150",
+      hours: "4700h",
+      battles: "11430",
+      assets: "266.8M",
+      extractionRate: "39.8%",
       opLevel: "60",
       titleName: "Deus da Guerra T6",
       titleDesc: "provante de alcançar a classificação mais alta na Zona de Risco, Temporada War Albaze!",
@@ -177,8 +177,8 @@ document.addEventListener("DOMContentLoaded", () => {
       ],
 
       detailsStats: [
-        { key: "Total de Batalhas", val: "430" },
-        { key: "Hora do Jogo", val: "73h" },
+        { key: "Total de Batalhas", val: "11430" },
+        { key: "Hora do Jogo", val: "4700h" },
         { key: "P/L (Média)", val: "1.4M" },
         { key: "Valor Extraído", val: "393.8M" },
         { key: "Recompensas de Tarefas", val: "1.2M" },
@@ -187,7 +187,7 @@ document.addEventListener("DOMContentLoaded", () => {
         { key: "Eliminações de Operadores", val: "635" },
         { key: "Precisão Geral", val: "25.5%" },
         { key: "Taxa de Eliminação", val: "45.6%" },
-        { key: "Taxa de Extração", val: "35.8%" },
+        { key: "Taxa de Extração", val: "39.8%" },
         { key: "Valor Extraído de Aliados", val: "14.1M" },
         { key: "Resgate de Companheiros", val: "77" },
         { key: "Aliados Ressurgidos", val: "61" }
@@ -362,7 +362,13 @@ document.addEventListener("DOMContentLoaded", () => {
     if (tabsHeader) tabsHeader.classList.add('game-active');
     if (tabGamesBtn) tabGamesBtn.classList.add('hidden');
     if (backToGamesBtn) backToGamesBtn.classList.remove('hidden');
-    gameTabs.forEach(tab => tab.classList.remove('hidden'));
+    gameTabs.forEach(tab => {
+      if (tab.getAttribute('data-tab') === 'conquistas' && gameId !== 'deltaforce') {
+        tab.classList.add('hidden');
+      } else {
+        tab.classList.remove('hidden');
+      }
+    });
 
     // 2. Carregar informações reais na aba PERFIL
     document.getElementById('profileHeader').textContent = `// OPERADOR: ${data.name.toUpperCase()}`;
@@ -385,31 +391,42 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Grid de emblemas equipados com design de patch militar real
+    const equippedEmblemsContainer = document.querySelector('.df-equipped-emblems');
+    if (equippedEmblemsContainer) {
+      if (gameId === 'deltaforce') {
+        equippedEmblemsContainer.style.display = 'block';
+      } else {
+        equippedEmblemsContainer.style.display = 'none';
+      }
+    }
+
     const equippedGrid = document.getElementById('dfEquippedGrid');
     equippedGrid.innerHTML = '';
-    data.equippedEmblems.forEach(emb => {
-      const slot = document.createElement('div');
-      slot.className = `df-ee-slot`;
-      
-      const matchingEmb = data.allEmblems ? data.allEmblems.find(ae => ae.name === emb.name) : null;
-      const desc = matchingEmb ? matchingEmb.desc : "Emblema militar equipado.";
-      setupTooltip(slot, emb.name, desc, "EQUIPADO");
+    if (gameId === 'deltaforce' && data.equippedEmblems) {
+      data.equippedEmblems.forEach(emb => {
+        const slot = document.createElement('div');
+        slot.className = `df-ee-slot`;
+        
+        const matchingEmb = data.allEmblems ? data.allEmblems.find(ae => ae.name === emb.name) : null;
+        const desc = matchingEmb ? matchingEmb.desc : "Emblema militar equipado.";
+        setupTooltip(slot, emb.name, desc, "EQUIPADO");
 
-      if (emb.spriteIndex !== undefined && slicedEmblems[emb.spriteIndex]) {
-        slot.innerHTML = `
-          <div class="emblem-patch has-image">
-            <img src="${slicedEmblems[emb.spriteIndex]}" alt="${emb.name}" class="emblem-img">
-          </div>
-        `;
-      } else {
-        slot.innerHTML = `
-          <div class="emblem-patch ${emb.shape} ${emb.color}">
-            <i class="fas ${emb.icon}"></i>
-          </div>
-        `;
-      }
-      equippedGrid.appendChild(slot);
-    });
+        if (emb.spriteIndex !== undefined && slicedEmblems[emb.spriteIndex]) {
+          slot.innerHTML = `
+            <div class="emblem-patch has-image">
+              <img src="${slicedEmblems[emb.spriteIndex]}" alt="${emb.name}" class="emblem-img">
+            </div>
+          `;
+        } else {
+          slot.innerHTML = `
+            <div class="emblem-patch ${emb.shape} ${emb.color}">
+              <i class="fas ${emb.icon}"></i>
+            </div>
+          `;
+        }
+        equippedGrid.appendChild(slot);
+      });
+    }
 
     // 3. Carregar informações na aba DETALHES
     document.getElementById('detailsHeader').textContent = `// DESEMPENHO EM ${data.name.toUpperCase()}`;
