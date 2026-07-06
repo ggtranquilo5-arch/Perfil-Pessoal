@@ -33,6 +33,8 @@ html {
   scroll-behavior: smooth;
   scrollbar-width: thin;
   scrollbar-color: var(--primary) rgba(255, 255, 255, .05);
+  overflow-x: hidden;
+  width: 100%;
 }
 
 html::-webkit-scrollbar {
@@ -457,7 +459,8 @@ body::before {
 }
 
 .hud-stars-rank i {
-  color: var(--primary); /* Bronze brilhante */
+  color: var(--primary);
+  /* Bronze brilhante */
   text-shadow: 0 0 8px rgba(200, 130, 66, 0.6);
   opacity: 0.9;
 }
@@ -508,10 +511,13 @@ body::before {
 }
 
 @keyframes ldot {
-  0%, 100% {
+
+  0%,
+  100% {
     opacity: 0.4;
     transform: scale(0.85);
   }
+
   50% {
     opacity: 1;
     transform: scale(1.3);
@@ -563,10 +569,18 @@ body::before {
   border-bottom: 1.5px solid var(--border);
   background: rgba(0, 0, 0, 0.25);
   transition: all 0.3s;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.tabs-header::-webkit-scrollbar {
+  display: none;
 }
 
 .tab-btn {
   flex: 1;
+  flex-shrink: 0;
   background: transparent;
   border: none;
   color: var(--text-dim);
@@ -1728,8 +1742,41 @@ body::before {
 }
 
 @media (max-width: 480px) {
+  .container {
+    padding: 60px 10px 30px 10px;
+  }
+
+  .tabs-content {
+    padding: 15px;
+  }
+
+  .audio-hud-control {
+    top: 15px;
+    right: 15px;
+    padding: 4px 8px;
+    gap: 6px;
+  }
+
+  .audio-hud-label {
+    display: none;
+  }
+
   .social-hud-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .social-hud-card {
+    padding: 10px 8px;
+    gap: 6px;
+  }
+
+  .social-hud-card i {
+    font-size: 1.1rem;
+  }
+
+  .sh-name {
+    font-size: 8px;
   }
 
   .hud-vertical-tags {
@@ -1746,6 +1793,8 @@ body::before {
 
   .tab-btn {
     font-size: 8px;
+    padding: 10px 4px;
+    min-width: auto;
   }
 
   .tab-btn i {
@@ -1760,11 +1809,51 @@ body::before {
     width: 100%;
   }
 
+  .df-equipped-section {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 15px;
+  }
+
+  .df-op-level-card {
+    width: 100%;
+    flex-direction: row;
+    gap: 15px;
+  }
+
+  .df-ee-grid {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
   .df-emblems-grid {
     grid-template-columns: repeat(3, 1fr);
   }
 
   .df-titles-selector-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .df-title-card-selector {
+    padding: 4px;
+  }
+
+  .radar-container-wrap {
+    transform: scale(0.8);
+    transform-origin: center top;
+    margin-bottom: -20px;
+  }
+
+  .launcher-game-card {
+    padding: 14px 16px;
+  }
+
+  .lgc-name {
+    font-size: 12px;
+  }
+
+  .lgc-meta {
+    font-size: 9px;
   }
 }
