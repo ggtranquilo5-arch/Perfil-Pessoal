@@ -142,7 +142,7 @@ document.addEventListener("DOMContentLoaded", () => {
         { name: "Deus da Guerra T4", id: "t4", file: "Screenshot_2026-07-01-15-18-32-566_com.garena.game.df.png", desc: "Temporada 4 - Classificação Deus da Guerra" }
       ],
       activeTitleId: "t6",
-      
+
       // Foto de perfil oficial (local)
       avatarUrl: "img/deltaforce_avatar.jpg",
 
@@ -164,7 +164,7 @@ document.addEventListener("DOMContentLoaded", () => {
         { name: "Trabalho de Equipe", icon: "fa-users", equipped: true, desc: "Cooperação ativa com esquadrão tático.", shape: "shape-shield", color: "gold-emb", spriteIndex: 3 },
         { name: "Rosa Negra", icon: "fa-seedling", equipped: true, desc: "Conclusão de operações silenciosas.", shape: "shape-diamond", color: "blue-emb", spriteIndex: 4 },
         { name: "Elite de Combate", icon: "fa-skull-crossbones", equipped: true, desc: "Letalidade máxima contra alvos hostis.", shape: "shape-shield", color: "red-emb", spriteIndex: 5 },
-        { name: "Escudo Verde", icon: "fa-shield-halved", equipped: true, desc: "Defesa bem-sucedida de pontos críticos.", shape: "shape-shield", color: "green-emb", spriteIndex: 6 },
+        { name: "Coração da África", icon: "fa-shield-halved", equipped: true, desc: "Referente ao raríssimo diamante Coração da África quando encontrado e extraído com sucesso na Zona de Risco.", shape: "shape-shield", color: "green-emb", spriteIndex: 6 },
         { name: "Pérola do Mar", icon: "fa-gem", equipped: false, desc: "Extração bem-sucedida de tesouros.", shape: "shape-circle", color: "gold-emb", spriteIndex: 7 },
         { name: "Sniper Fuzileiro", icon: "fa-bullseye", equipped: false, desc: "Precisão de longo alcance com rifles.", shape: "shape-shield", color: "blue-emb", spriteIndex: 8 },
         { name: "Lâmina Silenciosa", icon: "fa-slash", equipped: false, desc: "Eliminações furtivas corpo a corpo.", shape: "shape-shield", color: "blue-emb", spriteIndex: 9 },
@@ -180,17 +180,17 @@ document.addEventListener("DOMContentLoaded", () => {
         { key: "Total de Batalhas", val: "11430" },
         { key: "Hora do Jogo", val: "4700h" },
         { key: "P/L (Média)", val: "1.4M" },
-        { key: "Valor Extraído", val: "393.8M" },
-        { key: "Recompensas de Tarefas", val: "1.2M" },
-        { key: "MandelBricks Decodificados", val: "2" },
-        { key: "Média A/M (K/D)", val: "13 | 2.5 | 1.4" },
-        { key: "Eliminações de Operadores", val: "635" },
-        { key: "Precisão Geral", val: "25.5%" },
+        { key: "Valor Extraído", val: "4.8b" },
+        { key: "Recompensas de Tarefas", val: "1.8M" },
+        { key: "MandelBricks Decodificados", val: "122" },
+        { key: "Média A/M (K/D)", val: "13 | 3.3 | 1.9" },
+        { key: "Eliminações de Operadores", val: "37.719" },
+        { key: "Precisão Geral", val: "35.5%" },
         { key: "Taxa de Eliminação", val: "45.6%" },
         { key: "Taxa de Extração", val: "39.8%" },
-        { key: "Valor Extraído de Aliados", val: "14.1M" },
-        { key: "Resgate de Companheiros", val: "77" },
-        { key: "Aliados Ressurgidos", val: "61" }
+        { key: "Valor Extraído de Aliados", val: "18.1M" },
+        { key: "Resgate de Companheiros", val: "832" },
+        { key: "Aliados Ressurgidos", val: "832" }
       ],
 
       radarPoints: "100,41 155,82 135,148 66,134 27,76"
@@ -206,7 +206,7 @@ document.addEventListener("DOMContentLoaded", () => {
       opLevel: "95",
       titleName: "Rei do AK",
       titleDesc: "Conquistou o domínio absoluto dos monumentos mais disputados do mapa.",
-      
+
       // Foto de perfil do Rust (local)
       avatarUrl: "img/rust_avatar.jpg",
 
@@ -243,7 +243,7 @@ document.addEventListener("DOMContentLoaded", () => {
       opLevel: "82",
       titleName: "Clutch Master",
       titleDesc: "Venceu mais de 100 rodadas jogando sozinho contra mais de 3 inimigos.",
-      
+
       // Foto de perfil do Valorant (local)
       avatarUrl: "img/valorant_avatar.jpg",
 
@@ -280,7 +280,7 @@ document.addEventListener("DOMContentLoaded", () => {
       opLevel: "74",
       titleName: "Defusal Veteran",
       titleDesc: "Desarmou 50 bombas com menos de 2 segundos restantes.",
-      
+
       // Foto de perfil do CS2 (local)
       avatarUrl: "img/Cs2 perfil.jpg",
 
@@ -415,7 +415,7 @@ document.addEventListener("DOMContentLoaded", () => {
       data.equippedEmblems.forEach(emb => {
         const slot = document.createElement('div');
         slot.className = `df-ee-slot`;
-        
+
         const matchingEmb = data.allEmblems ? data.allEmblems.find(ae => ae.name === emb.name) : null;
         const desc = matchingEmb ? matchingEmb.desc : "Emblema militar equipado.";
         setupTooltip(slot, emb.name, desc, "EQUIPADO");
@@ -464,7 +464,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (data.titles && data.titles.length > 0) {
       if (allTitlesSection) allTitlesSection.classList.remove('hidden');
-      
+
       // Encontrar título ativo
       const activeTitle = data.titles.find(t => t.id === data.activeTitleId) || data.titles[0];
 
@@ -533,12 +533,12 @@ document.addEventListener("DOMContentLoaded", () => {
     // Grid de 18 emblemas com visual de patch militar real
     const allEmblemsGrid = document.getElementById('dfAllEmblemsGrid');
     allEmblemsGrid.innerHTML = '';
-    
+
     const emblemsToLoad = data.allEmblems || [];
     emblemsToLoad.forEach(emb => {
       const card = document.createElement('div');
       card.className = `emblem-card-grid ${emb.equipped ? 'equipped' : ''}`;
-      
+
       setupTooltip(card, emb.name, emb.desc, emb.equipped ? "ADQUIRIDO" : "BLOQUEADO");
 
       if (emb.spriteIndex !== undefined && slicedEmblems[emb.spriteIndex]) {
@@ -629,7 +629,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const updateClock = () => {
     const now = new Date();
-    
+
     // Formatar Horário
     const hh = String(now.getHours()).padStart(2, '0');
     const mm = String(now.getMinutes()).padStart(2, '0');
