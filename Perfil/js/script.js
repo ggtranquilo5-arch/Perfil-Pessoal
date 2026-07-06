@@ -362,7 +362,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Lógica de seleção do jogo
   const launcherCards = document.querySelectorAll('.launcher-game-card');
 
-  const selectGame = (gameId) => {
+  const selectGame = (gameId, preserveTab = false) => {
     currentActiveGame = gameId;
     const data = gameData[gameId];
     if (!data) return;
@@ -389,7 +389,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById('dfExtractRate').textContent = data.extractionRate;
     const opLevelEl = document.getElementById('dfOpLevel');
     if (opLevelEl) {
-      opLevelEl.innerHTML = `<strong>Lv ${data.opLevel}</strong>`;
+      opLevelEl.textContent = `Lv ${data.opLevel}`;
     }
     document.getElementById('dfProfileTitle').textContent = data.titleName;
 
@@ -504,7 +504,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (tooltipEl) tooltipEl.classList.remove('active');
 
             // Re-renderizar a aba inteira do jogo de forma limpa e consistente
-            selectGame(gameId);
+            selectGame(gameId, true);
           });
 
           titlesGrid.appendChild(titleCard);
@@ -558,7 +558,9 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // 6. Ativar aba de Perfil por padrão
-    activateTab('perfil');
+    if (!preserveTab) {
+      activateTab('perfil');
+    }
   };
 
   // Retornar ao launcher principal
