@@ -17,6 +17,37 @@
 
 <body>
 
+  <!-- Tela de Introdução (Intro) -->
+  <div id="intro-overlay" class="intro-overlay">
+    <div class="intro-content">
+      <!-- Círculo HUD da Intro -->
+      <div class="intro-hud-ring">
+        <div class="intro-ring-outer"></div>
+        <div class="intro-ring-middle"></div>
+        <div class="intro-ring-inner">
+          <span class="intro-logo-text">CLOUTCH</span>
+        </div>
+      </div>
+
+      <!-- Barra de Progresso e Diagnósticos -->
+      <div class="intro-status-box">
+        <div class="intro-terminal-text" id="introTerminal">
+          &gt; INICIALIZANDO INTERFACE DE CONEXÃO...<br>
+        </div>
+        <div class="intro-progress-bar-wrapper">
+          <div class="intro-progress-bar" id="introProgressBar"></div>
+        </div>
+        <div class="intro-percentage" id="introPercent">0%</div>
+      </div>
+
+      <!-- Botão para Iniciar (Oculto no início) -->
+      <button id="introStartBtn" class="intro-start-btn hidden">
+        <span class="btn-glitch-text">INICIAR CONSOLE // BOOT SYSTEM</span>
+        <span class="btn-pulse-glow"></span>
+      </button>
+    </div>
+  </div>
+
   <!-- Vídeo de Fundo Oficial -->
   <video id="video-background" autoplay loop muted playsinline>
     <source src="videoplayback (1).webm" type="video/webm">

@@ -1858,3 +1858,217 @@ body::before {
     font-size: 9px;
   }
 }
+
+/* ==========================================
+   TELA DE INTRODUÇÃO (INTRO OVERLAY)
+   ========================================== */
+.intro-overlay {
+  position: fixed;
+  inset: 0;
+  background: #080605;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  transition: opacity 0.8s cubic-bezier(0.77, 0, 0.175, 1), visibility 0.8s;
+  overflow: hidden;
+}
+
+/* scanlines e ruído de fundo na intro */
+.intro-overlay::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: 
+    linear-gradient(rgba(200, 130, 66, 0.05) 50%, transparent 50%),
+    radial-gradient(circle, rgba(200, 130, 66, 0.02) 0%, transparent 80%);
+  background-size: 100% 4px, 100% 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.intro-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  text-align: center;
+  max-width: 500px;
+  width: 90%;
+}
+
+/* Anéis de HUD da Intro */
+.intro-hud-ring {
+  position: relative;
+  width: 180px;
+  height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.intro-ring-outer {
+  position: absolute;
+  inset: 0;
+  border: 2px dashed var(--primary);
+  border-radius: 50%;
+  opacity: 0.6;
+  animation: introRotateCw 15s linear infinite;
+}
+
+.intro-ring-middle {
+  position: absolute;
+  inset: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-left-color: var(--primary);
+  border-right-color: var(--primary);
+  border-radius: 50%;
+  animation: introRotateCcw 8s linear infinite;
+}
+
+.intro-ring-inner {
+  position: absolute;
+  inset: 30px;
+  border: 3px double rgba(200, 130, 66, 0.3);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(12, 10, 9, 0.9);
+  box-shadow: 0 0 25px rgba(200, 130, 66, 0.15);
+}
+
+.intro-logo-text {
+  font-family: 'Oxanium', sans-serif;
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: 4px;
+  color: #fff;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5), 0 0 20px var(--primary);
+  animation: introPulse 2s ease-in-out infinite;
+}
+
+/* Barra de progresso e informações */
+.intro-status-box {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.intro-terminal-text {
+  font-family: 'Space Grotesk', monospace;
+  font-size: 11px;
+  color: var(--text-dim);
+  height: 60px;
+  overflow-hidden: scroll;
+  text-align: left;
+  line-height: 1.5;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(200, 130, 66, 0.1);
+  padding: 8px 12px;
+  border-radius: 6px;
+}
+
+.intro-progress-bar-wrapper {
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 3px;
+  overflow: hidden;
+  border: 1px solid rgba(200, 130, 66, 0.15);
+}
+
+.intro-progress-bar {
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), var(--orange));
+  box-shadow: 0 0 10px var(--primary);
+  border-radius: 3px;
+  transition: width 0.1s linear;
+}
+
+.intro-percentage {
+  font-family: 'Oxanium', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--primary);
+  letter-spacing: 1px;
+}
+
+/* Botão de Inicializar */
+.intro-start-btn {
+  background: linear-gradient(135deg, var(--primary) 0%, #a6632d 100%);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #fff;
+  padding: 14px 28px;
+  font-family: 'Oxanium', sans-serif;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  border-radius: 4px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 20px rgba(200, 130, 66, 0.3);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  animation: introButtonPop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.intro-start-btn:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 0 30px rgba(200, 130, 66, 0.6);
+  border-color: #fff;
+}
+
+.intro-start-btn:active {
+  transform: translateY(1px);
+}
+
+.intro-start-btn .btn-pulse-glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(255,255,255,0.2) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.intro-start-btn:hover .btn-pulse-glow {
+  opacity: 1;
+}
+
+/* Classes utilitárias da intro */
+.intro-overlay.fade-out {
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* Animações */
+@keyframes introRotateCw {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes introRotateCcw {
+  0% { transform: rotate(360deg); }
+  100% { transform: rotate(0deg); }
+}
+
+@keyframes introPulse {
+  0%, 100% { transform: scale(1); opacity: 0.9; }
+  50% { transform: scale(1.05); opacity: 1; text-shadow: 0 0 15px rgba(255, 255, 255, 0.8), 0 0 30px var(--primary); }
+}
+
+@keyframes introButtonPop {
+  0% { transform: scale(0.8); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}

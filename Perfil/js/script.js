@@ -5,6 +5,93 @@ document.addEventListener("DOMContentLoaded", () => {
   const audioLabel = document.getElementById('audioLabel');
   let isPlaying = false;
 
+  // ══════════════════════════
+  // ANIMAÇÃO DE INTRODUÇÃO (INTRO OVERLAY)
+  // ══════════════════════════
+  const introOverlay = document.getElementById('intro-overlay');
+  const introTerminal = document.getElementById('introTerminal');
+  const introProgressBar = document.getElementById('introProgressBar');
+  const introPercent = document.getElementById('introPercent');
+  const introStartBtn = document.getElementById('introStartBtn');
+
+  if (introOverlay) {
+    let progress = 0;
+    const logs = [
+      { p: 10, text: "> CONEXÃO ESTABELECIDA. BUSCANDO DADOS DE PERFIL..." },
+      { p: 25, text: "> SISTEMA DE PATCH MILITAR: INICIADO." },
+      { p: 45, text: "> CONECTANDO AO SERVIDOR DE JOGOS DO OPERADOR..." },
+      { p: 60, text: "> SINCRONIZANDO: DELTA FORCE, RUST, VALORANT, CS2, GTA V..." },
+      { p: 80, text: "> CARREGANDO ATRIBUTOS DE COMBATE E GRÁFICO DE RADAR..." },
+      { p: 95, text: "> PRONTO. PRÉ-INICIALIZANDO EFEITOS HUD HOLOGRÁFICOS..." }
+    ];
+
+    const interval = setInterval(() => {
+      // Avança o progresso com velocidade dinâmica
+      progress += Math.floor(Math.random() * 4) + 1;
+      if (progress >= 100) {
+        progress = 100;
+        clearInterval(interval);
+        
+        // Finalização da barra de carregamento
+        if (introProgressBar) introProgressBar.style.width = "100%";
+        if (introPercent) introPercent.textContent = "100%";
+        
+        // Log final no terminal
+        const pLine = document.createElement('div');
+        pLine.textContent = "> SISTEMA CARREGADO COM SUCESSO. OPERADOR CLOUTCH ATIVO.";
+        if (introTerminal) {
+          introTerminal.appendChild(pLine);
+          introTerminal.scrollTop = introTerminal.scrollHeight;
+        }
+
+        // Mostrar o botão de inicializar
+        if (introStartBtn) {
+          introStartBtn.classList.remove('hidden');
+        }
+      } else {
+        if (introProgressBar) introProgressBar.style.width = `${progress}%`;
+        if (introPercent) introPercent.textContent = `${progress}%`;
+
+        // Verifica se há novos logs para adicionar com base no progresso
+        logs.forEach((log) => {
+          if (progress >= log.p && !log.displayed) {
+            log.displayed = true;
+            const pLine = document.createElement('div');
+            pLine.textContent = log.text;
+            if (introTerminal) {
+              introTerminal.appendChild(pLine);
+              introTerminal.scrollTop = introTerminal.scrollHeight;
+            }
+          }
+        });
+      }
+    }, 45);
+
+    if (introStartBtn) {
+      introStartBtn.addEventListener('click', () => {
+        // Tenta tocar o áudio após o clique de interação obrigatório do usuário
+        if (audio) {
+          audio.play().then(() => {
+            isPlaying = true;
+            if (audBtn) {
+              audBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
+              audBtn.classList.add('playing');
+            }
+            if (audioLabel) audioLabel.textContent = 'SISTEMA DE ÁUDIO';
+          }).catch(err => {
+            console.error("Autoplay de som bloqueado pelo navegador:", err);
+          });
+        }
+
+        // Desvanecer a intro e remover do DOM
+        introOverlay.classList.add('fade-out');
+        setTimeout(() => {
+          introOverlay.remove();
+        }, 800);
+      });
+    }
+  }
+
   // Emblemas otimizados do Delta Force fornecidos pelo usuário
   let currentActiveGame = 'deltaforce';
   const dfEmblemFiles = [
