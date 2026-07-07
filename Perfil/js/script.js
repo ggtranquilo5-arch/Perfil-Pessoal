@@ -31,11 +31,11 @@ document.addEventListener("DOMContentLoaded", () => {
       if (progress >= 100) {
         progress = 100;
         clearInterval(interval);
-        
+
         // Finalização da barra de carregamento
         if (introProgressBar) introProgressBar.style.width = "100%";
         if (introPercent) introPercent.textContent = "100%";
-        
+
         // Log final no terminal
         const pLine = document.createElement('div');
         pLine.textContent = "> SISTEMA CARREGADO COM SUCESSO. OPERADOR CLOUTCH ATIVO.";
@@ -245,7 +245,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Todos os 16 emblemas com formas 3D e cores correspondentes à imagem do jogo
       allEmblems: [
-        { name: "Boas-vindas à FD", icon: "fa-crosshairs", equipped: true, desc: "Força Delta. Registro oficial de operador.", shape: "shape-shield", color: "cyan-emb", spriteIndex: 0 },
+        { name: "Boas-vindas à FD", icon: "fa-crosshairs", equipped: true, desc: "Força Delta.21/04/2025.", shape: "shape-shield", color: "cyan-emb", spriteIndex: 0 },
         { name: "Asas de Resgate", icon: "fa-helicopter", equipped: true, desc: "Apoio tático e extração de helicóptero.", shape: "shape-shield", color: "cyan-emb", spriteIndex: 1 },
         { name: "Pioneiro da Linha", icon: "fa-font", equipped: true, desc: "Conquista de vanguarda no front.", shape: "shape-triangle", color: "gold-emb", spriteIndex: 2 },
         { name: "Trabalho de Equipe", icon: "fa-users", equipped: true, desc: "Cooperação ativa com esquadrão tático.", shape: "shape-shield", color: "gold-emb", spriteIndex: 3 },
