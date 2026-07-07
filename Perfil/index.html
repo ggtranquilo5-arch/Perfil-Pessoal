@@ -11,7 +11,7 @@
     href="https://fonts.googleapis.com/css2?family=Oxanium:wght@300;400;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700;800&display=swap"
     rel="stylesheet">
 
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/style.css?v=1.0.2">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
@@ -19,18 +19,28 @@
 
   <!-- Tela de Introdução (Intro) -->
   <div id="intro-overlay" class="intro-overlay">
+    <!-- Scanner Holográfico HUD -->
+    <div class="intro-scanner-line"></div>
+
     <div class="intro-content">
       <!-- Círculo HUD da Intro -->
       <div class="intro-hud-ring">
         <div class="intro-ring-outer"></div>
         <div class="intro-ring-middle"></div>
         <div class="intro-ring-inner">
-          <span class="intro-logo-text">CLOUTCH</span>
+          <span class="intro-logo-text" id="glitch-logo">CLOUTCH</span>
         </div>
       </div>
 
       <!-- Barra de Progresso e Diagnósticos -->
       <div class="intro-status-box">
+        <!-- Live HUD Stats Flutuantes -->
+        <div class="intro-stats-flicker">
+          <span class="stat-item">SYS_STATUS: <span style="color: var(--green);">ONLINE</span></span>
+          <span class="stat-item">PING: <span id="hud-ping">24</span>ms</span>
+          <span class="stat-item">TEMP: <span id="hud-temp">42</span>°C</span>
+        </div>
+
         <div class="intro-terminal-text" id="introTerminal">
           &gt; INICIALIZANDO INTERFACE DE CONEXÃO...<br>
         </div>
@@ -39,18 +49,12 @@
         </div>
         <div class="intro-percentage" id="introPercent">0%</div>
       </div>
-
-      <!-- Botão para Iniciar (Oculto no início) -->
-      <button id="introStartBtn" class="intro-start-btn hidden">
-        <span class="btn-glitch-text">INICIAR CONSOLE // BOOT SYSTEM</span>
-        <span class="btn-pulse-glow"></span>
-      </button>
     </div>
   </div>
 
   <!-- Vídeo de Fundo Oficial -->
   <video id="video-background" autoplay loop muted playsinline>
-    <source src="videoplayback (1).webm" type="video/webm">
+    <source src="https://raw.githubusercontent.com/ggtranquilo5-arch/Perfil-Pessoal/main/Perfil/videoplayback%20(1).webm" type="video/webm">
   </video>
 
   <!-- Overlays HUD para profundidade -->
@@ -69,7 +73,7 @@
   </div>
 
   <audio id="bgAudio" loop preload="auto">
-    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    <source src="https://archive.org/download/dark-synthwave-pyl9yg/Cluster%20Buster%20-%20Dark%20Synthwave%20-%2012%20The%20Dead%20Next%20Door.mp3" type="audio/mpeg">
   </audio>
 
   <!-- Container Principal com Efeitos 3D -->
@@ -424,7 +428,7 @@
 
   <div id="hudTooltip" class="hud-tooltip"></div>
 
-  <script src="js/script.js"></script>
+  <script src="js/script.js?v=1.0.2"></script>
 </body>
 
 </html>

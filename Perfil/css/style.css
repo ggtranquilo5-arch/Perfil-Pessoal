@@ -1999,51 +1999,50 @@ body::before {
   letter-spacing: 1px;
 }
 
-/* Botão de Inicializar */
-.intro-start-btn {
-  background: linear-gradient(135deg, var(--primary) 0%, #a6632d 100%);
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  color: #fff;
-  padding: 14px 28px;
-  font-family: 'Oxanium', sans-serif;
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  border-radius: 4px;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-  box-shadow: 0 0 20px rgba(200, 130, 66, 0.3);
-  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-  animation: introButtonPop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-.intro-start-btn:hover {
-  transform: translateY(-2px) scale(1.03);
-  box-shadow: 0 0 30px rgba(200, 130, 66, 0.6);
-  border-color: #fff;
-}
-
-.intro-start-btn:active {
-  transform: translateY(1px);
-}
-
-.intro-start-btn .btn-pulse-glow {
+/* Linha de Scanner Holográfico */
+.intro-scanner-line {
   position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at center, rgba(255,255,255,0.2) 0%, transparent 70%);
-  opacity: 0;
-  transition: opacity 0.3s;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--primary), transparent);
+  box-shadow: 0 0 10px var(--primary);
+  top: 0;
+  z-index: 10;
+  opacity: 0.45;
+  animation: scannerSweep 4s ease-in-out infinite;
 }
 
-.intro-start-btn:hover .btn-pulse-glow {
-  opacity: 1;
+@keyframes scannerSweep {
+  0% { top: 0%; }
+  50% { top: 100%; }
+  100% { top: 0%; }
 }
 
-/* Classes utilitárias da intro */
+/* Informações de Status Flutuantes */
+.intro-stats-flicker {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  font-family: 'Oxanium', sans-serif;
+  font-size: 8.5px;
+  letter-spacing: 1.5px;
+  color: var(--text-dim);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+
+.intro-stats-flicker .stat-item {
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(200, 130, 66, 0.15);
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+/* Transição de fechamento da intro com Zoom + Blur */
 .intro-overlay.fade-out {
   opacity: 0;
+  transform: scale(1.12);
+  filter: blur(12px);
   pointer-events: none;
   visibility: hidden;
 }
@@ -2066,9 +2065,4 @@ body::before {
 @keyframes introPulse {
   0%, 100% { transform: scale(1); opacity: 0.9; }
   50% { transform: scale(1.05); opacity: 1; text-shadow: 0 0 15px rgba(255, 255, 255, 0.8), 0 0 30px var(--primary); }
-}
-
-@keyframes introButtonPop {
-  0% { transform: scale(0.8); opacity: 0; }
-  100% { transform: scale(1); opacity: 1; }
 }

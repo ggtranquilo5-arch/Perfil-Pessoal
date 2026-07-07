@@ -4,55 +4,89 @@ document.addEventListener("DOMContentLoaded", () => {
   const audBtn = document.getElementById('audBtn');
   const audioLabel = document.getElementById('audioLabel');
   let isPlaying = false;
-
   // ══════════════════════════
-  // ANIMAÇÃO DE INTRODUÇÃO (INTRO OVERLAY)
+  // ANIMAÇÃO DE INTRODUÇÃO (INTRO OVERLAY DINÂMICA)
   // ══════════════════════════
   const introOverlay = document.getElementById('intro-overlay');
   const introTerminal = document.getElementById('introTerminal');
   const introProgressBar = document.getElementById('introProgressBar');
   const introPercent = document.getElementById('introPercent');
-  const introStartBtn = document.getElementById('introStartBtn');
+  const glitchLogo = document.getElementById('glitch-logo');
+  const pingEl = document.getElementById('hud-ping');
+  const tempEl = document.getElementById('hud-temp');
 
   if (introOverlay) {
     let progress = 0;
     const logs = [
-      { p: 10, text: "> CONEXÃO ESTABELECIDA. BUSCANDO DADOS DE PERFIL..." },
-      { p: 25, text: "> SISTEMA DE PATCH MILITAR: INICIADO." },
-      { p: 45, text: "> CONECTANDO AO SERVIDOR DE JOGOS DO OPERADOR..." },
-      { p: 60, text: "> SINCRONIZANDO: DELTA FORCE, RUST, VALORANT, CS2, GTA V..." },
-      { p: 80, text: "> CARREGANDO ATRIBUTOS DE COMBATE E GRÁFICO DE RADAR..." },
-      { p: 95, text: "> PRONTO. PRÉ-INICIALIZANDO EFEITOS HUD HOLOGRÁFICOS..." }
+      { p: 8, text: "> CONEXÃO ESTABELECIDA. BUSCANDO DADOS DE PERFIL..." },
+      { p: 20, text: "> SISTEMA DE PATCH MILITAR: INICIADO." },
+      { p: 40, text: "> CONECTANDO AO SERVIDOR DE JOGOS DO OPERADOR..." },
+      { p: 55, text: "> SINCRONIZANDO: DELTA FORCE, RUST, VALORANT, CS2, GTA V..." },
+      { p: 75, text: "> CARREGANDO ATRIBUTOS DE COMBATE E GRÁFICO DE RADAR..." },
+      { p: 92, text: "> PRONTO. PRÉ-INICIALIZANDO EFEITOS HUD HOLOGRÁFICOS..." }
     ];
 
-    const interval = setInterval(() => {
-      // Avança o progresso com velocidade dinâmica
-      progress += Math.floor(Math.random() * 4) + 1;
+    // 1. Efeito Decodificador / Glitch no Logo CLOUTCH
+    if (glitchLogo) {
+      const targetText = "CLOUTCH";
+      const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#@$%&*!?";
+      let iterations = 0;
+      const logoInterval = setInterval(() => {
+        glitchLogo.textContent = targetText.split("").map((char, index) => {
+          if (index < iterations) return targetText[index];
+          return chars[Math.floor(Math.random() * chars.length)];
+        }).join("");
+
+        if (iterations >= targetText.length) {
+          clearInterval(logoInterval);
+        }
+        iterations += 1/3;
+      }, 35);
+    }
+
+    // 2. Estatísticas Flutuantes HUD Piscando
+    const statsInterval = setInterval(() => {
+      if (progress >= 100) {
+        clearInterval(statsInterval);
+        return;
+      }
+      if (pingEl) pingEl.textContent = Math.floor(Math.random() * 9) + 20; // 20-28
+      if (tempEl) tempEl.textContent = Math.floor(Math.random() * 5) + 39; // 39-43
+    }, 150);
+
+    // 3. Progresso do Carregamento
+    const loadInterval = setInterval(() => {
+      // Progresso dinâmico e veloz
+      progress += Math.floor(Math.random() * 5) + 1;
       if (progress >= 100) {
         progress = 100;
-        clearInterval(interval);
+        clearInterval(loadInterval);
 
-        // Finalização da barra de carregamento
+        // Barra cheia
         if (introProgressBar) introProgressBar.style.width = "100%";
         if (introPercent) introPercent.textContent = "100%";
 
         // Log final no terminal
         const pLine = document.createElement('div');
-        pLine.textContent = "> SISTEMA CARREGADO COM SUCESSO. OPERADOR CLOUTCH ATIVO.";
+        pLine.textContent = "> SISTEMA CARREGADO. ACESSANDO HUD DE COMBATE...";
         if (introTerminal) {
           introTerminal.appendChild(pLine);
           introTerminal.scrollTop = introTerminal.scrollHeight;
         }
 
-        // Mostrar o botão de inicializar
-        if (introStartBtn) {
-          introStartBtn.classList.remove('hidden');
-        }
+        // Transição Automática após 600ms
+        setTimeout(() => {
+          introOverlay.classList.add('fade-out');
+          setTimeout(() => {
+            introOverlay.remove();
+          }, 900); // tempo de remoção do DOM
+        }, 600);
+
       } else {
         if (introProgressBar) introProgressBar.style.width = `${progress}%`;
         if (introPercent) introPercent.textContent = `${progress}%`;
 
-        // Verifica se há novos logs para adicionar com base no progresso
+        // Escrever logs de carregamento com base no progresso
         logs.forEach((log) => {
           if (progress >= log.p && !log.displayed) {
             log.displayed = true;
@@ -65,32 +99,29 @@ document.addEventListener("DOMContentLoaded", () => {
           }
         });
       }
-    }, 45);
+    }, 50);
+  }
 
-    if (introStartBtn) {
-      introStartBtn.addEventListener('click', () => {
-        // Tenta tocar o áudio após o clique de interação obrigatório do usuário
-        if (audio) {
-          audio.play().then(() => {
-            isPlaying = true;
-            if (audBtn) {
-              audBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
-              audBtn.classList.add('playing');
-            }
-            if (audioLabel) audioLabel.textContent = 'SISTEMA DE ÁUDIO';
-          }).catch(err => {
-            console.error("Autoplay de som bloqueado pelo navegador:", err);
-          });
+  // Ouvinte inteligente de áudio na primeira interação
+  const playAudioOnFirstInteraction = () => {
+    if (audio && !isPlaying) {
+      audio.play().then(() => {
+        isPlaying = true;
+        if (audBtn) {
+          audBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
+          audBtn.classList.add('playing');
         }
-
-        // Desvanecer a intro e remover do DOM
-        introOverlay.classList.add('fade-out');
-        setTimeout(() => {
-          introOverlay.remove();
-        }, 800);
+        if (audioLabel) audioLabel.textContent = 'SISTEMA DE ÁUDIO';
+      }).catch(err => {
+        console.log("Áudio pendente de interação:", err);
       });
     }
-  }
+    // Remove os ouvintes para não rodar novamente
+    document.removeEventListener('click', playAudioOnFirstInteraction);
+    document.removeEventListener('keydown', playAudioOnFirstInteraction);
+  };
+  document.addEventListener('click', playAudioOnFirstInteraction);
+  document.addEventListener('keydown', playAudioOnFirstInteraction);
 
   // Emblemas otimizados do Delta Force fornecidos pelo usuário
   let currentActiveGame = 'deltaforce';
