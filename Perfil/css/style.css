@@ -1860,189 +1860,195 @@ body::before {
 }
 
 /* ==========================================
-   TELA DE INTRODUÇÃO (INTRO OVERLAY)
+   TELA DE INTRODUÇÃO (INTRO OVERLAY PREMIUM HUD)
    ========================================== */
 .intro-overlay {
   position: fixed;
   inset: 0;
-  background: #080605;
+  background: #060504;
   z-index: 99999;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  transition: opacity 0.8s cubic-bezier(0.77, 0, 0.175, 1), visibility 0.8s;
+  transition: opacity 0.8s cubic-bezier(0.77, 0, 0.175, 1), transform 0.8s cubic-bezier(0.77, 0, 0.175, 1), filter 0.8s;
   overflow: hidden;
 }
 
-/* scanlines e ruído de fundo na intro */
+/* Grelha Holográfica HUD */
 .intro-overlay::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: 
-    linear-gradient(rgba(200, 130, 66, 0.05) 50%, transparent 50%),
-    radial-gradient(circle, rgba(200, 130, 66, 0.02) 0%, transparent 80%);
-  background-size: 100% 4px, 100% 100%;
+  background-image: 
+    linear-gradient(rgba(200, 130, 66, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(200, 130, 66, 0.035) 1px, transparent 1px);
+  background-size: 50px 50px;
+  background-position: center;
   pointer-events: none;
   z-index: 1;
 }
 
+/* Scanlines e Efeito de Brilho de CRT */
+.intro-overlay::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: 
+    linear-gradient(rgba(18, 14, 11, 0) 50%, rgba(18, 14, 11, 0.25) 50%),
+    radial-gradient(circle, transparent 50%, rgba(6, 5, 4, 0.8) 100%);
+  background-size: 100% 4px, 100% 100%;
+  pointer-events: none;
+  z-index: 2;
+}
+
 .intro-content {
   position: relative;
-  z-index: 2;
+  z-index: 5;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 40px;
+  gap: 25px;
   text-align: center;
-  max-width: 500px;
+  max-width: 600px;
   width: 90%;
 }
 
-/* Anéis de HUD da Intro */
-.intro-hud-ring {
+/* Cantos HUD Decorativos */
+.hud-corner {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(200, 130, 66, 0.35);
+  z-index: 10;
+  pointer-events: none;
+}
+.hud-corner.top-left { top: 35px; left: 35px; border-right: none; border-bottom: none; }
+.hud-corner.top-right { top: 35px; right: 35px; border-left: none; border-bottom: none; }
+.hud-corner.bottom-left { bottom: 35px; left: 35px; border-right: none; border-top: none; }
+.hud-corner.bottom-right { bottom: 35px; right: 35px; border-left: none; border-top: none; }
+
+/* Painéis de Dados Flutuantes */
+.hud-info-panel {
+  position: absolute;
+  font-family: 'Space Grotesk', monospace;
+  font-size: 9px;
+  color: var(--text-dim);
+  line-height: 2;
+  z-index: 10;
+  pointer-events: none;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+.hud-info-panel.panel-left {
+  bottom: 45px;
+  left: 45px;
+  border-left: 2px solid var(--primary);
+  padding-left: 14px;
+}
+.hud-info-panel.panel-right {
+  bottom: 45px;
+  right: 45px;
+  border-right: 2px solid var(--primary);
+  padding-right: 14px;
+  text-align: right;
+}
+.text-green {
+  color: var(--green);
+  font-weight: 700;
+  text-shadow: 0 0 5px rgba(0, 255, 136, 0.4);
+}
+
+/* Anel de Carregamento HUD */
+.hud-loader {
   position: relative;
-  width: 180px;
-  height: 180px;
+  width: 210px;
+  height: 210px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.intro-ring-outer {
+.hud-scanner-circle {
   position: absolute;
   inset: 0;
   border: 2px dashed var(--primary);
   border-radius: 50%;
-  opacity: 0.6;
-  animation: introRotateCw 15s linear infinite;
+  opacity: 0.65;
+  animation: spinCw 25s linear infinite;
+  box-shadow: 0 0 20px rgba(200, 130, 66, 0.15);
 }
 
-.intro-ring-middle {
+.hud-scanner-circle-outer {
   position: absolute;
-  inset: 15px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-left-color: var(--primary);
-  border-right-color: var(--primary);
+  inset: -12px;
+  border: 1px solid rgba(200, 130, 66, 0.18);
+  border-top-color: var(--primary);
+  border-bottom-color: var(--primary);
   border-radius: 50%;
-  animation: introRotateCcw 8s linear infinite;
+  animation: spinCcw 12s linear infinite;
 }
 
-.intro-ring-inner {
-  position: absolute;
-  inset: 30px;
-  border: 3px double rgba(200, 130, 66, 0.3);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(12, 10, 9, 0.9);
-  box-shadow: 0 0 25px rgba(200, 130, 66, 0.15);
-}
-
-.intro-logo-text {
-  font-family: 'Oxanium', sans-serif;
-  font-size: 20px;
-  font-weight: 900;
-  letter-spacing: 4px;
-  color: #fff;
-  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5), 0 0 20px var(--primary);
-  animation: introPulse 2s ease-in-out infinite;
-}
-
-/* Barra de progresso e informações */
-.intro-status-box {
-  width: 100%;
+.hud-loader-inner {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  text-align: center;
+  z-index: 5;
 }
 
-.intro-terminal-text {
-  font-family: 'Space Grotesk', monospace;
-  font-size: 11px;
-  color: var(--text-dim);
-  height: 60px;
-  overflow-hidden: scroll;
-  text-align: left;
-  line-height: 1.5;
-  background: rgba(0, 0, 0, 0.3);
-  border: 1px solid rgba(200, 130, 66, 0.1);
-  padding: 8px 12px;
-  border-radius: 6px;
-}
-
-.intro-progress-bar-wrapper {
-  width: 100%;
-  height: 6px;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 3px;
-  overflow: hidden;
-  border: 1px solid rgba(200, 130, 66, 0.15);
-}
-
-.intro-progress-bar {
-  width: 0%;
-  height: 100%;
-  background: linear-gradient(90deg, var(--primary), var(--orange));
-  box-shadow: 0 0 10px var(--primary);
-  border-radius: 3px;
-  transition: width 0.1s linear;
-}
-
-.intro-percentage {
+.hud-title-name {
   font-family: 'Oxanium', sans-serif;
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--primary);
-  letter-spacing: 1px;
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: 6px;
+  color: #ffffff;
+  text-shadow: 0 0 12px var(--primary);
 }
 
-/* Linha de Scanner Holográfico */
+.hud-loader-percent {
+  font-family: 'Oxanium', sans-serif;
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--primary);
+  text-shadow: 0 0 15px rgba(200, 130, 66, 0.45);
+}
+
+/* Linha de Status de Carregamento (Única e Elegante) */
+.hud-status-line {
+  margin-top: 40px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--text-mid);
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  text-align: center;
+  min-height: 24px;
+  text-shadow: 0 0 6px rgba(255, 255, 255, 0.25);
+  animation: statusPulse 1.8s ease-in-out infinite;
+}
+
+/* Linha de Scanner de Tela */
 .intro-scanner-line {
   position: absolute;
   width: 100%;
-  height: 3px;
+  height: 2px;
   background: linear-gradient(90deg, transparent, var(--primary), transparent);
-  box-shadow: 0 0 10px var(--primary);
+  box-shadow: 0 0 12px var(--primary);
   top: 0;
   z-index: 10;
-  opacity: 0.45;
-  animation: scannerSweep 4s ease-in-out infinite;
+  opacity: 0.35;
+  animation: scannerSweep 5s ease-in-out infinite;
 }
 
-@keyframes scannerSweep {
-  0% { top: 0%; }
-  50% { top: 100%; }
-  100% { top: 0%; }
-}
-
-/* Informações de Status Flutuantes */
-.intro-stats-flicker {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-  font-family: 'Oxanium', sans-serif;
-  font-size: 8.5px;
-  letter-spacing: 1.5px;
-  color: var(--text-dim);
-  margin-bottom: 6px;
-  text-transform: uppercase;
-}
-
-.intro-stats-flicker .stat-item {
-  background: rgba(0, 0, 0, 0.35);
-  border: 1px solid rgba(200, 130, 66, 0.15);
-  padding: 4px 8px;
-  border-radius: 4px;
-}
-
-/* Transição de fechamento da intro com Zoom + Blur */
+/* Transição de Fechamento (Scale + Blur + Fade) */
 .intro-overlay.fade-out {
   opacity: 0;
-  transform: scale(1.12);
-  filter: blur(12px);
+  transform: scale(1.15);
+  filter: blur(15px);
   pointer-events: none;
   visibility: hidden;
 }
@@ -2052,17 +2058,26 @@ body::before {
 }
 
 /* Animações */
-@keyframes introRotateCw {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+@keyframes spinCw {
+  to { transform: rotate(360deg); }
 }
 
-@keyframes introRotateCcw {
-  0% { transform: rotate(360deg); }
-  100% { transform: rotate(0deg); }
+@keyframes spinCcw {
+  to { transform: rotate(-360deg); }
+}
+
+@keyframes statusPulse {
+  0%, 100% { opacity: 0.75; }
+  50% { opacity: 1; }
+}
+
+@keyframes scannerSweep {
+  0% { top: 0%; }
+  50% { top: 100%; }
+  100% { top: 0%; }
 }
 
 @keyframes introPulse {
   0%, 100% { transform: scale(1); opacity: 0.9; }
-  50% { transform: scale(1.05); opacity: 1; text-shadow: 0 0 15px rgba(255, 255, 255, 0.8), 0 0 30px var(--primary); }
+  50% { transform: scale(1.04); opacity: 1; text-shadow: 0 0 15px rgba(255, 255, 255, 0.85), 0 0 30px var(--primary); }
 }

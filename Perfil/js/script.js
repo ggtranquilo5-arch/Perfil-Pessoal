@@ -5,26 +5,19 @@ document.addEventListener("DOMContentLoaded", () => {
   const audioLabel = document.getElementById('audioLabel');
   let isPlaying = false;
   // ══════════════════════════
-  // ANIMAÇÃO DE INTRODUÇÃO (INTRO OVERLAY DINÂMICA)
+  // ANIMAÇÃO DE INTRODUÇÃO (INTRO OVERLAY DINÂMICA PREMIUM HUD)
   // ══════════════════════════
   const introOverlay = document.getElementById('intro-overlay');
   const introTerminal = document.getElementById('introTerminal');
-  const introProgressBar = document.getElementById('introProgressBar');
   const introPercent = document.getElementById('introPercent');
   const glitchLogo = document.getElementById('glitch-logo');
   const pingEl = document.getElementById('hud-ping');
   const tempEl = document.getElementById('hud-temp');
+  const flowEl = document.getElementById('hud-flow');
+  const decryptEl = document.getElementById('hud-decrypt');
 
   if (introOverlay) {
     let progress = 0;
-    const logs = [
-      { p: 8, text: "> CONEXÃO ESTABELECIDA. BUSCANDO DADOS DE PERFIL..." },
-      { p: 20, text: "> SISTEMA DE PATCH MILITAR: INICIADO." },
-      { p: 40, text: "> CONECTANDO AO SERVIDOR DE JOGOS DO OPERADOR..." },
-      { p: 55, text: "> SINCRONIZANDO: DELTA FORCE, RUST, VALORANT, CS2, GTA V..." },
-      { p: 75, text: "> CARREGANDO ATRIBUTOS DE COMBATE E GRÁFICO DE RADAR..." },
-      { p: 92, text: "> PRONTO. PRÉ-INICIALIZANDO EFEITOS HUD HOLOGRÁFICOS..." }
-    ];
 
     // 1. Efeito Decodificador / Glitch no Logo CLOUTCH
     if (glitchLogo) {
@@ -40,7 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (iterations >= targetText.length) {
           clearInterval(logoInterval);
         }
-        iterations += 1/3;
+        iterations += 1 / 3;
       }, 35);
     }
 
@@ -52,27 +45,22 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       if (pingEl) pingEl.textContent = Math.floor(Math.random() * 9) + 20; // 20-28
       if (tempEl) tempEl.textContent = Math.floor(Math.random() * 5) + 39; // 39-43
-    }, 150);
+      if (flowEl) flowEl.textContent = (Math.random() * 5 + 95).toFixed(1) + "%"; // 95% - 99.9%
+      if (decryptEl) {
+        const keys = ["0x7F2A", "0x3B8C", "0x9E1D", "0x5A4F", "0x2C7E", "0x8D3B"];
+        decryptEl.textContent = keys[Math.floor(Math.random() * keys.length)];
+      }
+    }, 120);
 
-    // 3. Progresso do Carregamento
+    // 3. Progresso do Carregamento com Mensagens de Linha Única
     const loadInterval = setInterval(() => {
-      // Progresso dinâmico e veloz
-      progress += Math.floor(Math.random() * 5) + 1;
+      progress += Math.floor(Math.random() * 4) + 1;
       if (progress >= 100) {
         progress = 100;
         clearInterval(loadInterval);
 
-        // Barra cheia
-        if (introProgressBar) introProgressBar.style.width = "100%";
         if (introPercent) introPercent.textContent = "100%";
-
-        // Log final no terminal
-        const pLine = document.createElement('div');
-        pLine.textContent = "> SISTEMA CARREGADO. ACESSANDO HUD DE COMBATE...";
-        if (introTerminal) {
-          introTerminal.appendChild(pLine);
-          introTerminal.scrollTop = introTerminal.scrollHeight;
-        }
+        if (introTerminal) introTerminal.textContent = "ACCESS GRANTED. BOOTING CONSOLE...";
 
         // Transição Automática após 600ms
         setTimeout(() => {
@@ -83,21 +71,27 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 600);
 
       } else {
-        if (introProgressBar) introProgressBar.style.width = `${progress}%`;
         if (introPercent) introPercent.textContent = `${progress}%`;
 
-        // Escrever logs de carregamento com base no progresso
-        logs.forEach((log) => {
-          if (progress >= log.p && !log.displayed) {
-            log.displayed = true;
-            const pLine = document.createElement('div');
-            pLine.textContent = log.text;
-            if (introTerminal) {
-              introTerminal.appendChild(pLine);
-              introTerminal.scrollTop = introTerminal.scrollHeight;
-            }
-          }
-        });
+        // Define a mensagem do status em uma linha única e centralizada para evitar overlap
+        let statusText = "SYSTEM INITIALIZING...";
+        if (progress < 15) {
+          statusText = "CONNECTING TO OPERATOR NETWORK...";
+        } else if (progress < 35) {
+          statusText = "SECURE DECRYPTION IN PROGRESS...";
+        } else if (progress < 55) {
+          statusText = "LOADING GAME COMPILATIONS...";
+        } else if (progress < 75) {
+          statusText = "RENDERING HOLOGRAPHIC SYSTEMS...";
+        } else if (progress < 90) {
+          statusText = "OPTIMIZING HUD PARALLAX ARRAY...";
+        } else {
+          statusText = "PRE-BOOT DIAGNOSTICS SUCCESSFUL.";
+        }
+
+        if (introTerminal) {
+          introTerminal.textContent = statusText;
+        }
       }
     }, 50);
   }
