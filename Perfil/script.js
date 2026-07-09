@@ -880,6 +880,14 @@ document.addEventListener("DOMContentLoaded", () => {
   // Inicializar a página na tela inicial (Launcher de Jogos)
   resetToLauncher();
 
+  // Inicializar tooltips para elementos estáticos com data attributes
+  document.querySelectorAll('[data-tooltip-title]').forEach(el => {
+    const title = el.getAttribute('data-tooltip-title');
+    const desc = el.getAttribute('data-tooltip-desc') || '';
+    const status = el.getAttribute('data-tooltip-status') || '';
+    setupTooltip(el, title, desc, status);
+  });
+
   // ══════════════════════════
   // EFEITO SPOTLIGHT AMBIENTE (SEGUIR CURSOR)
   // ══════════════════════════

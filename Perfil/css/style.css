@@ -2160,3 +2160,90 @@ body:not(.boot-complete) .reveal-bottom {
     top: 0%;
   }
 }
+
+/* ═══════════════════════════════════════════════════
+   PERFIL DO AMIGO PRÓXIMO (TEMATIZAÇÃO E OTIMIZAÇÃO)
+   ═══════════════════════════════════════════════════ */
+.friend-profile .df-rank-badge-card {
+  background: rgba(200, 130, 66, 0.04);
+  border-color: rgba(200, 130, 66, 0.25);
+  transition: var(--transition);
+}
+
+.friend-profile .df-rank-badge-card:hover {
+  border-color: rgba(200, 130, 66, 0.45);
+  background: rgba(200, 130, 66, 0.08);
+  box-shadow: 0 0 15px rgba(200, 130, 66, 0.15);
+}
+
+.friend-profile .df-rb-label {
+  color: var(--primary);
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.friend-profile .df-rb-title {
+  color: var(--primary);
+  text-shadow: 0 0 10px rgba(200, 130, 66, 0.4);
+}
+
+.friend-profile .df-sm-val.highlighted-kd {
+  color: var(--primary);
+  text-shadow: 0 0 6px rgba(200, 130, 66, 0.25);
+}
+
+.friend-profile .details-full-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.friend-profile .char-hud-frame {
+  border-color: rgba(200, 130, 66, 0.25);
+  transition: var(--transition);
+}
+
+.friend-profile .char-hud-frame:hover {
+  border-color: rgba(200, 130, 66, 0.4);
+  box-shadow: 0 15px 35px rgba(200, 130, 66, 0.15);
+}
+
+.friend-profile .char-skeleton-glow {
+  background: radial-gradient(circle, rgba(200, 130, 66, 0.25) 0%, transparent 70%);
+}
+
+.friend-profile .char-hud-banner {
+  background: linear-gradient(180deg, transparent 0%, rgba(200, 130, 66, 0.08) 100%);
+  border-top: 1px solid rgba(200, 130, 66, 0.2);
+}
+
+.friend-profile .char-hud-name {
+  color: var(--primary);
+  text-shadow: 0 0 10px rgba(200, 130, 66, 0.5);
+}
+
+.friend-profile .pd-header {
+  margin-top: 18px;
+}
+
+.friend-profile .pd-header:first-child {
+  margin-top: 0;
+}
+
+.friend-profile .df-equipped-section {
+  margin-top: 8px;
+}
+
+.friend-profile .df-ee-grid {
+  gap: 8px;
+}
+
+.char-hud-tagline {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 7px;
+  color: rgba(255, 255, 255, 0.45);
+  text-transform: uppercase;
+  margin-top: 3px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}

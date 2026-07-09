@@ -237,7 +237,7 @@
 
             <!-- Aba: Amigo Próximo (Modelo de Perfil) -->
             <div class="tab-panel" id="tab-amigo">
-              <div class="df-profile-layout">
+              <div class="df-profile-layout friend-profile">
 
                 <!-- Lado Esquerdo: Estatísticas e Detalhes do Amigo -->
                 <div class="df-profile-stats">
@@ -245,11 +245,9 @@
 
                   <!-- Classificação & Mini Grid do Amigo -->
                   <div class="df-quick-stats-row">
-                    <div class="df-rank-badge-card"
-                      style="background: rgba(0, 255, 136, 0.04); border-color: rgba(0, 255, 136, 0.25);">
-                      <span class="df-rb-label" style="color: var(--green);">CLASSIFICAÇÃO DE ELITE</span>
-                      <div class="df-rb-title"
-                        style="color: var(--green); text-shadow: 0 0 10px rgba(0, 255, 136, 0.4);">Ghost Legend 🌟</div>
+                    <div class="df-rank-badge-card">
+                      <span class="df-rb-label">CLASSIFICAÇÃO DE ELITE</span>
+                      <div class="df-rb-title">Ghost Legend 🌟</div>
                       <div class="df-rb-score">Pontuação: 94.200</div>
                     </div>
                     <div class="df-stats-mini-grid">
@@ -263,8 +261,7 @@
                       </div>
                       <div class="df-sm-item">
                         <span class="df-sm-lbl">K.D GERAL</span>
-                        <span class="df-sm-val"
-                          style="color: var(--green); text-shadow: 0 0 6px rgba(0, 255, 136, 0.25);">3.10</span>
+                        <span class="df-sm-val highlighted-kd">3.10</span>
                       </div>
                       <div class="df-sm-item">
                         <span class="df-sm-lbl">ABATES (KILLS)</span>
@@ -275,22 +272,22 @@
 
                   <!-- Detalhes de Desempenho -->
                   <div class="pd-header">// DETALHES DE DESEMPENHO</div>
-                  <div class="details-full-grid" style="display: flex; flex-direction: column; gap: 8px;">
+                  <div class="details-full-grid">
                     <div class="pd-row">
                       <span class="pd-key">ABATES POR HEADSHOT</span>
-                      <span class="pd-val">68.2%</span>
+                      <span class="pd-val">38.7%</span>
                     </div>
                     <div class="pd-row">
-                      <span class="pd-key">VITÓRIAS TOTAIS</span>
-                      <span class="pd-val">6.890 (Taxa de Vitórias: 61.9%)</span>
+                      <span class="pd-key">EXTRAÇÃO</span>
+                      <span class="pd-val">49.5%</span>
                     </div>
                     <div class="pd-row">
-                      <span class="pd-key">MÉDIA DE ABATES POR HORA</span>
-                      <span class="pd-val">7.9 Kills/h</span>
+                      <span class="pd-key">PRECISÃO DE TIRO</span>
+                      <span class="pd-val">41.2%</span>
                     </div>
                     <div class="pd-row">
                       <span class="pd-key">NÍVEL DE OPERAÇÃO</span>
-                      <span class="pd-val">Lv 98</span>
+                      <span class="pd-val">Lv 60</span>
                     </div>
                     <div class="pd-row">
                       <span class="pd-key">MVP EM PARTIDAS</span>
@@ -298,21 +295,56 @@
                     </div>
                   </div>
 
+                  <!-- Emblemas Equipados do Amigo (Novidades e Detalhes Extra) -->
+                  <div class="pd-header">// EMBLEMAS EQUIPADOS</div>
+                  <div class="df-equipped-section">
+                    <div class="df-equipped-emblems" style="width: 100%;">
+                      <div class="df-ee-grid">
+                        <div class="df-ee-slot" data-tooltip-title="Sombra Silenciosa"
+                          data-tooltip-desc="Opera furtivamente sob o manto da espreita."
+                          data-tooltip-status="ADQUIRIDO">
+                          <div class="emblem-patch shape-circle gold-emb">
+                            <i class="fas fa-ghost"></i>
+                          </div>
+                        </div>
+                        <div class="df-ee-slot" data-tooltip-title="Atirador Tático"
+                          data-tooltip-desc="Mestre em combate de precisão de longa distância."
+                          data-tooltip-status="ADQUIRIDO">
+                          <div class="emblem-patch shape-shield red-emb">
+                            <i class="fas fa-crosshairs"></i>
+                          </div>
+                        </div>
+                        <div class="df-ee-slot" data-tooltip-title="Líder Lobo"
+                          data-tooltip-desc="Comanda incursões furtivas com eficiência perfeita."
+                          data-tooltip-status="ADQUIRIDO">
+                          <div class="emblem-patch shape-diamond cyan-emb">
+                            <i class="fas fa-crown"></i>
+                          </div>
+                        </div>
+                        <div class="df-ee-slot" data-tooltip-title="Guardião de Ferro"
+                          data-tooltip-desc="Defesa e vigilância intransponíveis em qualquer cenário."
+                          data-tooltip-status="ADQUIRIDO">
+                          <div class="emblem-patch shape-circle blue-emb">
+                            <i class="fas fa-shield-halved"></i>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
                 </div>
 
                 <!-- Lado Direito: Render da Conta do Amigo -->
                 <div class="df-profile-char">
-                  <div class="char-hud-frame" style="border-color: rgba(0, 255, 136, 0.25);">
+                  <div class="char-hud-frame">
                     <div class="char-image-container">
-                      <div class="char-skeleton-glow"
-                        style="background: radial-gradient(circle, rgba(0, 255, 136, 0.25) 0%, transparent 70%);"></div>
-                      <img src="img/friend_avatar.png" alt="Render do Amigo" class="char-avatar-render">
+                      <div class="char-skeleton-glow"></div>
+                      <img src="img/indio-mito.jpg" alt="Render do Amigo" class="char-avatar-render">
                     </div>
-                    <div class="char-hud-banner"
-                      style="background: linear-gradient(180deg, transparent 0%, rgba(0, 255, 136, 0.08) 100%); border-top: 1px solid rgba(0, 255, 136, 0.2);">
-                      <div class="char-hud-name"
-                        style="color: var(--green); text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);">INDIO-MITO</div>
+                    <div class="char-hud-banner">
+                      <div class="char-hud-name">INDIO-MITO</div>
                       <div class="char-hud-title">Vigilante Tático</div>
+                      <div class="char-hud-tagline">Sempre na espreita</div>
                     </div>
                   </div>
                 </div>
@@ -525,7 +557,7 @@
 
   <div id="hudTooltip" class="hud-tooltip"></div>
 
-  <script src="js/script.js?v=1.1.4"></script>
+  <script src="script.js?v=1.1.4"></script>
 </body>
 
 </html>
