@@ -444,7 +444,8 @@ body::before {
 .ping-dot {
   width: 5px;
   height: 5px;
-  background: #8e999e; /* Cinza Militar */
+  background: #8e999e;
+  /* Cinza Militar */
   border-radius: 50%;
   box-shadow: 0 0 6px rgba(142, 153, 158, 0.6);
   z-index: 2;
@@ -462,8 +463,15 @@ body::before {
 }
 
 @keyframes pingWaveAnim {
-  0% { transform: scale(0.3); opacity: 0.8; }
-  100% { transform: scale(1.6); opacity: 0; }
+  0% {
+    transform: scale(0.3);
+    opacity: 0.8;
+  }
+
+  100% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
 }
 
 /* Texto e Cursor de Terminal Cinza Militar */
@@ -477,13 +485,15 @@ body::before {
 }
 
 .hud-status-label {
-  color: rgba(142, 153, 158, 0.65); /* Cinza militar levemente escurecido */
+  color: rgba(142, 153, 158, 0.65);
+  /* Cinza militar levemente escurecido */
   margin-right: 6px;
   text-transform: uppercase;
 }
 
 .hud-status-text {
-  color: #8e999e; /* Cinza Militar */
+  color: #8e999e;
+  /* Cinza Militar */
   text-shadow: 0 0 4px rgba(142, 153, 158, 0.35);
   text-transform: uppercase;
 }
@@ -496,8 +506,15 @@ body::before {
 }
 
 @keyframes blinkCursor {
-  from, to { opacity: 0; }
-  50% { opacity: 1; }
+
+  from,
+  to {
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 1;
+  }
 }
 
 /* ═══════════════════════════════════════════════════
