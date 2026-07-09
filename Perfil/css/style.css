@@ -2097,38 +2097,55 @@ body::before {
 .reveal-item {
   opacity: 0;
   will-change: opacity, transform;
+  transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-/* Estado inicial dependendo da direção + animação de fallback automático (caso o JS seja bloqueado/cached) */
+/* Estado inicial dependendo da direção */
 .reveal-left {
   transform: translateX(-50px) translateZ(0);
-  animation: revealFadeIn 0.8s cubic-bezier(0.25, 1, 0.5, 1) 2.0s forwards;
 }
 
 .reveal-right {
   transform: translateX(50px) translateZ(0);
-  animation: revealFadeIn 0.8s cubic-bezier(0.25, 1, 0.5, 1) 2.2s forwards;
 }
 
 .reveal-bottom {
   transform: translateY(40px) translateZ(0);
-  animation: revealFadeIn 0.8s cubic-bezier(0.25, 1, 0.5, 1) 2.4s forwards;
 }
 
-/* Quando o boot completar (JavaScript ativo), aplicamos imediatamente */
+/* Quando o boot completar (JavaScript ativo), aplicamos a transição imediatamente */
 .boot-complete .reveal-left {
-  animation: revealFadeIn 0.8s cubic-bezier(0.25, 1, 0.5, 1) 0.15s forwards !important;
+  opacity: 1 !important;
+  transform: none !important;
+  transition-delay: 0.15s;
 }
 
 .boot-complete .reveal-right {
-  animation: revealFadeIn 0.8s cubic-bezier(0.25, 1, 0.5, 1) 0.35s forwards !important;
+  opacity: 1 !important;
+  transform: none !important;
+  transition-delay: 0.35s;
 }
 
 .boot-complete .reveal-bottom {
-  animation: revealFadeIn 0.8s cubic-bezier(0.25, 1, 0.5, 1) 0.55s forwards !important;
+  opacity: 1 !important;
+  transform: none !important;
+  transition-delay: 0.55s;
 }
 
-@keyframes revealFadeIn {
+/* Fallback caso a classe boot-complete não seja aplicada após 2.5s (incompatibilidade ou cache do JS) */
+body:not(.boot-complete) .reveal-left {
+  animation: revealFallback 0.8s cubic-bezier(0.25, 1, 0.5, 1) 2.5s forwards;
+}
+
+body:not(.boot-complete) .reveal-right {
+  animation: revealFallback 0.8s cubic-bezier(0.25, 1, 0.5, 1) 2.7s forwards;
+}
+
+body:not(.boot-complete) .reveal-bottom {
+  animation: revealFallback 0.8s cubic-bezier(0.25, 1, 0.5, 1) 2.9s forwards;
+}
+
+@keyframes revealFallback {
   to {
     opacity: 1;
     transform: none;
