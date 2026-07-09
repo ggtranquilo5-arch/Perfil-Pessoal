@@ -664,12 +664,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     const profileTitleEl = document.getElementById('dfProfileTitle');
     if (profileTitleEl) {
-      if (data.titles && data.titles.length > 0) {
-        const activeTitle = data.titles.find(t => t.id === data.activeTitleId) || data.titles[0];
-        profileTitleEl.innerHTML = `<img src="img/titulos/${activeTitle.file}" alt="${activeTitle.name}" class="char-profile-title-img">`;
-      } else {
-        profileTitleEl.innerHTML = `<span class="char-hud-title-text">${data.titleName}</span>`;
-      }
+      profileTitleEl.textContent = data.titleName;
     }
 
     // Atualizar avatar na aba Perfil
@@ -783,13 +778,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             // Atualizar o nome do título no perfil
             const profileTitleEl = document.getElementById('dfProfileTitle');
-            if (profileTitleEl) {
-              if (data.titles && data.titles.length > 0) {
-                profileTitleEl.innerHTML = `<img src="img/titulos/${title.file}" alt="${title.name}" class="char-profile-title-img">`;
-              } else {
-                profileTitleEl.textContent = title.name;
-              }
-            }
+            if (profileTitleEl) profileTitleEl.textContent = title.name;
 
             // Esconder tooltip ativo antes de recarregar
             if (tooltipEl) tooltipEl.classList.remove('active');
