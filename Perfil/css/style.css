@@ -1545,8 +1545,12 @@ body::before {
 .df-title-banner-img,
 .df-title-card-selector img,
 .hud-avatar-img,
-.char-avatar-render {
-  image-rendering: auto;
+.char-avatar-render,
+.char-profile-title-img {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  backface-visibility: hidden;
+  transform: translateZ(0);
 }
 
 /* ═══════════════════════════════════════════════════
