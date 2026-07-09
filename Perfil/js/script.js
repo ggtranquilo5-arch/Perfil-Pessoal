@@ -236,9 +236,9 @@ document.addEventListener("DOMContentLoaded", () => {
       } else {
         // Digitando com decodificador (glitch de letra rápido)
         const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#@$%&*!?";
-        
+
         dynamicStatusText.textContent = currentWord.substring(0, charIndex) + (charIndex < currentWord.length ? chars[Math.floor(Math.random() * chars.length)] : "");
-        
+
         setTimeout(() => {
           dynamicStatusText.textContent = currentWord.substring(0, charIndex + 1);
           charIndex++;
@@ -352,28 +352,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   };
 
-  // ══════════════════════════
-  // CONTROLE DE ÁUDIO (HUD)
-  // ══════════════════════════
-  if (audBtn && audio) {
-    audBtn.addEventListener('click', () => {
-      if (isPlaying) {
-        audio.pause();
-        audBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
-        audBtn.classList.remove('playing');
-        if (audioLabel) audioLabel.textContent = 'ÁUDIO DESATIVADO';
-      } else {
-        audio.play().then(() => {
-          audBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
-          audBtn.classList.add('playing');
-          if (audioLabel) audioLabel.textContent = 'SISTEMA DE ÁUDIO';
-        }).catch(err => {
-          console.error("Autoplay de som falhou ou foi bloqueado:", err);
-        });
-      }
-      isPlaying = !isPlaying;
-    });
-  }
+
 
   // ══════════════════════════
   // DADOS DOS JOGOS (DADOS REAIS COMPATÍVEIS E EMBLEMAS 3D)
