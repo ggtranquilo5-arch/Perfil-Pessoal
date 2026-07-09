@@ -471,8 +471,7 @@ document.addEventListener("DOMContentLoaded", () => {
       rankScore: "Pontuação: RR 72",
       hours: "450h",
       battles: "380",
-      assets: "45K VP",
-      extractionRate: "58.4%",
+
       opLevel: "82",
       titleName: "Clutch Master",
       titleDesc: "Venceu mais de 100 rodadas jogando sozinho contra mais de 3 inimigos.",
@@ -508,8 +507,7 @@ document.addEventListener("DOMContentLoaded", () => {
       rankScore: "Pontuação: 18,400",
       hours: "350h",
       battles: "290",
-      assets: "6.2M Valor",
-      extractionRate: "62.1%",
+
       opLevel: "74",
       titleName: "Defusal Veteran",
       titleDesc: "Desarmou 50 bombas com menos de 2 segundos restantes.",
@@ -545,8 +543,7 @@ document.addEventListener("DOMContentLoaded", () => {
       rankScore: "Pontuação: $120.4M",
       hours: "250h",
       battles: "150 Golpes",
-      assets: "$120.4M",
-      extractionRate: "82.4%",
+
       opLevel: "120",
       titleName: "Heist Mastermind",
       titleDesc: "Completou todos os golpes na dificuldade máxima com a mesma equipe e sem mortes.",
@@ -587,6 +584,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Elementos do launcher de abas
   const tabsHeader = document.getElementById('tabsHeader');
   const tabGamesBtn = document.getElementById('tabGamesBtn');
+  const tabAmigoBtn = document.getElementById('tabAmigoBtn');
   const backToGamesBtn = document.getElementById('backToGamesBtn');
   const gameTabs = document.querySelectorAll('.game-tab');
   const tabButtons = document.querySelectorAll('.tab-btn');
@@ -602,6 +600,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // 1. Atualizar Abas do Header
     if (tabsHeader) tabsHeader.classList.add('game-active');
     if (tabGamesBtn) tabGamesBtn.classList.add('hidden');
+    if (tabAmigoBtn) tabAmigoBtn.classList.add('hidden');
     if (backToGamesBtn) backToGamesBtn.classList.remove('hidden');
     gameTabs.forEach(tab => {
       if (tab.getAttribute('data-tab') === 'conquistas' && gameId !== 'deltaforce') {
@@ -617,8 +616,32 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById('dfRankScore').textContent = data.rankScore;
     document.getElementById('dfHours').textContent = data.hours;
     document.getElementById('dfBattles').textContent = data.battles;
-    document.getElementById('dfAssets').textContent = data.assets || "--";
-    document.getElementById('dfExtractRate').textContent = data.extractionRate || "--";
+    const assetsEl = document.getElementById('dfAssets');
+    const extractRateEl = document.getElementById('dfExtractRate');
+
+    if (assetsEl) {
+      const parent = assetsEl.closest('.df-sm-item');
+      if (parent) {
+        if (data.assets) {
+          assetsEl.textContent = data.assets;
+          parent.style.display = 'flex';
+        } else {
+          parent.style.display = 'none';
+        }
+      }
+    }
+
+    if (extractRateEl) {
+      const parent = extractRateEl.closest('.df-sm-item');
+      if (parent) {
+        if (data.extractionRate) {
+          extractRateEl.textContent = data.extractionRate;
+          parent.style.display = 'flex';
+        } else {
+          parent.style.display = 'none';
+        }
+      }
+    }
     const opLevelEl = document.getElementById('dfOpLevel');
     if (opLevelEl) {
       opLevelEl.textContent = `Lv ${data.opLevel}`;
@@ -799,6 +822,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const resetToLauncher = () => {
     if (tabsHeader) tabsHeader.classList.remove('game-active');
     if (tabGamesBtn) tabGamesBtn.classList.remove('hidden');
+    if (tabAmigoBtn) tabAmigoBtn.classList.remove('hidden');
     if (backToGamesBtn) backToGamesBtn.classList.add('hidden');
     gameTabs.forEach(tab => tab.classList.add('hidden'));
 

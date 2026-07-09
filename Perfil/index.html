@@ -11,7 +11,7 @@
     href="https://fonts.googleapis.com/css2?family=Oxanium:wght@300;400;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700;800&display=swap"
     rel="stylesheet">
 
-  <link rel="stylesheet" href="css/style.css?v=1.1.1">
+  <link rel="stylesheet" href="css/style.css?v=1.1.4">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
@@ -141,6 +141,11 @@
               <i class="fas fa-gamepad"></i> MEUS JOGOS
             </button>
 
+            <!-- Aba do Amigo Próximo -->
+            <button class="tab-btn" data-tab="amigo" id="tabAmigoBtn">
+              <i class="fas fa-user-friends"></i> AMIGO PRÓXIMO
+            </button>
+
             <!-- Abas do Jogo Selecionado (ocultas por padrão) -->
             <button class="tab-btn game-tab hidden" data-tab="perfil">
               <i class="fas fa-user-astronaut"></i> PERFIL
@@ -225,6 +230,91 @@
                     <div class="lgc-meta">3.250 Horas Jogadas &bull; Ingressou em 2020</div>
                   </div>
                   <div class="lgc-arrow"><i class="fas fa-chevron-right"></i></div>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- Aba: Amigo Próximo (Modelo de Perfil) -->
+            <div class="tab-panel" id="tab-amigo">
+              <div class="df-profile-layout">
+
+                <!-- Lado Esquerdo: Estatísticas e Detalhes do Amigo -->
+                <div class="df-profile-stats">
+                  <div class="pd-header">// OPERADOR AMIGO: INDIO-MITO</div>
+
+                  <!-- Classificação & Mini Grid do Amigo -->
+                  <div class="df-quick-stats-row">
+                    <div class="df-rank-badge-card"
+                      style="background: rgba(0, 255, 136, 0.04); border-color: rgba(0, 255, 136, 0.25);">
+                      <span class="df-rb-label" style="color: var(--green);">CLASSIFICAÇÃO DE ELITE</span>
+                      <div class="df-rb-title"
+                        style="color: var(--green); text-shadow: 0 0 10px rgba(0, 255, 136, 0.4);">Ghost Legend 🌟</div>
+                      <div class="df-rb-score">Pontuação: 94.200</div>
+                    </div>
+                    <div class="df-stats-mini-grid">
+                      <div class="df-sm-item">
+                        <span class="df-sm-lbl">HORAS JOGADAS</span>
+                        <span class="df-sm-val">4.354h</span>
+                      </div>
+                      <div class="df-sm-item">
+                        <span class="df-sm-lbl">BATALHAS</span>
+                        <span class="df-sm-val">11.130</span>
+                      </div>
+                      <div class="df-sm-item">
+                        <span class="df-sm-lbl">K.D GERAL</span>
+                        <span class="df-sm-val"
+                          style="color: var(--green); text-shadow: 0 0 6px rgba(0, 255, 136, 0.25);">3.10</span>
+                      </div>
+                      <div class="df-sm-item">
+                        <span class="df-sm-lbl">ABATES (KILLS)</span>
+                        <span class="df-sm-val">34.503</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Detalhes de Desempenho -->
+                  <div class="pd-header">// DETALHES DE DESEMPENHO</div>
+                  <div class="details-full-grid" style="display: flex; flex-direction: column; gap: 8px;">
+                    <div class="pd-row">
+                      <span class="pd-key">ABATES POR HEADSHOT</span>
+                      <span class="pd-val">68.2%</span>
+                    </div>
+                    <div class="pd-row">
+                      <span class="pd-key">VITÓRIAS TOTAIS</span>
+                      <span class="pd-val">6.890 (Taxa de Vitórias: 61.9%)</span>
+                    </div>
+                    <div class="pd-row">
+                      <span class="pd-key">MÉDIA DE ABATES POR HORA</span>
+                      <span class="pd-val">7.9 Kills/h</span>
+                    </div>
+                    <div class="pd-row">
+                      <span class="pd-key">NÍVEL DE OPERAÇÃO</span>
+                      <span class="pd-val">Lv 98</span>
+                    </div>
+                    <div class="pd-row">
+                      <span class="pd-key">MVP EM PARTIDAS</span>
+                      <span class="pd-val">2.845</span>
+                    </div>
+                  </div>
+
+                </div>
+
+                <!-- Lado Direito: Render da Conta do Amigo -->
+                <div class="df-profile-char">
+                  <div class="char-hud-frame" style="border-color: rgba(0, 255, 136, 0.25);">
+                    <div class="char-image-container">
+                      <div class="char-skeleton-glow"
+                        style="background: radial-gradient(circle, rgba(0, 255, 136, 0.25) 0%, transparent 70%);"></div>
+                      <img src="img/friend_avatar.png" alt="Render do Amigo" class="char-avatar-render">
+                    </div>
+                    <div class="char-hud-banner"
+                      style="background: linear-gradient(180deg, transparent 0%, rgba(0, 255, 136, 0.08) 100%); border-top: 1px solid rgba(0, 255, 136, 0.2);">
+                      <div class="char-hud-name"
+                        style="color: var(--green); text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);">INDIO-MITO</div>
+                      <div class="char-hud-title">Vigilante Tático</div>
+                    </div>
+                  </div>
                 </div>
 
               </div>
@@ -435,7 +525,7 @@
 
   <div id="hudTooltip" class="hud-tooltip"></div>
 
-  <script src="js/script.js?v=1.1.1"></script>
+  <script src="js/script.js?v=1.1.4"></script>
 </body>
 
 </html>
