@@ -1,8 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
   // Elementos do áudio
   const audio = document.getElementById('bgAudio');
-  const audBtn = document.getElementById('audBtn');
-  const audioLabel = document.getElementById('audioLabel');
   let isPlaying = false;
   // ══════════════════════════
   // SISTEMA DE FUMAÇA NO CANVAS (INTRO)
@@ -185,26 +183,86 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 280); // Transição total de ~1.7s para manter o carregamento fluido e não cansativo
   }
 
-  // Ouvinte inteligente de áudio na primeira interação
-  const playAudioOnFirstInteraction = () => {
-    if (audio && !isPlaying) {
+  // Lógica de Autoplay inteligente na primeira interação
+  const playAudio = () => {
+    if (audio && audio.paused) {
       audio.play().then(() => {
         isPlaying = true;
-        if (audBtn) {
-          audBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
-          audBtn.classList.add('playing');
-        }
-        if (audioLabel) audioLabel.textContent = 'SISTEMA DE ÁUDIO';
       }).catch(err => {
-        console.log("Áudio pendente de interação:", err);
+        console.log("Autoplay aguardando interação do usuário:", err);
       });
     }
-    // Remove os ouvintes para não rodar novamente
-    document.removeEventListener('click', playAudioOnFirstInteraction);
-    document.removeEventListener('keydown', playAudioOnFirstInteraction);
   };
-  document.addEventListener('click', playAudioOnFirstInteraction);
-  document.addEventListener('keydown', playAudioOnFirstInteraction);
+
+  // Tenta tocar imediatamente
+  playAudio();
+
+  // Executa na primeira interação (clique ou tecla em qualquer lugar)
+  document.addEventListener('click', playAudio, { once: true });
+  document.addEventListener('keydown', playAudio, { once: true });
+
+  // ══════════════════════════
+  // WIDGET DE STATUS DINÂMICO (DECRYPTER TERMINAL EFFECT)
+  // ══════════════════════════
+  const dynamicStatusText = document.getElementById('dynamicStatusText');
+  if (dynamicStatusText) {
+    const statusData = [
+      "OPERATOR ACTIVE",
+      "SECURE LINK // 24ms",
+      "SYS: OPERATIONAL",
+      "LOC: 40.7128 N 74.0060 W",
+      "FIREWALL: NOMINAL",
+      "CLOUTCH_SECURE // READY"
+    ];
+    let dataIndex = 0;
+    let charIndex = 0;
+    let isDeleting = false;
+    let typingSpeed = 75;
+
+    const typeStatus = () => {
+      const currentWord = statusData[dataIndex];
+
+      if (isDeleting) {
+        // Apagando caracteres com glitch aleatório
+        const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ#@$%&*!?";
+        const tempText = currentWord.substring(0, charIndex - 1);
+        if (charIndex > 0) {
+          dynamicStatusText.textContent = tempText + (Math.random() > 0.65 ? chars[Math.floor(Math.random() * chars.length)] : "");
+        } else {
+          dynamicStatusText.textContent = "";
+        }
+        charIndex--;
+        typingSpeed = 30; // Velocidade de apagar
+      } else {
+        // Digitando com decodificador (glitch de letra rápido)
+        const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#@$%&*!?";
+        
+        dynamicStatusText.textContent = currentWord.substring(0, charIndex) + (charIndex < currentWord.length ? chars[Math.floor(Math.random() * chars.length)] : "");
+        
+        setTimeout(() => {
+          dynamicStatusText.textContent = currentWord.substring(0, charIndex + 1);
+          charIndex++;
+        }, 15);
+
+        typingSpeed = 90;
+      }
+
+      // Troca de estados
+      if (!isDeleting && charIndex === currentWord.length) {
+        isDeleting = true;
+        typingSpeed = 2500; // Tempo que a palavra fica exibida
+      } else if (isDeleting && charIndex === 0) {
+        isDeleting = false;
+        dataIndex = (dataIndex + 1) % statusData.length;
+        typingSpeed = 400; // Pausa antes de digitar a próxima palavra
+      }
+
+      setTimeout(typeStatus, typingSpeed);
+    };
+
+    // Iniciar efeito após o boot completo do sistema (2.2s)
+    setTimeout(typeStatus, 2200);
+  }
 
   // Emblemas otimizados do Delta Force fornecidos pelo usuário
   const dfEmblemFiles = [

@@ -120,75 +120,7 @@ body::before {
   background: radial-gradient(circle, transparent 40%, rgba(12, 10, 9, 0.85) 100%);
 }
 
-/* ═══════════════════════════════════════════════════
-   AUDIO FAB CONTROLS (HUD)
-   ═══════════════════════════════════════════════════ */
-.audio-hud-control {
-  position: fixed;
-  top: 25px;
-  right: 30px;
-  z-index: 1000;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  background: rgba(0, 0, 0, 0.4);
-  border: 1px solid var(--border);
-  padding: 6px 14px;
-  border-radius: 30px;
-  backdrop-filter: blur(10px);
-}
 
-.audio-fab {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: transparent;
-  border: none;
-  color: var(--text);
-  font-size: 13px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: var(--transition);
-  position: relative;
-}
-
-.audio-fab:hover {
-  color: var(--primary);
-  transform: scale(1.1);
-}
-
-.afab-pulse {
-  position: absolute;
-  inset: -4px;
-  border-radius: 50%;
-  border: 1px solid rgba(200, 130, 66, 0.25);
-  animation: afabPulse 2.5s ease-in-out infinite;
-  pointer-events: none;
-}
-
-@keyframes afabPulse {
-
-  0%,
-  100% {
-    transform: scale(1);
-    opacity: .4;
-  }
-
-  50% {
-    transform: scale(1.2);
-    opacity: 0.8;
-  }
-}
-
-.audio-hud-label {
-  font-family: 'Oxanium', sans-serif;
-  font-size: 8.5px;
-  letter-spacing: 2px;
-  color: var(--text-dim);
-  font-weight: 700;
-}
 
 /* ═══════════════════════════════════════════════════
    CONTAINER E LAYOUT PRINCIPAL
@@ -485,54 +417,115 @@ body::before {
   line-height: 1;
 }
 
-/* Indicador de Status Online */
-.hud-status-active {
+/* Novo Widget de Status HUD Premium */
+.hud-status-widget {
+  position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  background: linear-gradient(90deg, rgba(200, 130, 66, 0.12) 0%, rgba(200, 130, 66, 0.02) 100%);
-  border-left: 3px solid var(--primary);
-  border-top: 1px solid rgba(200, 130, 66, 0.2);
-  border-bottom: 1px solid rgba(200, 130, 66, 0.2);
-  border-right: 1px solid rgba(200, 130, 66, 0.2);
-  padding: 4px 12px;
-  border-radius: 2px;
-  backdrop-filter: blur(4px);
-  margin-top: 4px;
+  gap: 12px;
+  background: rgba(18, 14, 11, 0.65);
+  border: 1px solid rgba(200, 130, 66, 0.25);
+  padding: 8px 16px;
+  border-radius: 4px;
+  backdrop-filter: blur(8px);
+  margin-top: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5), inset 0 0 8px rgba(200, 130, 66, 0.05);
+  min-width: 230px;
 }
 
-.hud-pulse-dot {
+.hud-status-widget::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(rgba(200, 130, 66, 0.05) 50%, transparent 50%);
+  background-size: 100% 4px;
+  pointer-events: none;
+  opacity: 0.4;
+}
+
+/* Cantos HUD Decorativos em Miniatura */
+.hud-widget-corners .wc-tick {
+  position: absolute;
   width: 6px;
   height: 6px;
-  border-radius: 50%;
-  background: var(--primary);
-  box-shadow: 0 0 8px var(--primary);
-  animation: ldot 2s ease-in-out infinite;
+  border: 1.5px solid var(--primary);
+  pointer-events: none;
+}
+.hud-widget-corners .tl { top: -1px; left: -1px; border-right: none; border-bottom: none; }
+.hud-widget-corners .tr { top: -1px; right: -1px; border-left: none; border-bottom: none; }
+.hud-widget-corners .bl { bottom: -1px; left: -1px; border-right: none; border-top: none; }
+.hud-widget-corners .br { bottom: -1px; right: -1px; border-left: none; border-top: none; }
+
+/* Sinalizador de Ping / Pulso Tático */
+.hud-status-ping-signal {
+  position: relative;
+  width: 8px;
+  height: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-@keyframes ldot {
+.ping-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--primary);
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--primary);
+  z-index: 2;
+}
 
-  0%,
-  100% {
-    opacity: 0.4;
-    transform: scale(0.85);
-  }
+.ping-wave {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border: 1.5px solid var(--primary);
+  border-radius: 50%;
+  opacity: 0;
+  animation: pingWaveAnim 2s infinite ease-out;
+  z-index: 1;
+}
 
-  50% {
-    opacity: 1;
-    transform: scale(1.3);
-    box-shadow: 0 0 12px var(--primary);
-  }
+@keyframes pingWaveAnim {
+  0% { transform: scale(0.3); opacity: 0.8; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+
+/* Texto e Cursor de Terminal */
+.hud-status-text-container {
+  display: flex;
+  align-items: center;
+  font-family: 'Space Grotesk', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.hud-status-label {
+  color: var(--text-dim);
+  margin-right: 6px;
 }
 
 .hud-status-text {
-  font-family: 'Oxanium', sans-serif;
-  font-size: 9px;
-  font-weight: 850;
-  letter-spacing: 2px;
   color: var(--primary);
-  text-shadow: 0 0 6px rgba(200, 130, 66, 0.4);
+  text-shadow: 0 0 6px rgba(200, 130, 66, 0.5);
   text-transform: uppercase;
+}
+
+.hud-status-cursor {
+  color: var(--primary);
+  font-weight: 900;
+  animation: blinkCursor 0.8s step-end infinite;
+  margin-left: 2px;
+}
+
+@keyframes blinkCursor {
+  from, to { opacity: 0; }
+  50% { opacity: 1; }
 }
 
 /* ═══════════════════════════════════════════════════
