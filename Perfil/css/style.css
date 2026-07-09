@@ -2096,40 +2096,43 @@ body::before {
    ═══════════════════════════════════════════════════ */
 .reveal-item {
   opacity: 0;
-  transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
   will-change: opacity, transform;
 }
 
-/* Estado inicial dependendo da direção */
+/* Estado inicial dependendo da direção + animação de fallback automático (caso o JS seja bloqueado/cached) */
 .reveal-left {
   transform: translateX(-50px) translateZ(0);
+  animation: revealFadeIn 0.8s cubic-bezier(0.25, 1, 0.5, 1) 2.0s forwards;
 }
 
 .reveal-right {
   transform: translateX(50px) translateZ(0);
+  animation: revealFadeIn 0.8s cubic-bezier(0.25, 1, 0.5, 1) 2.2s forwards;
 }
 
 .reveal-bottom {
   transform: translateY(40px) translateZ(0);
+  animation: revealFadeIn 0.8s cubic-bezier(0.25, 1, 0.5, 1) 2.4s forwards;
 }
 
-/* Quando o boot estiver completo, aplicamos a classe boot-complete no body ou no container */
-.boot-complete .reveal-item {
-  opacity: 1;
-  transform: none;
-}
-
-/* Delays para efeito sequencial (Staggered Delay) */
+/* Quando o boot completar (JavaScript ativo), aplicamos imediatamente */
 .boot-complete .reveal-left {
-  transition-delay: 0.15s;
+  animation: revealFadeIn 0.8s cubic-bezier(0.25, 1, 0.5, 1) 0.15s forwards !important;
 }
 
 .boot-complete .reveal-right {
-  transition-delay: 0.35s;
+  animation: revealFadeIn 0.8s cubic-bezier(0.25, 1, 0.5, 1) 0.35s forwards !important;
 }
 
 .boot-complete .reveal-bottom {
-  transition-delay: 0.55s;
+  animation: revealFadeIn 0.8s cubic-bezier(0.25, 1, 0.5, 1) 0.55s forwards !important;
+}
+
+@keyframes revealFadeIn {
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 /* Animações */
