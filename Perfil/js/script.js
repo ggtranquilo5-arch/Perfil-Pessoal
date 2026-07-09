@@ -5,11 +5,108 @@ document.addEventListener("DOMContentLoaded", () => {
   const audioLabel = document.getElementById('audioLabel');
   let isPlaying = false;
   // ══════════════════════════
+  // SISTEMA DE FUMAÇA NO CANVAS (INTRO)
+  // ══════════════════════════
+  const canvas = document.getElementById('intro-canvas');
+  let smokeActive = true;
+
+  if (canvas) {
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    const maxParticles = 45; // Quantidade balanceada de fumaça leve/nebulosa
+
+    // Ajustar tamanho do canvas
+    const resizeCanvas = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    class SmokeParticle {
+      constructor() {
+        this.reset();
+        // Spawna posições verticais aleatórias no início para preenchimento imediato
+        this.y = Math.random() * canvas.height;
+      }
+
+      reset() {
+        this.x = Math.random() * canvas.width;
+        this.y = canvas.height + Math.random() * 50;
+        this.size = Math.random() * 140 + 90; // Partículas grandes para fumaça nebulosa difusa
+        this.vx = Math.random() * 0.6 - 0.3; // Deriva horizontal suave
+        this.vy = -(Math.random() * 0.9 + 0.4); // Sobe de forma lenta e orgânica
+        this.alpha = 0;
+        this.maxAlpha = Math.random() * 0.12 + 0.04; // Transparência muito sutil para parecer neblina suave
+        this.fadeSpeed = Math.random() * 0.004 + 0.002;
+        this.growthSpeed = Math.random() * 0.15 + 0.08;
+        this.stage = 0; // 0 = surgindo (fadeIn), 1 = sumindo (fadeOut)
+      }
+
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+        this.size += this.growthSpeed;
+
+        if (this.stage === 0) {
+          this.alpha += this.fadeSpeed;
+          if (this.alpha >= this.maxAlpha) {
+            this.alpha = this.maxAlpha;
+            this.stage = 1;
+          }
+        } else {
+          this.alpha -= this.fadeSpeed * 0.7;
+          if (this.alpha <= 0) {
+            this.reset();
+          }
+        }
+      }
+
+      draw() {
+        ctx.save();
+        ctx.beginPath();
+        // Gradiente radial com dissipação nas bordas
+        const gradient = ctx.createRadialGradient(
+          this.x, this.y, 0,
+          this.x, this.y, this.size
+        );
+        // Cores de plasma de fumaça bronze/laranja
+        gradient.addColorStop(0, `rgba(200, 130, 66, ${this.alpha})`);
+        gradient.addColorStop(0.3, `rgba(255, 140, 0, ${this.alpha * 0.4})`);
+        gradient.addColorStop(1, 'rgba(6, 5, 4, 0)');
+
+        ctx.fillStyle = gradient;
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      }
+    }
+
+    // Criar conjunto de partículas
+    for (let i = 0; i < maxParticles; i++) {
+      particles.push(new SmokeParticle());
+    }
+
+    // Loop de Animação
+    const animateSmoke = () => {
+      if (!smokeActive) return;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      particles.forEach(p => {
+        p.update();
+        p.draw();
+      });
+
+      requestAnimationFrame(animateSmoke);
+    };
+    animateSmoke();
+  }
+
+  // ══════════════════════════
   // ANIMAÇÃO DE INTRODUÇÃO (INTRO OVERLAY DINÂMICA PREMIUM HUD)
   // ══════════════════════════
   const introOverlay = document.getElementById('intro-overlay');
   const introTerminal = document.getElementById('introTerminal');
-  const introPercent = document.getElementById('introPercent');
   const glitchLogo = document.getElementById('glitch-logo');
   const pingEl = document.getElementById('hud-ping');
   const tempEl = document.getElementById('hud-temp');
@@ -17,7 +114,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const decryptEl = document.getElementById('hud-decrypt');
 
   if (introOverlay) {
-    let progress = 0;
+    let activeBoot = true;
 
     // 1. Efeito Decodificador / Glitch no Logo CLOUTCH
     if (glitchLogo) {
@@ -39,7 +136,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 2. Estatísticas Flutuantes HUD Piscando
     const statsInterval = setInterval(() => {
-      if (progress >= 100) {
+      if (!activeBoot) {
         clearInterval(statsInterval);
         return;
       }
@@ -52,48 +149,40 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }, 120);
 
-    // 3. Progresso do Carregamento com Mensagens de Linha Única
-    const loadInterval = setInterval(() => {
-      progress += Math.floor(Math.random() * 4) + 1;
-      if (progress >= 100) {
-        progress = 100;
-        clearInterval(loadInterval);
+    // 3. Sequência de Mensagens de Inicialização Dinâmica
+    const bootMessages = [
+      "SYSTEM INITIALIZING...",
+      "CONNECTING TO OPERATOR NETWORK...",
+      "DECRYPTING SECURITY CREDENTIALS...",
+      "LOADING HUD VISUAL PROTOCOLS...",
+      "BOOTING HOLOGRAPHIC CONSOLE...",
+      "ACCESS GRANTED. BOOTING CONSOLE..."
+    ];
 
-        if (introPercent) introPercent.textContent = "100%";
-        if (introTerminal) introTerminal.textContent = "ACCESS GRANTED. BOOTING CONSOLE...";
+    let messageIndex = 0;
+    const bootInterval = setInterval(() => {
+      messageIndex++;
+      if (messageIndex >= bootMessages.length) {
+        clearInterval(bootInterval);
+        activeBoot = false;
 
-        // Transição Automática após 600ms
+        // Finalizar carregamento e sumir com a intro
         setTimeout(() => {
           introOverlay.classList.add('fade-out');
+          // Disparar animação staggered das seções principais adicionando a classe ao body
+          document.body.classList.add('boot-complete');
+
           setTimeout(() => {
+            smokeActive = false; // Parar loop da animação do canvas para poupar CPU/GPU
             introOverlay.remove();
-          }, 900); // tempo de remoção do DOM
-        }, 600);
-
+          }, 900);
+        }, 300);
       } else {
-        if (introPercent) introPercent.textContent = `${progress}%`;
-
-        // Define a mensagem do status em uma linha única e centralizada para evitar overlap
-        let statusText = "SYSTEM INITIALIZING...";
-        if (progress < 15) {
-          statusText = "CONNECTING TO OPERATOR NETWORK...";
-        } else if (progress < 35) {
-          statusText = "SECURE DECRYPTION IN PROGRESS...";
-        } else if (progress < 55) {
-          statusText = "LOADING GAME COMPILATIONS...";
-        } else if (progress < 75) {
-          statusText = "RENDERING HOLOGRAPHIC SYSTEMS...";
-        } else if (progress < 90) {
-          statusText = "OPTIMIZING HUD PARALLAX ARRAY...";
-        } else {
-          statusText = "PRE-BOOT DIAGNOSTICS SUCCESSFUL.";
-        }
-
         if (introTerminal) {
-          introTerminal.textContent = statusText;
+          introTerminal.textContent = bootMessages[messageIndex];
         }
       }
-    }, 50);
+    }, 280); // Transição total de ~1.7s para manter o carregamento fluido e não cansativo
   }
 
   // Ouvinte inteligente de áudio na primeira interação
@@ -311,10 +400,8 @@ document.addEventListener("DOMContentLoaded", () => {
       name: "Rust",
       rankTitle: "Sobrevivente Alfa",
       rankScore: "Pontuação: 9200",
-      hours: "1.200h",
-      battles: "850",
-      assets: "1.4B",
-      extractionRate: "85.2%",
+      hours: "5.200h",
+      battles: "854",
       opLevel: "95",
       titleName: "Rei do AK",
       titleDesc: "Conquistou o domínio absoluto dos monumentos mais disputados do mapa.",
@@ -335,12 +422,11 @@ document.addEventListener("DOMContentLoaded", () => {
         { name: "Engenheiro", icon: "fa-hammer", equipped: true, desc: "Construiu uma base anti-raid.", shape: "shape-diamond", color: "green-emb" }
       ],
       detailsStats: [
-        { key: "Total de Wipes Jogados", val: "42" },
-        { key: "Horas de Sobrevivência", val: "1.200h" },
-        { key: "PVP Kills", val: "2,450" },
+        { key: "Total de Wipes Jogados", val: "854" },
+        { key: "Horas de Sobrevivência", val: "5.200h" },
+        { key: "PVP Kills", val: "3,450" },
         { key: "Raids Executados", val: "84" },
-        { key: "Recursos Coletados", val: "14.5M" },
-        { key: "Helicópteros Derrubados", val: "16" }
+        { key: "Helicópteros Derrubados", val: "123" }
       ],
       radarPoints: "100,25 168,75 140,155 60,155 32,75"
     },
@@ -497,8 +583,8 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById('dfRankScore').textContent = data.rankScore;
     document.getElementById('dfHours').textContent = data.hours;
     document.getElementById('dfBattles').textContent = data.battles;
-    document.getElementById('dfAssets').textContent = data.assets;
-    document.getElementById('dfExtractRate').textContent = data.extractionRate;
+    document.getElementById('dfAssets').textContent = data.assets || "--";
+    document.getElementById('dfExtractRate').textContent = data.extractionRate || "--";
     const opLevelEl = document.getElementById('dfOpLevel');
     if (opLevelEl) {
       opLevelEl.textContent = `Lv ${data.opLevel}`;

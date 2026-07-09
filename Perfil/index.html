@@ -11,7 +11,7 @@
     href="https://fonts.googleapis.com/css2?family=Oxanium:wght@300;400;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700;800&display=swap"
     rel="stylesheet">
 
-  <link rel="stylesheet" href="css/style.css?v=1.0.3">
+  <link rel="stylesheet" href="css/style.css?v=1.0.4">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
@@ -19,6 +19,9 @@
 
   <!-- Tela de Introdução (Intro HUD) -->
   <div id="intro-overlay" class="intro-overlay">
+    <!-- Canvas para fumaça/partículas dinâmicas -->
+    <canvas id="intro-canvas" class="intro-canvas"></canvas>
+
     <!-- Cantos HUD Decorativos -->
     <div class="hud-corner top-left"></div>
     <div class="hud-corner top-right"></div>
@@ -41,14 +44,10 @@
     <div class="intro-scanner-line"></div>
 
     <div class="intro-content">
-      <!-- Círculo HUD da Intro -->
-      <div class="hud-loader">
-        <div class="hud-scanner-circle"></div>
-        <div class="hud-scanner-circle-outer"></div>
-        <div class="hud-loader-inner">
-          <span class="hud-title-name" id="glitch-logo">CLOUTCH</span>
-          <span class="hud-loader-percent" id="introPercent">0%</span>
-        </div>
+      <!-- Logo da Intro Sem Círculo Giratório -->
+      <div class="hud-logo-container">
+        <span class="hud-title-name" id="glitch-logo">CLOUTCH</span>
+        <div class="hud-logo-glow"></div>
       </div>
 
       <!-- Linha de Status Simples e Elegante -->
@@ -90,7 +89,7 @@
     <main class="hud-dashboard">
 
       <!-- COLUNA ESQUERDA (Left HUD - Réplica Canva) -->
-      <section class="left-hud">
+      <section class="left-hud reveal-item reveal-left">
 
         <div class="hud-avatar-wrapper">
           <!-- Efeitos Holográficos no Fundo -->
@@ -127,7 +126,7 @@
       </section>
 
       <!-- COLUNA DIREITA (Right HUD - Launcher & Abas Dinâmicas) -->
-      <section class="right-hud">
+      <section class="right-hud reveal-item reveal-right">
 
         <div class="tabs-card">
           <!-- Cabeçalho das Abas -->
@@ -399,7 +398,7 @@
     </div>
 
     <!-- SEÇÃO DE REDES SOCIAIS (Rodapé Amplo e Holográfico) -->
-    <section class="social-footer-hud" aria-label="Redes Sociais">
+    <section class="social-footer-hud reveal-item reveal-bottom" aria-label="Redes Sociais">
       <div class="social-hud-header">
         <span class="sh-tag">// CONEXÕES SOCIAIS</span>
         <span class="sh-line"></span>
