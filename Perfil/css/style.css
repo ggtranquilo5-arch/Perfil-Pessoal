@@ -820,7 +820,7 @@ body::before {
    ═══════════════════════════════════════════════════ */
 .df-profile-layout {
   display: grid;
-  grid-template-columns: 1fr 140px;
+  grid-template-columns: 1fr 190px;
   gap: 30px;
   align-items: start;
 }
@@ -987,59 +987,28 @@ body::before {
 
 .char-hud-frame {
   border: 1px solid var(--border);
-  border-radius: 12px;
-  background: rgba(10, 8, 12, 0.6);
-  padding: 8px;
+  border-radius: 14px;
+  background: rgba(18, 14, 11, 0.75);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
   position: relative;
-  width: 130px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7);
+  width: 180px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.05);
 }
 
 .char-image-container {
   width: 100%;
-  height: 155px;
-  border-radius: 8px;
+  height: 220px;
+  border-radius: 10px;
   overflow: hidden;
-  border: 1.5px solid var(--border);
+  border: 1.5px solid rgba(200, 130, 66, 0.3);
   position: relative;
-  background: rgba(0, 0, 0, 0.5);
-}
-
-/* Efeitos HUD Premium (Varredura e Subpixels de Monitor) */
-.char-image-container::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.05), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.05));
-  background-size: 100% 4px, 6px 100%;
-  pointer-events: none;
-  opacity: 0.35;
-  z-index: 2;
-}
-
-.char-skeleton-glow {
-  position: absolute;
-  top: -100%;
-  left: 0;
-  width: 100%;
-  height: 60px;
-  background: linear-gradient(180deg, transparent, rgba(200, 130, 66, 0.15) 85%, var(--primary) 100%);
-  animation: sweep 4s infinite linear;
-  pointer-events: none;
-  z-index: 3;
-}
-
-@keyframes sweep {
-  0% {
-    top: -60px;
-  }
-
-  100% {
-    top: 100%;
-  }
+  background: rgba(0, 0, 0, 0.6);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
 }
 
 .char-avatar-render {
@@ -1050,27 +1019,30 @@ body::before {
 }
 
 .char-hud-banner {
-  background: linear-gradient(90deg, var(--orange) 0%, rgba(255, 140, 0, 0.6) 100%);
-  border-radius: 4px;
-  margin-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 0;
+  margin-top: 12px;
   width: 100%;
-  padding: 5px;
+  padding: 8px 4px 2px 4px;
   text-align: center;
+  background: transparent;
 }
 
 .char-hud-name {
   font-family: 'Space Grotesk', sans-serif;
   font-weight: 800;
-  font-size: 11px;
+  font-size: 14px;
   color: #ffffff;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
 }
 
 .char-hud-title {
   font-family: 'Oxanium', sans-serif;
   font-weight: 600;
-  font-size: 8px;
-  color: rgba(255, 255, 255, 0.85);
-  margin-top: 1px;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.7);
+  margin-top: 4px;
 }
 
 /* ═══════════════════════════════════════════════════
@@ -2199,33 +2171,29 @@ body:not(.boot-complete) .reveal-bottom {
 }
 
 .friend-profile .char-hud-frame {
-  border-color: rgba(200, 130, 66, 0.25);
+  border-color: rgba(200, 130, 66, 0.3);
   transition: var(--transition);
 }
 
 .friend-profile .char-hud-frame:hover {
-  border-color: rgba(200, 130, 66, 0.4);
-  box-shadow: 0 15px 35px rgba(200, 130, 66, 0.15);
-}
-
-.friend-profile .char-skeleton-glow {
-  background: radial-gradient(circle, rgba(200, 130, 66, 0.25) 0%, transparent 70%);
+  border-color: rgba(200, 130, 66, 0.6);
+  box-shadow: 0 20px 40px rgba(200, 130, 66, 0.15);
 }
 
 .friend-profile .char-hud-banner {
-  background: linear-gradient(180deg, transparent 0%, rgba(200, 130, 66, 0.08) 100%);
-  border-top: 1px solid rgba(200, 130, 66, 0.2);
+  background: linear-gradient(180deg, transparent 0%, rgba(200, 130, 66, 0.05) 100%);
+  border-top: 1px solid rgba(200, 130, 66, 0.3);
 }
 
 .friend-profile .char-hud-name {
   color: var(--primary);
-  text-shadow: 0 0 10px rgba(200, 130, 66, 0.5);
+  text-shadow: 0 0 8px rgba(200, 130, 66, 0.3);
 }
 
 .friend-profile .char-avatar-render {
   object-fit: contain;
-  background: #120e0b;
-  padding: 4px;
+  background: #141218;
+  padding: 6px;
 }
 
 .friend-profile .pd-header {
@@ -2246,10 +2214,10 @@ body:not(.boot-complete) .reveal-bottom {
 
 .char-hud-tagline {
   font-family: 'Space Grotesk', sans-serif;
-  font-size: 7px;
-  color: rgba(255, 255, 255, 0.45);
+  font-size: 9px;
+  color: rgba(255, 255, 255, 0.5);
   text-transform: uppercase;
-  margin-top: 3px;
-  font-weight: 500;
-  letter-spacing: 0.5px;
+  margin-top: 6px;
+  font-weight: 600;
+  letter-spacing: 0.8px;
 }
