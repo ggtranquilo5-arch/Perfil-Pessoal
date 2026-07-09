@@ -432,29 +432,45 @@ document.addEventListener("DOMContentLoaded", () => {
       radarPoints: "100,41 155,82 135,148 66,134 27,76"
     },
     rust: {
-      name: "Rust",
+      name: "Rust Mobile",
       rankTitle: "Sobrevivente Alfa",
       rankScore: "Pontuação: 9200",
       hours: "5.200h",
       battles: "854",
       opLevel: "95",
-      titleName: "Rei do AK",
-      titleDesc: "Conquistou o domínio absoluto dos monumentos mais disputados do mapa.",
+      titleName: "Glória Suprema",
+      titleDesc: "Alcançou o topo do Hall da Fama no ranking global do servidor.",
 
       // Foto de perfil do Rust (local)
-      avatarUrl: "img/rust_avatar.jpg",
+      avatarUrl: "img/avatarRust1.png",
+
+      titles: [
+        { name: "Glória Suprema", id: "tr4", file: "tituloRust4.png", desc: "Alcançou o topo do Hall da Fama no ranking global do servidor." },
+        { name: "Mestre da Mineração", id: "tr2", file: "tituloRust2.png", desc: "Extraiu e coletou mais de 1 milhão de recursos de minério no wipe." },
+        { name: "Guerreiro do Bunker", id: "tr3", file: "tituloRust3.png", desc: "Sobreviveu e dominou as instalações subterrâneas mais hostis." },
+        { name: "S1 University Rankings", id: "tr1", file: "tituloRust1.png", desc: "Conquistou a classificação máxima da liga universitária na Temporada 1." }
+      ],
+      activeTitleId: "tr4",
 
       equippedEmblems: [
-        { name: "Sobrevivente", icon: "fa-radiation", shape: "shape-circle", color: "red-emb" },
-        { name: "Pilhador", icon: "fa-box-open", shape: "shape-shield", color: "gold-emb" },
-        { name: "Líder de Clã", icon: "fa-users", shape: "shape-shield", color: "cyan-emb" },
-        { name: "Engenheiro", icon: "fa-hammer", shape: "shape-diamond", color: "green-emb" }
+        { name: "Mestre dos Cofres", file: "emblemaRust1.png" },
+        { name: "Rei do Fuzil", file: "emblemaRust2.png" },
+        { name: "Pilhador Aéreo", file: "emblemaRust3.png" },
+        { name: "Desbravador do Mapa", file: "emblemaRust4.png" },
+        { name: "Arquiteto Lendário", file: "emblemaRust5.png" },
+        { name: "Primeiros Passos", file: "emblemaRust6.png" }
       ],
       allEmblems: [
-        { name: "Sobrevivente", icon: "fa-radiation", equipped: true, desc: "Sobreviveu a 50 dias seguidos no wipe.", shape: "shape-circle", color: "red-emb" },
-        { name: "Pilhador", icon: "fa-box-open", equipped: true, desc: "Saqueou 500 caixas militares.", shape: "shape-shield", color: "gold-emb" },
-        { name: "Líder de Clã", icon: "fa-users", equipped: true, desc: "Liderou um clã de 8 membros.", shape: "shape-shield", color: "cyan-emb" },
-        { name: "Engenheiro", icon: "fa-hammer", equipped: true, desc: "Construiu uma base anti-raid.", shape: "shape-diamond", color: "green-emb" }
+        { name: "Mestre dos Cofres", file: "emblemaRust1.png", equipped: true, desc: "Invadiu e saqueou 100 cofres trancados com sucesso." },
+        { name: "Rei do Fuzil", file: "emblemaRust2.png", equipped: true, desc: "Mestre absoluto do recuo e precisão com o Fuzil de Assalto AK-47." },
+        { name: "Pilhador Aéreo", file: "emblemaRust3.png", equipped: true, desc: "Saqueou 50 caixas de suprimentos caídas do céu (Air Drops)." },
+        { name: "Desbravador do Mapa", file: "emblemaRust4.png", equipped: true, desc: "Explorou e revelou 100% de todas as regiões geográficas do mapa." },
+        { name: "Arquiteto Lendário", file: "emblemaRust5.png", equipped: true, desc: "Construiu e fortificou uma base impenetrável de metal de alta qualidade." },
+        { name: "Primeiros Passos", file: "emblemaRust6.png", equipped: true, desc: "Fabricou as primeiras ferramentas primitivas de madeira e pedra." },
+        { name: "Mestre Lenhador", file: "emblemaRust7.png", equipped: true, desc: "Coletou mais de 500.000 unidades de madeira com ferramentas industriais." },
+        { name: "Mestre Caçador", file: "emblemaRust8.png", equipped: true, desc: "Caçou e abateu todos os tipos de animais selvagens perigosos da ilha." },
+        { name: "Destruidor de Barris", file: "emblemaRust9.png", equipped: true, desc: "Quebrou 1.000 barris de sucata ao longo das estradas do mapa." },
+        { name: "Lenda do PvP", file: "emblemaRust10.png", equipped: true, desc: "Eliminou 250 adversários usando submetralhadoras de combate." }
       ],
       detailsStats: [
         { key: "Total de Wipes Jogados", val: "854" },
@@ -603,7 +619,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (tabAmigoBtn) tabAmigoBtn.classList.add('hidden');
     if (backToGamesBtn) backToGamesBtn.classList.remove('hidden');
     gameTabs.forEach(tab => {
-      if (tab.getAttribute('data-tab') === 'conquistas' && gameId !== 'deltaforce') {
+      if (tab.getAttribute('data-tab') === 'conquistas' && gameId !== 'deltaforce' && gameId !== 'rust') {
         tab.classList.add('hidden');
       } else {
         tab.classList.remove('hidden');
@@ -646,7 +662,15 @@ document.addEventListener("DOMContentLoaded", () => {
     if (opLevelEl) {
       opLevelEl.textContent = `Lv ${data.opLevel}`;
     }
-    document.getElementById('dfProfileTitle').textContent = data.titleName;
+    const profileTitleEl = document.getElementById('dfProfileTitle');
+    if (profileTitleEl) {
+      if (data.titles && data.titles.length > 0) {
+        const activeTitle = data.titles.find(t => t.id === data.activeTitleId) || data.titles[0];
+        profileTitleEl.innerHTML = `<img src="img/titulos/${activeTitle.file}" alt="${activeTitle.name}" class="char-profile-title-img">`;
+      } else {
+        profileTitleEl.innerHTML = `<span class="char-hud-title-text">${data.titleName}</span>`;
+      }
+    }
 
     // Atualizar avatar na aba Perfil
     const charAvatar = document.querySelector('#tab-perfil .char-avatar-render');
@@ -657,7 +681,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Grid de emblemas equipados com design de patch militar real
     const equippedEmblemsContainer = document.querySelector('.df-equipped-emblems');
     if (equippedEmblemsContainer) {
-      if (gameId === 'deltaforce') {
+      if (gameId === 'deltaforce' || gameId === 'rust') {
         equippedEmblemsContainer.style.display = 'block';
       } else {
         equippedEmblemsContainer.style.display = 'none';
@@ -666,7 +690,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const equippedGrid = document.getElementById('dfEquippedGrid');
     equippedGrid.innerHTML = '';
-    if (gameId === 'deltaforce' && data.equippedEmblems) {
+    if ((gameId === 'deltaforce' || gameId === 'rust') && data.equippedEmblems) {
       data.equippedEmblems.forEach(emb => {
         const slot = document.createElement('div');
         slot.className = `df-ee-slot`;
@@ -675,7 +699,13 @@ document.addEventListener("DOMContentLoaded", () => {
         const desc = matchingEmb ? matchingEmb.desc : "Emblema militar equipado.";
         setupTooltip(slot, emb.name, desc, "EQUIPADO");
 
-        if (emb.spriteIndex !== undefined && slicedEmblems[emb.spriteIndex]) {
+        if (emb.file) {
+          slot.innerHTML = `
+            <div class="emblem-patch has-image">
+              <img src="img/emblemas/${emb.file}" alt="${emb.name}" class="emblem-img">
+            </div>
+          `;
+        } else if (emb.spriteIndex !== undefined && slicedEmblems[emb.spriteIndex]) {
           slot.innerHTML = `
             <div class="emblem-patch has-image">
               <img src="${slicedEmblems[emb.spriteIndex]}" alt="${emb.name}" class="emblem-img">
@@ -753,7 +783,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
             // Atualizar o nome do título no perfil
             const profileTitleEl = document.getElementById('dfProfileTitle');
-            if (profileTitleEl) profileTitleEl.textContent = title.name;
+            if (profileTitleEl) {
+              if (data.titles && data.titles.length > 0) {
+                profileTitleEl.innerHTML = `<img src="img/titulos/${title.file}" alt="${title.name}" class="char-profile-title-img">`;
+              } else {
+                profileTitleEl.textContent = title.name;
+              }
+            }
 
             // Esconder tooltip ativo antes de recarregar
             if (tooltipEl) tooltipEl.classList.remove('active');
@@ -796,7 +832,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
       setupTooltip(card, emb.name, emb.desc, emb.equipped ? "ADQUIRIDO" : "BLOQUEADO");
 
-      if (emb.spriteIndex !== undefined && slicedEmblems[emb.spriteIndex]) {
+      if (emb.file) {
+        card.innerHTML = `
+          <div class="emblem-patch has-image">
+            <img src="img/emblemas/${emb.file}" alt="${emb.name}" class="emblem-img">
+          </div>
+        `;
+      } else if (emb.spriteIndex !== undefined && slicedEmblems[emb.spriteIndex]) {
         card.innerHTML = `
           <div class="emblem-patch has-image">
             <img src="${slicedEmblems[emb.spriteIndex]}" alt="${emb.name}" class="emblem-img">

@@ -1045,6 +1045,15 @@ body::before {
   margin-top: 4px;
 }
 
+.char-profile-title-img {
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin-top: 5px;
+  display: block;
+}
+
 /* ═══════════════════════════════════════════════════
    ABA DETALHES (GRÁFICO DE RADAR SVG)
    ═══════════════════════════════════════════════════ */
