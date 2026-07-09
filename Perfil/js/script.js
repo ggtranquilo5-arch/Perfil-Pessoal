@@ -207,7 +207,6 @@ document.addEventListener("DOMContentLoaded", () => {
   document.addEventListener('keydown', playAudioOnFirstInteraction);
 
   // Emblemas otimizados do Delta Force fornecidos pelo usuário
-  let currentActiveGame = 'deltaforce';
   const dfEmblemFiles = [
     "IMG_20260701_143542.png", // 0: Boas-vindas à FD
     "Screenshot_2026-07-01-14-20-40-467_com.garena.game.df.png", // 1: Asas de Resgate
@@ -228,7 +227,6 @@ document.addEventListener("DOMContentLoaded", () => {
   ];
 
   const slicedEmblems = dfEmblemFiles.map(file => `img/emblemas/${file}`);
-  let isEmblemSheetLoaded = true;
 
   if (audio) {
     audio.volume = 0.45;
@@ -561,7 +559,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const launcherCards = document.querySelectorAll('.launcher-game-card');
 
   const selectGame = (gameId, preserveTab = false) => {
-    currentActiveGame = gameId;
     const data = gameData[gameId];
     if (!data) return;
 
@@ -818,34 +815,6 @@ document.addEventListener("DOMContentLoaded", () => {
   if (backToGamesBtn) {
     backToGamesBtn.addEventListener('click', resetToLauncher);
   }
-
-  // ══════════════════════════
-  // RELÓGIO DIGITAL ATIVO
-  // ══════════════════════════
-  const clockEl = document.getElementById('liveClock');
-  const dateEl = document.getElementById('liveDate');
-
-  const updateClock = () => {
-    const now = new Date();
-
-    // Formatar Horário
-    const hh = String(now.getHours()).padStart(2, '0');
-    const mm = String(now.getMinutes()).padStart(2, '0');
-    const ss = String(now.getSeconds()).padStart(2, '0');
-    if (clockEl) {
-      clockEl.textContent = `${hh}:${mm}:${ss}`;
-    }
-
-    // Formatar Data
-    const options = { day: 'numeric', month: 'long', year: 'numeric' };
-    const dateStr = now.toLocaleDateString('pt-BR', options).toUpperCase();
-    if (dateEl) {
-      dateEl.textContent = dateStr;
-    }
-  };
-
-  updateClock();
-  setInterval(updateClock, 1000);
 
   // Inicializar a página na tela inicial (Launcher de Jogos)
   resetToLauncher();
