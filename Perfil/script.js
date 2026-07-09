@@ -649,7 +649,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById('dfProfileTitle').textContent = data.titleName;
 
     // Atualizar avatar na aba Perfil
-    const charAvatar = document.querySelector('.char-avatar-render');
+    const charAvatar = document.querySelector('#tab-perfil .char-avatar-render');
     if (charAvatar) {
       charAvatar.src = data.avatarUrl;
     }
@@ -827,7 +827,7 @@ document.addEventListener("DOMContentLoaded", () => {
     gameTabs.forEach(tab => tab.classList.add('hidden'));
 
     // Reverter avatar na aba Perfil (local)
-    const charAvatar = document.querySelector('.char-avatar-render');
+    const charAvatar = document.querySelector('#tab-perfil .char-avatar-render');
     if (charAvatar) {
       charAvatar.src = 'img/operator_render.png';
     }

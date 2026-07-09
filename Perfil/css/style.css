@@ -2222,6 +2222,12 @@ body:not(.boot-complete) .reveal-bottom {
   text-shadow: 0 0 10px rgba(200, 130, 66, 0.5);
 }
 
+.friend-profile .char-avatar-render {
+  object-fit: contain;
+  background: #120e0b;
+  padding: 4px;
+}
+
 .friend-profile .pd-header {
   margin-top: 18px;
 }
