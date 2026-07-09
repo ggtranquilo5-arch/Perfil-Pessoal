@@ -1583,8 +1583,7 @@ body::before {
 .df-title-card-selector img,
 .hud-avatar-img,
 .char-avatar-render {
-  image-rendering: -webkit-optimize-contrast;
-  image-rendering: crisp-edges;
+  image-rendering: auto;
 }
 
 /* ═══════════════════════════════════════════════════
