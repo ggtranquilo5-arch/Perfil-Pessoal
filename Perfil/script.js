@@ -325,18 +325,37 @@ document.addEventListener("DOMContentLoaded", () => {
         finalY = clientY - tooltipH - offset;
       }
 
-      // Evitar que o tooltip saia das bordas da tela (especialmente no mobile)
-      if (finalX < 10) {
-        finalX = 10;
-      }
-      if (finalX + tooltipW > windowW - 10) {
-        finalX = windowW - tooltipW - 10;
-      }
-      if (finalY < 10) {
-        finalY = 10;
-      }
-      if (finalY + tooltipH > windowH - 10) {
-        finalY = windowH - tooltipH - 10;
+      // Limitar a área útil ao container .tabs-card para que não passe da linha limitadora do painel
+      const tabsCard = document.querySelector('.tabs-card');
+      if (tabsCard) {
+        const cardRect = tabsCard.getBoundingClientRect();
+
+        if (finalX < cardRect.left + 10) {
+          finalX = cardRect.left + 10;
+        }
+        if (finalX + tooltipW > cardRect.right - 10) {
+          finalX = cardRect.right - tooltipW - 10;
+        }
+        if (finalY < cardRect.top + 10) {
+          finalY = cardRect.top + 10;
+        }
+        if (finalY + tooltipH > cardRect.bottom - 10) {
+          finalY = cardRect.bottom - tooltipH - 10;
+        }
+      } else {
+        // Fallback para os limites gerais da viewport
+        if (finalX < 10) {
+          finalX = 10;
+        }
+        if (finalX + tooltipW > windowW - 10) {
+          finalX = windowW - tooltipW - 10;
+        }
+        if (finalY < 10) {
+          finalY = 10;
+        }
+        if (finalY + tooltipH > windowH - 10) {
+          finalY = windowH - tooltipH - 10;
+        }
       }
 
       tooltipEl.style.left = `${finalX}px`;
