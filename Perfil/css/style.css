@@ -1586,10 +1586,18 @@ body::before {
 
 /* Otimização de nitidez de pixels para mobile e telas de alta densidade */
 .emblem-img,
+.hud-avatar-img,
+.char-avatar-render {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+  filter: contrast(1.02) saturate(1.02);
+  /* Melhora sutil de contraste e saturação para os pixels se destacarem */
+}
+
 .df-title-banner-img,
 .df-title-card-selector img,
-.hud-avatar-img,
-.char-avatar-render,
 .char-profile-title-img {
   image-rendering: auto;
   backface-visibility: hidden;
