@@ -170,6 +170,15 @@ document.addEventListener("DOMContentLoaded", () => {
           // Disparar animação staggered das seções principais adicionando a classe ao body
           document.body.classList.add('boot-complete');
 
+          // Carregar o vídeo de fundo de forma diferida (após a intro carregar)
+          const bgVideo = document.getElementById('video-background');
+          const videoSource = document.getElementById('video-source');
+          if (bgVideo && videoSource) {
+            videoSource.src = videoSource.getAttribute('data-src');
+            bgVideo.load();
+            bgVideo.play().catch(err => console.log("Video autoplay blocked by browser policy:", err));
+          }
+
           setTimeout(() => {
             smokeActive = false; // Parar loop da animação do canvas para poupar CPU/GPU
             introOverlay.remove();
@@ -730,13 +739,13 @@ document.addEventListener("DOMContentLoaded", () => {
         if (emb.file) {
           slot.innerHTML = `
             <div class="emblem-patch has-image">
-              <img src="img/emblemas/${emb.file}" alt="${emb.name}" class="emblem-img">
+              <img src="img/emblemas/${emb.file}" alt="${emb.name}" class="emblem-img" loading="lazy">
             </div>
           `;
         } else if (emb.spriteIndex !== undefined && slicedEmblems[emb.spriteIndex]) {
           slot.innerHTML = `
             <div class="emblem-patch has-image">
-              <img src="${slicedEmblems[emb.spriteIndex]}" alt="${emb.name}" class="emblem-img">
+              <img src="${slicedEmblems[emb.spriteIndex]}" alt="${emb.name}" class="emblem-img" loading="lazy">
             </div>
           `;
         } else {
@@ -784,7 +793,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // Renderizar o banner ativo
       if (titleDisplay) {
         titleDisplay.innerHTML = `
-          <img src="img/titulos/${activeTitle.file}" alt="${activeTitle.name}" class="df-title-banner-img">
+          <img src="img/titulos/${activeTitle.file}" alt="${activeTitle.name}" class="df-title-banner-img" loading="lazy">
         `;
         const activeTitleImg = titleDisplay.querySelector('.df-title-banner-img');
         if (activeTitleImg) {
@@ -799,7 +808,7 @@ document.addEventListener("DOMContentLoaded", () => {
           const titleCard = document.createElement('div');
           titleCard.className = `df-title-card-selector ${title.id === data.activeTitleId ? 'active' : ''}`;
           titleCard.innerHTML = `
-            <img src="img/titulos/${title.file}" alt="${title.name}">
+            <img src="img/titulos/${title.file}" alt="${title.name}" loading="lazy">
           `;
 
           setupTooltip(titleCard, title.name, title.desc, title.id === data.activeTitleId ? "EQUIPPED" : "AVAILABLE");
@@ -857,13 +866,13 @@ document.addEventListener("DOMContentLoaded", () => {
       if (emb.file) {
         card.innerHTML = `
           <div class="emblem-patch has-image">
-            <img src="img/emblemas/${emb.file}" alt="${emb.name}" class="emblem-img">
+            <img src="img/emblemas/${emb.file}" alt="${emb.name}" class="emblem-img" loading="lazy">
           </div>
         `;
       } else if (emb.spriteIndex !== undefined && slicedEmblems[emb.spriteIndex]) {
         card.innerHTML = `
           <div class="emblem-patch has-image">
-            <img src="${slicedEmblems[emb.spriteIndex]}" alt="${emb.name}" class="emblem-img">
+            <img src="${slicedEmblems[emb.spriteIndex]}" alt="${emb.name}" class="emblem-img" loading="lazy">
           </div>
         `;
       } else {

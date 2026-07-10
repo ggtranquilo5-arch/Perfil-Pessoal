@@ -6,12 +6,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Profile | CLOUTCH</title>
 
-  <!-- Fontes Gamer -->
+  <!-- DNS Prefetching & Preconnecting for load speed -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+
+  <!-- Gamer Fonts -->
   <link
-    href="https://fonts.googleapis.com/csss2?family=Oxanium:wght@300;400;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700;800&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Oxanium:wght@300;400;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700;800&display=swap"
     rel="stylesheet">
 
-  <link rel="stylesheet" href="css/style.css?v=1.1.6">
+  <link rel="stylesheet" href="css/style.css?v=1.1.7">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
@@ -55,11 +60,9 @@
     </div>
   </div>
 
-  <!-- Vídeo de Fundo Oficial -->
-  <video id="video-background" autoplay loop muted playsinline>
-    <source
-      src="https://raw.githubusercontent.com/ggtranquilo5-arch/Perfil-Pessoal/main/Perfil/videoplayback%20(1).webm"
-      type="video/webm">
+  <!-- Background Video (Lazy loaded for optimized page boot) -->
+  <video id="video-background" autoplay loop muted playsinline preload="none">
+    <source id="video-source" data-src="videoplayback (1).webm" type="video/webm">
   </video>
 
   <!-- Overlays HUD para profundidade -->
@@ -68,9 +71,7 @@
   <div class="grid-overlay"></div>
   <div class="vignette"></div>
 
-
-
-  <audio id="bgAudio" loop preload="auto">
+  <audio id="bgAudio" loop preload="none">
     <source
       src="https://archive.org/download/dark-synthwave-pyl9yg/Cluster%20Buster%20-%20Dark%20Synthwave%20-%2012%20The%20Dead%20Next%20Door.mp3"
       type="audio/mpeg">
@@ -301,7 +302,7 @@
                 <div class="df-profile-char">
                   <div class="char-hud-frame">
                     <div class="char-image-container">
-                      <img src="img/indio-mito.jpg" alt="Render do Amigo" class="char-avatar-render">
+                      <img src="img/indio-mito.jpg" alt="Render do Amigo" class="char-avatar-render" loading="lazy">
                     </div>
                     <div class="char-hud-banner">
                       <div class="char-hud-name">INDIO-MITO</div>
@@ -371,7 +372,8 @@
                 <div class="df-profile-char">
                   <div class="char-hud-frame">
                     <div class="char-image-container">
-                      <img src="img/Principal avatar.png" alt="Render do Operador" class="char-avatar-render">
+                      <img src="img/Principal avatar.png" alt="Render do Operador" class="char-avatar-render"
+                        loading="lazy">
                     </div>
                     <div class="char-hud-banner">
                       <div class="char-hud-name">CLOUTCH</div>
@@ -518,7 +520,7 @@
 
   <div id="hudTooltip" class="hud-tooltip"></div>
 
-  <script src="script.js?v=1.1.6"></script>
+  <script src="script.js?v=1.1.7"></script>
 </body>
 
 </html>
