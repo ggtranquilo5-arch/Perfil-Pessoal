@@ -319,10 +319,24 @@ document.addEventListener("DOMContentLoaded", () => {
       let finalY = y;
 
       if (x + tooltipW > windowW) {
-        finalX = e.clientX - tooltipW - offset;
+        finalX = clientX - tooltipW - offset;
       }
       if (y + tooltipH > windowH) {
-        finalY = e.clientY - tooltipH - offset;
+        finalY = clientY - tooltipH - offset;
+      }
+
+      // Evitar que o tooltip saia das bordas da tela (especialmente no mobile)
+      if (finalX < 10) {
+        finalX = 10;
+      }
+      if (finalX + tooltipW > windowW - 10) {
+        finalX = windowW - tooltipW - 10;
+      }
+      if (finalY < 10) {
+        finalY = 10;
+      }
+      if (finalY + tooltipH > windowH - 10) {
+        finalY = windowH - tooltipH - 10;
       }
 
       tooltipEl.style.left = `${finalX}px`;

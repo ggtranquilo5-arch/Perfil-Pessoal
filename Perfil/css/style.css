@@ -1495,6 +1495,8 @@ body::before {
   z-index: 10000;
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.9);
   backdrop-filter: blur(12px);
+  max-width: 280px;
+  box-sizing: border-box;
 }
 
 .hud-tooltip.active {
