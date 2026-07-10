@@ -361,21 +361,21 @@ document.addEventListener("DOMContentLoaded", () => {
     deltaforce: {
       name: "Delta Force: Hawk Ops",
       rankTitle: "DF Pinnacle ⭐ 245",
-      rankScore: "Pontuação: 23150",
+      rankScore: "Score: 23150",
       hours: "4700h",
       battles: "11430",
       assets: "266.8M",
       extractionRate: "39.8%",
       opLevel: "60",
-      titleName: "Deus da Guerra T6",
-      titleDesc: "provante de alcançar a classificação mais alta na Zona de Risco, Temporada War Albaze!",
+      titleName: "God of War T6",
+      titleDesc: "Proof of reaching the highest rank in Risk Zone during Season War Albaze!",
       titles: [
-        { name: "S9 God of War", id: "t9", file: "Screenshot_2026-07-01-15-17-13-442_com.garena.game.df.png", desc: "Temporada 9 - Classificação Deus da Guerra" },
-        { name: "Deus da Guerra T8", id: "t8", file: "Screenshot_2026-07-01-15-17-50-703_com.garena.game.df.png", desc: "Temporada 8 - Classificação Deus da Guerra" },
-        { name: "Deus da Guerra T7", id: "t7", file: "Screenshot_2026-07-01-15-17-28-310_com.garena.game.df.png", desc: "Temporada 7 - Classificação Deus da Guerra" },
-        { name: "Deus da Guerra T6", id: "t6", file: "Screenshot_2026-07-01-15-18-04-634_com.garena.game.df.png", desc: "Temporada 6 - Classificação Deus da Guerra" },
-        { name: "Deus da Guerra T5", id: "t5", file: "Screenshot_2026-07-01-15-18-17-734_com.garena.game.df.png", desc: "Temporada 5 - Classificação Deus da Guerra" },
-        { name: "Deus da Guerra T4", id: "t4", file: "Screenshot_2026-07-01-15-18-32-566_com.garena.game.df.png", desc: "Temporada 4 - Classificação Deus da Guerra" }
+        { name: "God of War T9", id: "t9", file: "Screenshot_2026-07-01-15-17-13-442_com.garena.game.df.png", desc: "Season 9 - God of War Rank" },
+        { name: "God of War T8", id: "t8", file: "Screenshot_2026-07-01-15-17-50-703_com.garena.game.df.png", desc: "Season 8 - God of War Rank" },
+        { name: "God of War T7", id: "t7", file: "Screenshot_2026-07-01-15-17-28-310_com.garena.game.df.png", desc: "Season 7 - God of War Rank" },
+        { name: "God of War T6", id: "t6", file: "Screenshot_2026-07-01-15-18-04-634_com.garena.game.df.png", desc: "Season 6 - God of War Rank" },
+        { name: "God of War T5", id: "t5", file: "Screenshot_2026-07-01-15-18-17-734_com.garena.game.df.png", desc: "Season 5 - God of War Rank" },
+        { name: "God of War T4", id: "t4", file: "Screenshot_2026-07-01-15-18-32-566_com.garena.game.df.png", desc: "Season 4 - God of War Rank" }
       ],
       activeTitleId: "t6",
 
@@ -384,149 +384,149 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // 6 emblemas equipados com shapes e cores (reduzido para economizar espaço e evitar overflow)
       equippedEmblems: [
-        { name: "Boas-vindas à FD", icon: "fa-crosshairs", shape: "shape-shield", color: "cyan-emb", spriteIndex: 0 },
-        { name: "Asas de Resgate", icon: "fa-helicopter", shape: "shape-shield", color: "cyan-emb", spriteIndex: 1 },
-        { name: "Pioneiro da Linha", icon: "fa-medal", shape: "shape-triangle", color: "gold-emb", spriteIndex: 2 },
-        { name: "Trabalho de Equipe", icon: "fa-users", shape: "shape-shield", color: "gold-emb", spriteIndex: 3 },
-        { name: "Rosa Negra", icon: "fa-spa", shape: "shape-diamond", color: "blue-emb", spriteIndex: 4 },
-        { name: "Elite de Combate", icon: "fa-skull-crossbones", shape: "shape-shield", color: "red-emb", spriteIndex: 5 }
+        { name: "Welcome to FD", icon: "fa-crosshairs", shape: "shape-shield", color: "cyan-emb", spriteIndex: 0 },
+        { name: "Rescue Wings", icon: "fa-helicopter", shape: "shape-shield", color: "cyan-emb", spriteIndex: 1 },
+        { name: "Frontline Pioneer", icon: "fa-medal", shape: "shape-triangle", color: "gold-emb", spriteIndex: 2 },
+        { name: "Teamwork", icon: "fa-users", shape: "shape-shield", color: "gold-emb", spriteIndex: 3 },
+        { name: "Black Rose", icon: "fa-spa", shape: "shape-diamond", color: "blue-emb", spriteIndex: 4 },
+        { name: "Combat Elite", icon: "fa-skull-crossbones", shape: "shape-shield", color: "red-emb", spriteIndex: 5 }
       ],
 
       // Todos os 16 emblemas com formas 3D e cores correspondentes à imagem do jogo
       allEmblems: [
-        { name: "Boas-vindas à FD", icon: "fa-crosshairs", equipped: true, desc: "Registro oficial do operador:21/04/2025.", shape: "shape-shield", color: "cyan-emb", spriteIndex: 0 },
-        { name: "Asas de Resgate", icon: "fa-helicopter", equipped: true, desc: "Apoio tático e extração de helicóptero.", shape: "shape-shield", color: "cyan-emb", spriteIndex: 1 },
-        { name: "Pioneiro da Linha", icon: "fa-font", equipped: true, desc: "Conquista de vanguarda no front.", shape: "shape-triangle", color: "gold-emb", spriteIndex: 2 },
-        { name: "Trabalho de Equipe", icon: "fa-users", equipped: true, desc: "Cooperação ativa com esquadrão tático.", shape: "shape-shield", color: "gold-emb", spriteIndex: 3 },
-        { name: "Rosa Negra", icon: "fa-seedling", equipped: true, desc: "Conclusão de operações silenciosas.", shape: "shape-diamond", color: "blue-emb", spriteIndex: 4 },
-        { name: "Elite de Combate", icon: "fa-skull-crossbones", equipped: true, desc: "Letalidade máxima contra alvos hostis.", shape: "shape-shield", color: "red-emb", spriteIndex: 5 },
-        { name: "Coração da África", icon: "fa-shield-halved", equipped: true, desc: "Referente ao raríssimo diamante Coração da África quando encontrado e extraído com sucesso na Zona de Risco.", shape: "shape-shield", color: "green-emb", spriteIndex: 6 },
-        { name: "Pérola do Mar", icon: "fa-gem", equipped: false, desc: "Extração bem-sucedida de tesouros.", shape: "shape-circle", color: "gold-emb", spriteIndex: 7 },
-        { name: "Sniper Fuzileiro", icon: "fa-bullseye", equipped: false, desc: "Precisão de longo alcance com rifles.", shape: "shape-shield", color: "blue-emb", spriteIndex: 8 },
-        { name: "Lâmina Silenciosa", icon: "fa-slash", equipped: false, desc: "Eliminações furtivas corpo a corpo.", shape: "shape-shield", color: "blue-emb", spriteIndex: 9 },
-        { name: "Lobo Cenográfico", icon: "fa-paw", equipped: false, desc: "Táticas de caça solo.", shape: "shape-diamond", color: "gold-emb", spriteIndex: 10 },
-        { name: "Leão de Bronze", icon: "fa-cat", equipped: false, desc: "Defesa sob cerco pesado.", shape: "shape-shield", color: "gold-emb", spriteIndex: 11 },
-        { name: "Engenharia Militar", icon: "fa-gear", equipped: false, desc: "Hacking e decodificação.", shape: "shape-circle", color: "gold-emb", spriteIndex: 12 },
-        { name: "Cavaleiro de Ferro", icon: "fa-horse", equipped: false, desc: "Mobilidade tática rápida.", shape: "shape-diamond", color: "gold-emb", spriteIndex: 13 },
-        { name: "Adagas Cruzadas", icon: "fa-bezier-curve", equipped: false, desc: "Coordenação de ataques em pinça.", shape: "shape-shield", color: "red-emb", spriteIndex: 14 },
-        { name: "Leão de Ouro", icon: "fa-crown", equipped: false, desc: "Vitórias consecutivas na arena.", shape: "shape-shield", color: "gold-emb", spriteIndex: 15 }
+        { name: "Welcome to FD", icon: "fa-crosshairs", equipped: true, desc: "Official Operator Registration: 04/21/2025.", shape: "shape-shield", color: "cyan-emb", spriteIndex: 0 },
+        { name: "Rescue Wings", icon: "fa-helicopter", equipped: true, desc: "Tactical support and helicopter extraction.", shape: "shape-shield", color: "cyan-emb", spriteIndex: 1 },
+        { name: "Frontline Pioneer", icon: "fa-font", equipped: true, desc: "Vanguard conquest on the front.", shape: "shape-triangle", color: "gold-emb", spriteIndex: 2 },
+        { name: "Teamwork", icon: "fa-users", equipped: true, desc: "Active cooperation with tactical squad.", shape: "shape-shield", color: "gold-emb", spriteIndex: 3 },
+        { name: "Black Rose", icon: "fa-seedling", equipped: true, desc: "Completion of stealth operations.", shape: "shape-diamond", color: "blue-emb", spriteIndex: 4 },
+        { name: "Combat Elite", icon: "fa-skull-crossbones", equipped: true, desc: "Maximum lethality against hostile targets.", shape: "shape-shield", color: "red-emb", spriteIndex: 5 },
+        { name: "Heart of Africa", icon: "fa-shield-halved", equipped: true, desc: "Extraction of the ultra-rare Heart of Africa diamond in the Hazard Zone.", shape: "shape-shield", color: "green-emb", spriteIndex: 6 },
+        { name: "Pearl of the Sea", icon: "fa-gem", equipped: false, desc: "Successful extraction of rare treasures.", shape: "shape-circle", color: "gold-emb", spriteIndex: 7 },
+        { name: "Marine Sniper", icon: "fa-bullseye", equipped: false, desc: "Long-range precision with sniper rifles.", shape: "shape-shield", color: "blue-emb", spriteIndex: 8 },
+        { name: "Silent Blade", icon: "fa-slash", equipped: false, desc: "Stealthy close combat takedowns.", shape: "shape-shield", color: "blue-emb", spriteIndex: 9 },
+        { name: "Lone Wolf", icon: "fa-paw", equipped: false, desc: "Solo hunting tactics.", shape: "shape-diamond", color: "gold-emb", spriteIndex: 10 },
+        { name: "Bronze Lion", icon: "fa-cat", equipped: false, desc: "Defense under heavy siege.", shape: "shape-shield", color: "gold-emb", spriteIndex: 11 },
+        { name: "Military Engineering", icon: "fa-gear", equipped: false, desc: "Hacking and decryption.", shape: "shape-circle", color: "gold-emb", spriteIndex: 12 },
+        { name: "Iron Rider", icon: "fa-horse", equipped: false, desc: "Fast tactical mobility.", shape: "shape-diamond", color: "gold-emb", spriteIndex: 13 },
+        { name: "Crossed Daggers", icon: "fa-bezier-curve", equipped: false, desc: "Coordination of pincer attacks.", shape: "shape-shield", color: "red-emb", spriteIndex: 14 },
+        { name: "Golden Lion", icon: "fa-crown", equipped: false, desc: "Consecutive arena victories.", shape: "shape-shield", color: "gold-emb", spriteIndex: 15 }
       ],
 
       detailsStats: [
-        { key: "Total de Batalhas", val: "11430" },
-        { key: "Hora do Jogo", val: "4700h" },
-        { key: "P/L (Média)", val: "1.4M" },
-        { key: "Valor Extraído", val: "4.8b" },
-        { key: "Recompensas de Tarefas", val: "1.8M" },
-        { key: "MandelBricks Decodificados", val: "122" },
-        { key: "Média A/M (K/D)", val: "13 | 3.3 | 1.9" },
-        { key: "Eliminações de Operadores", val: "37.719" },
-        { key: "Precisão Geral", val: "35.5%" },
-        { key: "Taxa de Eliminação", val: "45.6%" },
-        { key: "Taxa de Extração", val: "39.8%" },
-        { key: "Valor Extraído de Aliados", val: "18.1M" },
-        { key: "Resgate de Companheiros", val: "832" },
-        { key: "Aliados Ressurgidos", val: "832" }
+        { key: "Total Battles", val: "11430" },
+        { key: "Playtime", val: "4700h" },
+        { key: "Avg. Profit/Loss", val: "1.4M" },
+        { key: "Total Extracted Value", val: "4.8b" },
+        { key: "Mission Rewards", val: "1.8M" },
+        { key: "MandelBricks Decoded", val: "122" },
+        { key: "Avg. K/D Ratio", val: "13 | 3.3 | 1.9" },
+        { key: "Operator Eliminations", val: "37,719" },
+        { key: "Overall Accuracy", val: "35.5%" },
+        { key: "Lethality Rate", val: "45.6%" },
+        { key: "Extraction Rate", val: "39.8%" },
+        { key: "Friendly Extraction Value", val: "18.1M" },
+        { key: "Teammate Rescues", val: "832" },
+        { key: "Revived Teammates", val: "832" }
       ],
 
       radarPoints: "100,41 155,82 135,148 66,134 27,76"
     },
     rust: {
       name: "Rust Mobile",
-      rankTitle: "Sobrevivente Alfa",
-      rankScore: "Pontuação: 9200",
-      hours: "5.200h",
+      rankTitle: "Alpha Survivor",
+      rankScore: "Score: 9200",
+      hours: "5,200h",
       battles: "854",
       opLevel: "95",
-      titleName: "Glória Suprema",
-      titleDesc: "Alcançou o topo do Hall da Fama no ranking global do servidor.",
+      titleName: "Supreme Glory",
+      titleDesc: "Reached the top of the Hall of Fame on the global server ranking.",
 
       // Foto de perfil do Rust (local)
       avatarUrl: "img/avatarRust1.png",
 
       titles: [
-        { name: "Glória Suprema", id: "tr4", file: "tituloRust4.png", desc: "Alcançou o topo do Hall da Fama no ranking global do servidor." },
-        { name: "Mestre da Mineração", id: "tr2", file: "tituloRust2.png", desc: "Extraiu e coletou mais de 1 milhão de recursos de minério no wipe." },
-        { name: "Guerreiro do Bunker", id: "tr3", file: "tituloRust3.png", desc: "Sobreviveu e dominou as instalações subterrâneas mais hostis." },
-        { name: "S1 University Rankings", id: "tr1", file: "tituloRust1.png", desc: "Conquistou a classificação máxima da liga universitária na Temporada 1." }
+        { name: "Supreme Glory", id: "tr4", file: "tituloRust4.png", desc: "Reached the top of the Hall of Fame on the global server ranking." },
+        { name: "Mining Master", id: "tr2", file: "tituloRust2.png", desc: "Extracted over 1 million ore resources in a single wipe." },
+        { name: "Bunker Warrior", id: "tr3", file: "tituloRust3.png", desc: "Survived and dominated the most hostile underground facilities." },
+        { name: "Top Scholar - S1 Season", id: "tr1", file: "tituloRust1.png", desc: "Awarded for achieving 1st place individually on the S1 Season University Leaderboard." }
       ],
       activeTitleId: "tr4",
 
       equippedEmblems: [
-        { name: "Mestre dos Cofres", file: "emblemaRust1.png" },
-        { name: "Rei do Fuzil", file: "emblemaRust2.png" },
-        { name: "Pilhador Aéreo", file: "emblemaRust3.png" },
-        { name: "Desbravador do Mapa", file: "emblemaRust4.png" },
-        { name: "Arquiteto Lendário", file: "emblemaRust5.png" },
-        { name: "Primeiros Passos", file: "emblemaRust6.png" }
+        { name: "Demolition Expert III", file: "emblemaRust1.png" },
+        { name: "Modification Expert I", file: "emblemaRust2.png" },
+        { name: "Armaments Artisan I", file: "emblemaRust3.png" },
+        { name: "Map Pathfinder", file: "emblemaRust4.png" },
+        { name: "Legendary Architect", file: "emblemaRust5.png" },
+        { name: "First Steps", file: "emblemaRust6.png" }
       ],
       allEmblems: [
-        { name: "Mestre dos Cofres", file: "emblemaRust1.png", equipped: true, desc: "Invadiu e saqueou 100 cofres trancados com sucesso." },
-        { name: "Rei do Fuzil", file: "emblemaRust2.png", equipped: true, desc: "Mestre absoluto do recuo e precisão com o Fuzil de Assalto AK-47." },
-        { name: "Pilhador Aéreo", file: "emblemaRust3.png", equipped: true, desc: "Saqueou 50 caixas de suprimentos caídas do céu (Air Drops)." },
-        { name: "Desbravador do Mapa", file: "emblemaRust4.png", equipped: true, desc: "Explorou e revelou 100% de todas as regiões geográficas do mapa." },
-        { name: "Arquiteto Lendário", file: "emblemaRust5.png", equipped: true, desc: "Construiu e fortificou uma base impenetrável de metal de alta qualidade." },
-        { name: "Primeiros Passos", file: "emblemaRust6.png", equipped: true, desc: "Fabricou as primeiras ferramentas primitivas de madeira e pedra." },
-        { name: "Mestre Lenhador", file: "emblemaRust7.png", equipped: true, desc: "Coletou mais de 500.000 unidades de madeira com ferramentas industriais." },
-        { name: "Mestre Caçador", file: "emblemaRust8.png", equipped: true, desc: "Caçou e abateu todos os tipos de animais selvagens perigosos da ilha." },
-        { name: "Destruidor de Barris", file: "emblemaRust9.png", equipped: true, desc: "Quebrou 1.000 barris de sucata ao longo das estradas do mapa." },
-        { name: "Lenda do PvP", file: "emblemaRust10.png", equipped: true, desc: "Eliminou 250 adversários usando submetralhadoras de combate." }
+        { name: "Demolition Expert III", file: "emblemaRust1.png", equipped: true, desc: "Destroy 10 tool cupboards in a single match." },
+        { name: "Modification Expert I", file: "emblemaRust2.png", equipped: true, desc: "Craft 5 weapon attachments in a single match." },
+        { name: "Armaments Artisan I", file: "emblemaRust3.png", equipped: true, desc: "Obtain 3 rockets of any type in a single match." },
+        { name: "Map Pathfinder", file: "emblemaRust4.png", equipped: true, desc: "Explored and revealed 100% of all geographical regions on the map." },
+        { name: "Legendary Architect", file: "emblemaRust5.png", equipped: true, desc: "Built and fortified an impenetrable high-quality metal base." },
+        { name: "First Steps", file: "emblemaRust6.png", equipped: true, desc: "Crafted the first primitive wooden and stone tools." },
+        { name: "Master Lumberjack", file: "emblemaRust7.png", equipped: true, desc: "Collected over 500,000 units of wood using industrial tools." },
+        { name: "Master Hunter", file: "emblemaRust8.png", equipped: true, desc: "Hunted and harvested all dangerous wildlife on the island." },
+        { name: "Barrel Destroyer", file: "emblemaRust9.png", equipped: true, desc: "Destroyed 1,000 scrap barrels along roads." },
+        { name: "Valiant Vanguard I", file: "emblemaRust10.png", equipped: true, desc: "Defeat 20 different players in a single match." }
       ],
       detailsStats: [
-        { key: "Total de Wipes Jogados", val: "854" },
-        { key: "Horas de Sobrevivência", val: "5.200h" },
+        { key: "Total Wipes Played", val: "854" },
+        { key: "Survival Hours", val: "5,200h" },
         { key: "PVP Kills", val: "3,450" },
-        { key: "Raids Executados", val: "84" },
-        { key: "Helicópteros Derrubados", val: "123" }
+        { key: "Raids Executed", val: "84" },
+        { key: "Helicopters Shot Down", val: "123" }
       ],
       radarPoints: "100,25 168,75 140,155 60,155 32,75"
     },
     valorant: {
       name: "Valorant",
-      rankTitle: "Ascendente III",
-      rankScore: "Pontuação: RR 72",
+      rankTitle: "Ascendant III",
+      rankScore: "Score: RR 72",
       hours: "450h",
-      battles: "380",
+      battles: "380 Matches",
 
       opLevel: "82",
       titleName: "Clutch Master",
-      titleDesc: "Venceu mais de 100 rodadas jogando sozinho contra mais de 3 inimigos.",
+      titleDesc: "Won 100+ rounds alone against 3+ enemies.",
 
       // Foto de perfil do Valorant (local)
       avatarUrl: "img/valorant_avatar.jpg",
 
       equippedEmblems: [
-        { name: "Precisão", icon: "fa-crosshairs", shape: "shape-shield", color: "red-emb" },
-        { name: "Suporte", icon: "fa-shield-halved", shape: "shape-shield", color: "cyan-emb" },
+        { name: "Precision", icon: "fa-crosshairs", shape: "shape-shield", color: "red-emb" },
+        { name: "Support", icon: "fa-shield-halved", shape: "shape-shield", color: "cyan-emb" },
         { name: "MVP", icon: "fa-trophy", shape: "shape-circle", color: "gold-emb" },
-        { name: "Dualista", icon: "fa-skull", shape: "shape-diamond", color: "blue-emb" }
+        { name: "Duelist", icon: "fa-skull", shape: "shape-diamond", color: "blue-emb" }
       ],
       allEmblems: [
-        { name: "Precisão", icon: "fa-crosshairs", equipped: true, desc: "Headshots acima de 28%.", shape: "shape-shield", color: "red-emb" },
-        { name: "Suporte", icon: "fa-shield-halved", equipped: true, desc: "Forneceu 150 assistências.", shape: "shape-shield", color: "cyan-emb" },
-        { name: "MVP", icon: "fa-trophy", equipped: true, desc: "MVP em partidas ranqueadas.", shape: "shape-circle", color: "gold-emb" },
-        { name: "Dualista", icon: "fa-skull", equipped: true, desc: "Eliminou 30 inimigos em uma partida.", shape: "shape-diamond", color: "blue-emb" }
+        { name: "Precision", icon: "fa-crosshairs", equipped: true, desc: "Headshot rate above 28%.", shape: "shape-shield", color: "red-emb" },
+        { name: "Support", icon: "fa-shield-halved", equipped: true, desc: "Provided 150 assists.", shape: "shape-shield", color: "cyan-emb" },
+        { name: "MVP", icon: "fa-trophy", equipped: true, desc: "Earned MVP in ranked matches.", shape: "shape-circle", color: "gold-emb" },
+        { name: "Duelist", icon: "fa-skull", equipped: true, desc: "Eliminated 30 enemies in a single match.", shape: "shape-diamond", color: "blue-emb" }
       ],
       detailsStats: [
-        { key: "Partidas Competitivas", val: "380" },
-        { key: "Horas Jogadas", val: "450h" },
-        { key: "K/D Ratio Geral", val: "1.28" },
-        { key: "Taxa de Vitória", val: "58.4%" },
-        { key: "Precisão do Headshot", val: "28.3%" },
-        { key: "Dano Médio por Rodada", val: "152" }
+        { key: "Competitive Matches", val: "380" },
+        { key: "Hours Played", val: "450h" },
+        { key: "Overall K/D Ratio", val: "1.28" },
+        { key: "Win Rate", val: "58.4%" },
+        { key: "Headshot Accuracy", val: "28.3%" },
+        { key: "Average Damage Per Round", val: "152" }
       ],
       radarPoints: "100,30 162,75 142,150 64,148 30,75"
     },
     cs2: {
       name: "Counter-Strike 2",
       rankTitle: "Global Elite // Premier",
-      rankScore: "Pontuação: 18,400",
+      rankScore: "Score: 18,400",
       hours: "350h",
-      battles: "290",
+      battles: "290 Matches",
 
       opLevel: "74",
       titleName: "Defusal Veteran",
-      titleDesc: "Desarmou 50 bombas com menos de 2 segundos restantes.",
+      titleDesc: "Defused 50 bombs with less than 2 seconds remaining.",
 
       // Foto de perfil do CS2 (local)
       avatarUrl: "img/Cs2 perfil.jpg",
@@ -534,55 +534,55 @@ document.addEventListener("DOMContentLoaded", () => {
       equippedEmblems: [
         { name: "Tactical", icon: "fa-bomb", shape: "shape-circle", color: "gold-emb" },
         { name: "Sharpshooter", icon: "fa-bullseye", shape: "shape-shield", color: "red-emb" },
-        { name: "Líder", icon: "fa-crown", shape: "shape-shield", color: "cyan-emb" },
-        { name: "Defensor", icon: "fa-shield", shape: "shape-diamond", color: "green-emb" }
+        { name: "Leader", icon: "fa-crown", shape: "shape-shield", color: "cyan-emb" },
+        { name: "Defender", icon: "fa-shield", shape: "shape-diamond", color: "green-emb" }
       ],
       allEmblems: [
-        { name: "Tactical", icon: "fa-bomb", equipped: true, desc: "Desarmou 100 bombas.", shape: "shape-circle", color: "gold-emb" },
-        { name: "Sharpshooter", icon: "fa-bullseye", equipped: true, desc: "AWP ace na mesma rodada.", shape: "shape-shield", color: "red-emb" },
-        { name: "Líder", icon: "fa-crown", equipped: true, desc: "Líder do lobby Premier.", shape: "shape-shield", color: "cyan-emb" },
-        { name: "Defensor", icon: "fa-shield", equipped: true, desc: "Segurou posições críticas do Bomb B.", shape: "shape-diamond", color: "green-emb" }
+        { name: "Tactical", icon: "fa-bomb", equipped: true, desc: "Defused 100 bombs.", shape: "shape-circle", color: "gold-emb" },
+        { name: "Sharpshooter", icon: "fa-bullseye", equipped: true, desc: "AWP ace in a single round.", shape: "shape-shield", color: "red-emb" },
+        { name: "Leader", icon: "fa-crown", equipped: true, desc: "Lobby leader in Premier.", shape: "shape-shield", color: "cyan-emb" },
+        { name: "Defender", icon: "fa-shield", equipped: true, desc: "Held critical positions at Bomb Site B.", shape: "shape-diamond", color: "green-emb" }
       ],
       detailsStats: [
-        { key: "Partidas Premier", val: "290" },
-        { key: "Horas Premier", val: "350h" },
-        { key: "Média KDA", val: "1.34" },
-        { key: "Headshots Efetuados", val: "67.8%" },
-        { key: "MVP Total", val: "184" },
-        { key: "Clutches Ganhos", val: "42" }
+        { key: "Premier Matches", val: "290" },
+        { key: "Premier Hours", val: "350h" },
+        { key: "Average KDA", val: "1.34" },
+        { key: "Headshots Landed", val: "67.8%" },
+        { key: "Total MVPs", val: "184" },
+        { key: "Clutches Won", val: "42" }
       ],
       radarPoints: "100,28 160,78 138,154 62,152 28,78"
     },
     gta5: {
       name: "Grand Theft Auto V",
-      rankTitle: "Chefe do Crime Organizado",
-      rankScore: "Pontuação: $120.4M",
+      rankTitle: "Organized Crime Boss",
+      rankScore: "Score: $120.4M",
       hours: "250h",
-      battles: "150 Golpes",
+      battles: "150 Heists",
 
       opLevel: "120",
       titleName: "Heist Mastermind",
-      titleDesc: "Completou todos os golpes na dificuldade máxima com a mesma equipe e sem mortes.",
+      titleDesc: "Completed all heists on hard difficulty with the same team without anyone dying.",
       avatarUrl: "img/Gta 5 avatar.jpg",
       equippedEmblems: [
-        { name: "Motorista", icon: "fa-car", shape: "shape-circle", color: "gold-emb" },
-        { name: "Pistoleiro", icon: "fa-gun", shape: "shape-shield", color: "red-emb" },
-        { name: "Planejador", icon: "fa-mask", shape: "shape-shield", color: "cyan-emb" },
-        { name: "Magnata", icon: "fa-money-bill-wave", shape: "shape-diamond", color: "green-emb" }
+        { name: "Driver", icon: "fa-car", shape: "shape-circle", color: "gold-emb" },
+        { name: "Gunslinger", icon: "fa-gun", shape: "shape-shield", color: "red-emb" },
+        { name: "Planner", icon: "fa-mask", shape: "shape-shield", color: "cyan-emb" },
+        { name: "Tycoon", icon: "fa-money-bill-wave", shape: "shape-diamond", color: "green-emb" }
       ],
       allEmblems: [
-        { name: "Motorista", icon: "fa-car", equipped: true, desc: "Venceu 50 corridas urbanas.", shape: "shape-circle", color: "gold-emb" },
-        { name: "Pistoleiro", icon: "fa-gun", equipped: true, desc: "Eliminou 200 inimigos com headshots.", shape: "shape-shield", color: "red-emb" },
-        { name: "Planejador", icon: "fa-mask", equipped: true, desc: "Planejou e executou o golpe sem alarmar.", shape: "shape-shield", color: "cyan-emb" },
-        { name: "Magnata", icon: "fa-money-bill-wave", equipped: true, desc: "Acumulou mais de 100 milhões no banco.", shape: "shape-diamond", color: "green-emb" }
+        { name: "Driver", icon: "fa-car", equipped: true, desc: "Won 50 street races.", shape: "shape-circle", color: "gold-emb" },
+        { name: "Gunslinger", icon: "fa-gun", equipped: true, desc: "Eliminated 200 enemies with headshots.", shape: "shape-shield", color: "red-emb" },
+        { name: "Planner", icon: "fa-mask", equipped: true, desc: "Planned and executed heist without triggering alarms.", shape: "shape-shield", color: "cyan-emb" },
+        { name: "Tycoon", icon: "fa-money-bill-wave", equipped: true, desc: "Accumulated over $100M in bank.", shape: "shape-diamond", color: "green-emb" }
       ],
       detailsStats: [
-        { key: "Golpes Concluídos", val: "150" },
-        { key: "Horas Jogadas", val: "250h" },
-        { key: "K/D Geral no Online", val: "1.45" },
-        { key: "Propriedades Adquiridas", val: "12" },
-        { key: "Carros na Garagem", val: "45" },
-        { key: "Nível de Procurado Máximo", val: "5 Estrelas" }
+        { key: "Heists Completed", val: "150" },
+        { key: "Hours Played", val: "250h" },
+        { key: "Overall Online K/D", val: "1.45" },
+        { key: "Properties Owned", val: "12" },
+        { key: "Cars in Garage", val: "45" },
+        { key: "Max Wanted Level", val: "5 Stars" }
       ],
       radarPoints: "100,32 165,75 138,150 62,148 26,75"
     }
@@ -627,7 +627,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // 2. Carregar informações reais na aba PERFIL
-    document.getElementById('profileHeader').textContent = `// OPERADOR: ${data.name.toUpperCase()}`;
+    document.getElementById('profileHeader').textContent = `// OPERATOR: ${data.name.toUpperCase()}`;
     document.getElementById('dfRankTitle').textContent = data.rankTitle;
     document.getElementById('dfRankScore').textContent = data.rankScore;
     document.getElementById('dfHours').textContent = data.hours;
@@ -691,8 +691,8 @@ document.addEventListener("DOMContentLoaded", () => {
         slot.className = `df-ee-slot`;
 
         const matchingEmb = data.allEmblems ? data.allEmblems.find(ae => ae.name === emb.name) : null;
-        const desc = matchingEmb ? matchingEmb.desc : "Emblema militar equipado.";
-        setupTooltip(slot, emb.name, desc, "EQUIPADO");
+        const desc = matchingEmb ? matchingEmb.desc : "Equipped military emblem.";
+        setupTooltip(slot, emb.name, desc, "EQUIPPED");
 
         if (emb.file) {
           slot.innerHTML = `
@@ -718,7 +718,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // 3. Carregar informações na aba DETALHES
-    document.getElementById('detailsHeader').textContent = `// DESEMPENHO EM ${data.name.toUpperCase()}`;
+    document.getElementById('detailsHeader').textContent = `// PERFORMANCE IN ${data.name.toUpperCase()}`;
     const detailsGrid = document.getElementById('dfDetailsGrid');
     detailsGrid.innerHTML = '';
     data.detailsStats.forEach(stat => {
@@ -755,7 +755,7 @@ document.addEventListener("DOMContentLoaded", () => {
         `;
         const activeTitleImg = titleDisplay.querySelector('.df-title-banner-img');
         if (activeTitleImg) {
-          setupTooltip(activeTitleImg, activeTitle.name, activeTitle.desc, "EQUIPADO");
+          setupTooltip(activeTitleImg, activeTitle.name, activeTitle.desc, "EQUIPPED");
         }
       }
 
@@ -769,7 +769,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <img src="img/titulos/${title.file}" alt="${title.name}">
           `;
 
-          setupTooltip(titleCard, title.name, title.desc, title.id === data.activeTitleId ? "EQUIPADO" : "DISPONÍVEL");
+          setupTooltip(titleCard, title.name, title.desc, title.id === data.activeTitleId ? "EQUIPPED" : "AVAILABLE");
 
           titleCard.addEventListener('click', () => {
             // Atualizar ID ativo
@@ -805,7 +805,7 @@ document.addEventListener("DOMContentLoaded", () => {
         `;
         const fallbackDisplay = document.getElementById('dfTitleDisplayFallback');
         if (fallbackDisplay) {
-          setupTooltip(fallbackDisplay, data.titleName, data.titleDesc || "Título militar ativo.", "EQUIPADO");
+          setupTooltip(fallbackDisplay, data.titleName, data.titleDesc || "Active military title.", "EQUIPPED");
         }
       }
     }
@@ -819,7 +819,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const card = document.createElement('div');
       card.className = `emblem-card-grid ${emb.equipped ? 'equipped' : ''}`;
 
-      setupTooltip(card, emb.name, emb.desc, emb.equipped ? "ADQUIRIDO" : "BLOQUEADO");
+      setupTooltip(card, emb.name, emb.desc, emb.equipped ? "UNLOCKED" : "LOCKED");
 
       if (emb.file) {
         card.innerHTML = `
