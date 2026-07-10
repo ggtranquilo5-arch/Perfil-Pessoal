@@ -1148,12 +1148,33 @@ body::before {
 /* ═══════════════════════════════════════════════════
    ABA CONQUISTAS (TÍTULOS E EMBLEMAS 3D REALISTAS)
    ═══════════════════════════════════════════════════ */
+.df-conquistas-layout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 25px;
+  align-items: start;
+}
+
+.df-conquistas-main {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  min-width: 0;
+}
+
 .df-active-title-card {
-  background: rgba(255, 140, 0, 0.03);
-  border: 1.5px solid rgba(255, 140, 0, 0.15);
+  background: rgba(200, 130, 66, 0.02);
+  border: 1px solid rgba(200, 130, 66, 0.12);
+  border-left: 4px solid var(--primary);
   border-radius: 12px;
-  padding: 16px 20px;
-  margin-bottom: 25px;
+  padding: 16px 18px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45), inset 0 0 15px rgba(200, 130, 66, 0.03);
+  transition: var(--transition);
+}
+
+.df-active-title-card:hover {
+  border-color: rgba(200, 130, 66, 0.35);
+  box-shadow: 0 12px 35px rgba(200, 130, 66, 0.15), inset 0 0 20px rgba(200, 130, 66, 0.05);
 }
 
 .df-title-display {
@@ -1610,8 +1631,9 @@ body::before {
 }
 
 .df-title-card-selector.active {
-  border-color: rgba(255, 255, 255, 0.5) !important;
-  background: rgba(255, 255, 255, 0.04);
+  border-color: var(--primary) !important;
+  background: rgba(200, 130, 66, 0.04);
+  box-shadow: 0 0 12px rgba(200, 130, 66, 0.3);
 }
 
 .df-title-display-fallback {
@@ -1656,6 +1678,11 @@ body::before {
 
   .df-emblems-grid {
     grid-template-columns: repeat(4, 1fr);
+  }
+
+  .df-conquistas-layout {
+    grid-template-columns: 1fr;
+    gap: 20px;
   }
 }
 
