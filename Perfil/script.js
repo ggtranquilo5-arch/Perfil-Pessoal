@@ -793,12 +793,17 @@ document.addEventListener("DOMContentLoaded", () => {
       // Renderizar o banner ativo
       if (titleDisplay) {
         titleDisplay.innerHTML = `
-          <img src="img/titulos/${activeTitle.file}" alt="${activeTitle.name}" class="df-title-banner-img" loading="lazy">
+          <div class="df-title-display-container">
+            <img src="img/titulos/${activeTitle.file}" alt="${activeTitle.name}" class="df-title-banner-img" loading="lazy">
+            <div class="df-title-display-info">
+              <div class="df-td-name">${activeTitle.name}</div>
+              <div class="df-td-desc">${activeTitle.desc}</div>
+              <div style="margin-top: 4px;">
+                <span class="tooltip-status equipped">EQUIPPED</span>
+              </div>
+            </div>
+          </div>
         `;
-        const activeTitleImg = titleDisplay.querySelector('.df-title-banner-img');
-        if (activeTitleImg) {
-          setupTooltip(activeTitleImg, activeTitle.name, activeTitle.desc, "EQUIPPED");
-        }
       }
 
       // Renderizar o grid de seleção de títulos
@@ -837,18 +842,19 @@ document.addEventListener("DOMContentLoaded", () => {
       if (allTitlesSection) allTitlesSection.classList.add('hidden');
       if (titleDisplay) {
         titleDisplay.innerHTML = `
-          <div class="df-title-display-fallback" id="dfTitleDisplayFallback">
-            <i class="fas fa-ribbon"></i>
-            <div class="df-td-info">
-              <div class="df-td-name" id="dfTitleName">${data.titleName}</div>
-              <div class="df-td-desc" id="dfTitleDesc">${data.titleDesc || ''}</div>
+          <div class="df-title-display-container">
+            <div class="df-title-fallback-icon">
+              <i class="fas fa-ribbon"></i>
+            </div>
+            <div class="df-title-display-info">
+              <div class="df-td-name">${data.titleName}</div>
+              <div class="df-td-desc">${data.titleDesc || 'Active military title.'}</div>
+              <div style="margin-top: 4px;">
+                <span class="tooltip-status equipped">EQUIPPED</span>
+              </div>
             </div>
           </div>
         `;
-        const fallbackDisplay = document.getElementById('dfTitleDisplayFallback');
-        if (fallbackDisplay) {
-          setupTooltip(fallbackDisplay, data.titleName, data.titleDesc || "Active military title.", "EQUIPPED");
-        }
       }
     }
 
