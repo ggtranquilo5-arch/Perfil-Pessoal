@@ -360,7 +360,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const gameData = {
     deltaforce: {
       name: "Delta Force: Hawk Ops",
-      rankTitle: "DF Pinnacle 🌟 245",
+      rankTitle: "DF Pinnacle ⭐ 245",
       rankScore: "Pontuação: 23150",
       hours: "4700h",
       battles: "11430",
