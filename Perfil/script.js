@@ -1,4 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
+  // Limpa sessão admin residual no carregamento para que usuários comuns não herdem privilégios do Mod
+  localStorage.removeItem('df_admin_session');
+
   // Elementos do áudio
   const audio = document.getElementById('bgAudio');
   let isPlaying = false;

@@ -1,4 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
+  // Limpa sessão admin residual no carregamento
+  localStorage.removeItem('df_admin_session');
+
   // Elementos do áudio
   const audio = document.getElementById('bgAudio');
   const audBtn = document.getElementById('audBtn');
