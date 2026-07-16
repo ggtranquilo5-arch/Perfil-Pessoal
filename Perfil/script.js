@@ -111,9 +111,42 @@ document.addEventListener("DOMContentLoaded", () => {
   const flowEl = document.getElementById('hud-flow');
   const decryptEl = document.getElementById('hud-decrypt');
 
-  if (introOverlay) {
-    let activeBoot = true;
+  // Variáveis globais de boot no escopo DOMContentLoaded
+  let bootInterval;
+  let activeBoot = true;
+  let messageIndex = 0;
+  let isModSelectionInProgress = false;
 
+  const finishBootSequence = () => {
+    if (bootInterval) clearInterval(bootInterval);
+    activeBoot = false;
+
+    // Finalizar carregamento e sumir com a intro
+    setTimeout(() => {
+      if (introOverlay) introOverlay.classList.add('fade-out');
+      // Disparar animação staggered das seções principais
+      document.body.classList.add('boot-complete');
+
+      // Carregar o vídeo de fundo
+      const bgVideo = document.getElementById('video-background');
+      const videoSource = document.getElementById('video-source');
+      if (bgVideo && videoSource) {
+        videoSource.src = videoSource.getAttribute('data-src');
+        bgVideo.load();
+        bgVideo.play().catch(err => console.log("Video autoplay blocked:", err));
+      }
+
+      setTimeout(() => {
+        smokeActive = false; // Parar loop do canvas
+        if (introOverlay) introOverlay.remove();
+
+        // Atualizar a visibilidade dos controles MOD no dashboard principal
+        updateModUIVisibility();
+      }, 900);
+    }, 300);
+  };
+
+  if (introOverlay) {
     // 1. Efeito Decodificador / Glitch no Logo CLOUTCH
     if (glitchLogo) {
       const targetText = "CLOUTCH";
@@ -132,22 +165,22 @@ document.addEventListener("DOMContentLoaded", () => {
       }, 35);
     }
 
-    // 2. Estatísticas Flutuantes HUD Piscando
+    // 2. Estatísticas Flutuantes HUD
     const statsInterval = setInterval(() => {
       if (!activeBoot) {
         clearInterval(statsInterval);
         return;
       }
-      if (pingEl) pingEl.textContent = Math.floor(Math.random() * 9) + 20; // 20-28
-      if (tempEl) tempEl.textContent = Math.floor(Math.random() * 5) + 39; // 39-43
-      if (flowEl) flowEl.textContent = (Math.random() * 5 + 95).toFixed(1) + "%"; // 95% - 99.9%
+      if (pingEl) pingEl.textContent = Math.floor(Math.random() * 9) + 20;
+      if (tempEl) tempEl.textContent = Math.floor(Math.random() * 5) + 39;
+      if (flowEl) flowEl.textContent = (Math.random() * 5 + 95).toFixed(1) + "%";
       if (decryptEl) {
         const keys = ["0x7F2A", "0x3B8C", "0x9E1D", "0x5A4F", "0x2C7E", "0x8D3B"];
         decryptEl.textContent = keys[Math.floor(Math.random() * keys.length)];
       }
     }, 120);
 
-    // 3. Sequência de Mensagens de Inicialização Dinâmica
+    // 3. Sequência de Inicialização Dinâmica
     const bootMessages = [
       "SYSTEM INITIALIZING...",
       "CONNECTING TO OPERATOR NETWORK...",
@@ -157,39 +190,21 @@ document.addEventListener("DOMContentLoaded", () => {
       "ACCESS GRANTED. BOOTING CONSOLE..."
     ];
 
-    let messageIndex = 0;
-    const bootInterval = setInterval(() => {
+    bootInterval = setInterval(() => {
       messageIndex++;
       if (messageIndex >= bootMessages.length) {
-        clearInterval(bootInterval);
-        activeBoot = false;
-
-        // Finalizar carregamento e sumir com a intro
-        setTimeout(() => {
-          introOverlay.classList.add('fade-out');
-          // Disparar animação staggered das seções principais adicionando a classe ao body
-          document.body.classList.add('boot-complete');
-
-          // Carregar o vídeo de fundo de forma diferida (após a intro carregar)
-          const bgVideo = document.getElementById('video-background');
-          const videoSource = document.getElementById('video-source');
-          if (bgVideo && videoSource) {
-            videoSource.src = videoSource.getAttribute('data-src');
-            bgVideo.load();
-            bgVideo.play().catch(err => console.log("Video autoplay blocked by browser policy:", err));
-          }
-
-          setTimeout(() => {
-            smokeActive = false; // Parar loop da animação do canvas para poupar CPU/GPU
-            introOverlay.remove();
-          }, 900);
-        }, 300);
+        // Se o usuário selecionou MOD e está digitando a senha, não finaliza automaticamente
+        if (isModSelectionInProgress) {
+          clearInterval(bootInterval);
+          return;
+        }
+        finishBootSequence();
       } else {
         if (introTerminal) {
           introTerminal.textContent = bootMessages[messageIndex];
         }
       }
-    }, 280); // Transição total de ~1.7s para manter o carregamento fluido e não cansativo
+    }, 280);
   }
 
   // Lógica de Autoplay inteligente na primeira interação
@@ -639,6 +654,184 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  // Calculate dynamic radar coordinates based on stats
+  const calculateRadarPoints = (data) => {
+    let kd = 3.3;
+    let extRate = 39.8;
+    let rescues = 832;
+    let lethality = 45.6;
+    let wealthVal = 4.8e9;
+
+    const parseFloatOnly = (str) => {
+      if (!str) return 0;
+      const match = String(str).match(/[\d.]+/);
+      return match ? parseFloat(match[0]) : 0;
+    };
+
+    const kdStr = String(data.kdRatio || data.avgKDRatio || "3.3");
+    if (kdStr.includes("|")) {
+      const parts = kdStr.split("|");
+      kd = parseFloatOnly(parts[1]) || 3.3;
+    } else {
+      kd = parseFloatOnly(kdStr) || 3.3;
+    }
+
+    extRate = parseFloatOnly(data.extractionRate || data.extractRate || "39.8");
+    rescues = parseFloatOnly(data.rescues || data.teammateRescues || "832");
+    lethality = parseFloatOnly(data.lethality || data.lethalityRate || "45.6");
+
+    const wealthStr = String(data.totalExtracted || data.assets || "4.8b").toLowerCase();
+    let numericWealth = parseFloatOnly(wealthStr);
+    if (wealthStr.includes("b")) {
+      numericWealth *= 1e9;
+    } else if (wealthStr.includes("m")) {
+      numericWealth *= 1e6;
+    }
+    wealthVal = numericWealth;
+
+    const clamp = (val, min, max) => Math.min(Math.max(val, min), max);
+
+    const scale_combat = clamp(0.2 + (kd / 5.0) * 0.8, 0.2, 1.0);
+    const scale_survival = clamp(0.2 + (extRate / 70.0) * 0.8, 0.2, 1.0);
+    const scale_coop1 = clamp(0.2 + (rescues / 1500.0) * 0.8, 0.2, 1.0);
+    const scale_coop2 = clamp(0.2 + (lethality / 80.0) * 0.8, 0.2, 1.0);
+    const scale_wealth = clamp(0.2 + (wealthVal / 8.0e9) * 0.8, 0.2, 1.0);
+
+    const p1_x = 100;
+    const p1_y = Math.round(100 - 80 * scale_combat);
+
+    const p2_x = Math.round(100 + 76 * scale_survival);
+    const p2_y = Math.round(100 - 25 * scale_survival);
+
+    const p3_x = Math.round(100 + 47 * scale_coop1);
+    const p3_y = Math.round(100 + 65 * scale_coop1);
+
+    const p4_x = Math.round(100 - 47 * scale_coop2);
+    const p4_y = Math.round(100 + 65 * scale_coop2);
+
+    const p5_x = Math.round(100 - 76 * scale_wealth);
+    const p5_y = Math.round(100 - 25 * scale_wealth);
+
+    return `${p1_x},${p1_y} ${p2_x},${p2_y} ${p3_x},${p3_y} ${p4_x},${p4_y} ${p5_x},${p5_y}`;
+  };
+
+  // Load saved stats and account link status from localStorage
+  const loadLocalStorageData = () => {
+    // 1. Load custom CallSign and Avatar if set
+    const savedName = localStorage.getItem('df_custom_callsign');
+    if (savedName) {
+      const nameEl = document.querySelector('.hud-main-name');
+      if (nameEl) nameEl.textContent = savedName;
+    }
+    const savedAvatar = localStorage.getItem('df_custom_avatar');
+    if (savedAvatar) {
+      const avatarEl = document.querySelector('.hud-avatar-img');
+      if (avatarEl) avatarEl.src = savedAvatar;
+    }
+
+    // 2. Load and merge custom titles into gameData
+    const savedTitles = localStorage.getItem('df_custom_titles');
+    if (savedTitles) {
+      try {
+        const parsedTitles = JSON.parse(savedTitles);
+        Object.keys(parsedTitles).forEach(gameId => {
+          if (gameData[gameId]) {
+            if (!gameData[gameId].titles) gameData[gameId].titles = [];
+            parsedTitles[gameId].forEach(customTitle => {
+              if (!gameData[gameId].titles.some(t => t.name === customTitle.name)) {
+                gameData[gameId].titles.push(customTitle);
+              }
+            });
+          }
+        });
+      } catch (e) { console.error(e); }
+    }
+
+    // 3. Load and merge custom emblems into gameData
+    const savedEmblems = localStorage.getItem('df_custom_emblems');
+    if (savedEmblems) {
+      try {
+        const parsedEmblems = JSON.parse(savedEmblems);
+        Object.keys(parsedEmblems).forEach(gameId => {
+          if (gameData[gameId]) {
+            if (!gameData[gameId].allEmblems) gameData[gameId].allEmblems = [];
+            parsedEmblems[gameId].forEach(customEmb => {
+              if (!gameData[gameId].allEmblems.some(e => e.name === customEmb.name)) {
+                gameData[gameId].allEmblems.push(customEmb);
+
+                // Force marked as equipped if it was equipped
+                if (customEmb.equipped) {
+                  if (!gameData[gameId].equippedEmblems) gameData[gameId].equippedEmblems = [];
+                  if (!gameData[gameId].equippedEmblems.some(e => e.name === customEmb.name)) {
+                    gameData[gameId].equippedEmblems.push(customEmb);
+                  }
+                }
+              }
+            });
+          }
+        });
+      } catch (e) { console.error(e); }
+    }
+
+    // 4. Load basic stats overrides (Delta Force legacy support)
+    const savedStats = localStorage.getItem('df_custom_stats');
+    if (savedStats && gameData.deltaforce) {
+      try {
+        const parsed = JSON.parse(savedStats);
+        Object.assign(gameData.deltaforce, parsed);
+        gameData.deltaforce.detailsStats = [
+          { key: "Total Battles", val: gameData.deltaforce.battles || "11430" },
+          { key: "Playtime", val: gameData.deltaforce.hours || "4700h" },
+          { key: "Avg. Profit/Loss", val: gameData.deltaforce.avgProfit || "1.4M" },
+          { key: "Total Extracted Value", val: gameData.deltaforce.totalExtracted || "4.8b" },
+          { key: "Mission Rewards", val: gameData.deltaforce.missionRewards || "1.8M" },
+          { key: "MandelBricks Decoded", val: gameData.deltaforce.mandelbricks || "122" },
+          { key: "Avg. K/D Ratio", val: gameData.deltaforce.kdRatio || "13 | 3.3 | 1.9" },
+          { key: "Operator Eliminations", val: gameData.deltaforce.kills || "37,719" },
+          { key: "Overall Accuracy", val: gameData.deltaforce.accuracy || "35.5%" },
+          { key: "Lethality Rate", val: gameData.deltaforce.lethality || "45.6%" },
+          { key: "Extraction Rate", val: gameData.deltaforce.extractionRate || "39.8%" },
+          { key: "Friendly Extraction Value", val: gameData.deltaforce.friendlyExtract || "18.1M" },
+          { key: "Teammate Rescues", val: gameData.deltaforce.rescues || "832" },
+          { key: "Revived Teammates", val: gameData.deltaforce.revives || "832" }
+        ];
+      } catch (e) { console.error(e); }
+    }
+
+    // 5. Load generalized game-by-game stats overrides
+    const savedGameStats = localStorage.getItem('df_game_stats');
+    if (savedGameStats) {
+      try {
+        const parsedStats = JSON.parse(savedGameStats);
+        Object.keys(parsedStats).forEach(gameId => {
+          if (gameData[gameId]) {
+            const gameOverride = parsedStats[gameId];
+
+            if (gameOverride.hours) gameData[gameId].hours = gameOverride.hours;
+            if (gameOverride.battles) gameData[gameId].battles = gameOverride.battles;
+            if (gameOverride.rankTitle) gameData[gameId].rankTitle = gameOverride.rankTitle;
+            if (gameOverride.rankScore) gameData[gameId].rankScore = gameOverride.rankScore;
+
+            if (gameOverride.detailsStats) {
+              gameOverride.detailsStats.forEach(overrideStat => {
+                const found = gameData[gameId].detailsStats.find(s => s.key.toLowerCase() === overrideStat.key.toLowerCase());
+                if (found) {
+                  found.val = overrideStat.val;
+                } else {
+                  gameData[gameId].detailsStats.push(overrideStat);
+                }
+              });
+            }
+          }
+        });
+      } catch (e) {
+        console.error("Failed to parse saved game stats:", e);
+      }
+    }
+  };
+
+  loadLocalStorageData();
+
   // Elementos do launcher de abas
   const tabsHeader = document.getElementById('tabsHeader');
   const tabGamesBtn = document.getElementById('tabGamesBtn');
@@ -651,7 +844,11 @@ document.addEventListener("DOMContentLoaded", () => {
   // Lógica de seleção do jogo
   const launcherCards = document.querySelectorAll('.launcher-game-card');
 
+  // Control variable for currently active game
+  let currentActiveGameId = 'deltaforce';
+
   const selectGame = (gameId, preserveTab = false) => {
+    currentActiveGameId = gameId;
     const data = gameData[gameId];
     if (!data) return;
 
@@ -776,7 +973,12 @@ document.addEventListener("DOMContentLoaded", () => {
     // Atualizar gráfico de radar SVG
     const radarPoly = document.getElementById('dfRadarPoly');
     if (radarPoly) {
-      radarPoly.setAttribute('points', data.radarPoints);
+      if (gameId === 'deltaforce') {
+        const dynamicPoints = calculateRadarPoints(data);
+        radarPoly.setAttribute('points', dynamicPoints);
+      } else {
+        radarPoly.setAttribute('points', data.radarPoints);
+      }
     }
 
     // 4. Carregar informações na aba CONQUISTAS
@@ -954,6 +1156,756 @@ document.addEventListener("DOMContentLoaded", () => {
   // Ouvinte de clique para voltar aos jogos
   if (backToGamesBtn) {
     backToGamesBtn.addEventListener('click', resetToLauncher);
+  }
+
+  // Seletores DOM do Modal e do Toast
+  const syncModal = document.getElementById('sync-modal');
+  const btnOpenSync = document.getElementById('btnOpenSync');
+  const closeSyncModal = document.getElementById('closeSyncModal');
+  const syncModalOverlay = document.getElementById('syncModalOverlay');
+
+  const dfSearchNickname = document.getElementById('dfSearchNickname');
+  const btnSearchConnect = document.getElementById('btnSearchConnect');
+  const searchFeedback = document.getElementById('searchFeedback');
+  const syncStatusDot = document.getElementById('syncStatusDot');
+  const syncStatusText = document.getElementById('syncStatusText');
+  const linkedAccountDetails = document.getElementById('linkedAccountDetails');
+  const linkedName = document.getElementById('linkedName');
+  const linkedUID = document.getElementById('linkedUID');
+
+  const quickSyncIndicator = document.getElementById('quickSyncIndicator');
+  const quickSyncName = document.getElementById('quickSyncName');
+
+  const chkAutoSync = document.getElementById('chkAutoSync');
+  const btnManualSyncAction = document.getElementById('btnManualSyncAction');
+
+  // Elementos Mod Control (Gerais)
+  const btnOpenModControl = document.getElementById('btnOpenModControl');
+  const dfSyncActionRow = document.getElementById('dfSyncActionRow');
+  const btnCancelModPanel = document.getElementById('btnCancelModPanel');
+  const btnSaveManualStats = document.getElementById('btnSaveManualStats');
+
+  // Seletores do Editor Identidade Global
+  const editGlobalName = document.getElementById('editGlobalName');
+  const editGlobalAvatar = document.getElementById('editGlobalAvatar');
+
+  // Seletores do Editor Estatísticas do Jogo Ativo
+  const modActiveGameHeader = document.getElementById('modActiveGameHeader');
+  const editGameRankTitle = document.getElementById('editGameRankTitle');
+  const editGameRankScore = document.getElementById('editGameRankScore');
+  const editGameBattles = document.getElementById('editGameBattles');
+  const editGameHours = document.getElementById('editGameHours');
+  const dynamicStatsFieldsContainer = document.getElementById('dynamicStatsFieldsContainer');
+
+  // Seletores do Criador de Novos Itens
+  const newTitleName = document.getElementById('newTitleName');
+  const newTitleFile = document.getElementById('newTitleFile');
+  const newTitleDesc = document.getElementById('newTitleDesc');
+  const btnAddTitle = document.getElementById('btnAddTitle');
+
+  const newEmblemName = document.getElementById('newEmblemName');
+  const newEmblemFile = document.getElementById('newEmblemFile');
+  const newEmblemIcon = document.getElementById('newEmblemIcon');
+  const newEmblemShape = document.getElementById('newEmblemShape');
+  const newEmblemColor = document.getElementById('newEmblemColor');
+  const newEmblemUnlocked = document.getElementById('newEmblemUnlocked');
+  const newEmblemDesc = document.getElementById('newEmblemDesc');
+  const btnAddEmblem = document.getElementById('btnAddEmblem');
+
+  // Elementos do Lock de Segurança do Modal
+  const syncLoginView = document.getElementById('sync-login-view');
+  const syncAdminView = document.getElementById('sync-admin-view');
+  const adminPassKey = document.getElementById('adminPassKey');
+  const btnAdminUnlock = document.getElementById('btnAdminUnlock');
+  const btnAdminLogout = document.getElementById('btnAdminLogout');
+  const loginFeedback = document.getElementById('loginFeedback');
+
+  // Elementos da seleção no Overlay de Intro
+  const btnModeUser = document.getElementById('btnModeUser');
+  const btnModeMod = document.getElementById('btnModeMod');
+  const introPassInputWrapper = document.getElementById('introPassInputWrapper');
+  const introPassKey = document.getElementById('introPassKey');
+  const btnIntroUnlock = document.getElementById('btnIntroUnlock');
+
+  const toastContainer = document.getElementById('hud-notification-container');
+
+  // Password Hash para verificação de login (@Joaquim2006 -> Base64 QEpvYXF1aW0yMDA2)
+  const masterKeyHash = "QEpvYXF1aW0yMDA2";
+
+  // Utility to show beautiful tactical HUD toasts
+  const showHUDToast = (title, message, duration = 5000) => {
+    if (!toastContainer) return;
+    const toast = document.createElement('div');
+    toast.className = 'hud-toast';
+    toast.innerHTML = `
+      <div class="hud-toast-header">
+        <span>// ${title.toUpperCase()}</span>
+        <button class="hud-toast-close">&times;</button>
+      </div>
+      <div class="hud-toast-body">${message}</div>
+    `;
+
+    toastContainer.appendChild(toast);
+
+    // Animate slide-in
+    setTimeout(() => toast.classList.add('show'), 50);
+
+    // Close button event
+    toast.querySelector('.hud-toast-close').addEventListener('click', () => {
+      toast.classList.remove('show');
+      setTimeout(() => toast.remove(), 400);
+    });
+
+    // Auto remove
+    setTimeout(() => {
+      if (toast.parentNode) {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 400);
+      }
+    }, duration);
+  };
+
+  // Helper to add terminal-like feedback inside the modal connection console
+  const addConsoleLog = (text, type = 'normal') => {
+    if (!searchFeedback) return;
+    const line = document.createElement('div');
+    line.className = `log-line ${type === 'dim' ? 'text-dim' : type === 'error' ? 'text-error' : ''}`;
+    line.textContent = `> ${text}`;
+    searchFeedback.appendChild(line);
+    searchFeedback.scrollTop = searchFeedback.scrollHeight;
+  };
+
+  const addLoginLog = (text, type = 'normal') => {
+    if (!loginFeedback) return;
+    const line = document.createElement('div');
+    line.className = `log-line ${type === 'dim' ? 'text-dim' : type === 'error' ? 'text-error' : ''}`;
+    line.textContent = `> ${text}`;
+    loginFeedback.appendChild(line);
+    loginFeedback.scrollTop = loginFeedback.scrollHeight;
+  };
+
+  // ══════════════════════════
+  // SELETOR DE MODO NA INTRODUÇÃO
+  // ══════════════════════════
+  if (btnModeUser) {
+    btnModeUser.addEventListener('click', () => {
+      btnModeUser.classList.add('active');
+      if (btnModeMod) btnModeMod.classList.remove('active');
+      if (introPassInputWrapper) introPassInputWrapper.style.display = 'none';
+      isModSelectionInProgress = false;
+      localStorage.removeItem('df_admin_session');
+      finishBootSequence();
+    });
+  }
+
+  if (btnModeMod) {
+    btnModeMod.addEventListener('click', () => {
+      btnModeMod.classList.add('active');
+      if (btnModeUser) btnModeUser.classList.remove('active');
+      if (introPassInputWrapper) {
+        introPassInputWrapper.style.display = 'flex';
+        introPassKey.focus();
+      }
+      isModSelectionInProgress = true;
+      // Pausa a contagem regressiva de carregamento automático
+      if (bootInterval) clearInterval(bootInterval);
+      if (introTerminal) {
+        introTerminal.textContent = "AWAITING AUTHORIZATION PASSCODE...";
+      }
+    });
+  }
+
+  // Desbloqueio pelo input da tela de intro
+  const handleIntroUnlockAction = () => {
+    const entered = introPassKey.value.trim();
+    if (!entered) return;
+
+    if (introTerminal) introTerminal.textContent = "VERIFYING PASSCODE IN CONTROL NODE...";
+
+    setTimeout(() => {
+      if (btoa(entered) === masterKeyHash) {
+        localStorage.setItem('df_admin_session', 'active');
+        if (introTerminal) {
+          introTerminal.textContent = "DECRYPTING ADMIN MODULES... MOD MODE ENABLED.";
+        }
+        setTimeout(() => {
+          finishBootSequence();
+          showHUDToast("admin authorization", "Mod privileges activated successfully.");
+        }, 600);
+      } else {
+        if (introTerminal) {
+          introTerminal.textContent = "ACCESS DENIED: RESUMING BOOT SEQUENCE AS GUEST...";
+        }
+        localStorage.removeItem('df_admin_session');
+        setTimeout(() => {
+          finishBootSequence();
+          showHUDToast("security block", "Invalid password key. Booted in guest mode.");
+        }, 1200);
+      }
+    }, 800);
+  };
+
+  if (btnIntroUnlock) {
+    btnIntroUnlock.addEventListener('click', handleIntroUnlockAction);
+  }
+  if (introPassKey) {
+    introPassKey.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') handleIntroUnlockAction();
+    });
+  }
+
+  // Security View Session Manager
+  const checkAdminSession = () => {
+    const sessionActive = localStorage.getItem('df_admin_session') === 'active';
+    if (sessionActive) {
+      if (syncLoginView) syncLoginView.classList.add('hidden-details');
+      if (syncAdminView) syncAdminView.classList.remove('hidden-details');
+      if (btnAdminLogout) btnAdminLogout.style.display = 'block';
+    } else {
+      if (syncLoginView) syncLoginView.classList.remove('hidden-details');
+      if (syncAdminView) syncAdminView.classList.add('hidden-details');
+      if (btnAdminLogout) btnAdminLogout.style.display = 'none';
+      if (adminPassKey) adminPassKey.value = '';
+    }
+    updateModUIVisibility();
+  };
+
+  // Password Unlock check inside Modal
+  if (btnAdminUnlock) {
+    btnAdminUnlock.addEventListener('click', () => {
+      const entered = adminPassKey.value.trim();
+      if (!entered) return;
+
+      if (loginFeedback) loginFeedback.innerHTML = '';
+      addLoginLog("AUTHORIZING CREDENTIALS...", "normal");
+
+      setTimeout(() => {
+        if (btoa(entered) === masterKeyHash) {
+          localStorage.setItem('df_admin_session', 'active');
+          addLoginLog("DECRYPTING DATABASE SHEET... SUCCESS", "normal");
+
+          setTimeout(() => {
+            showHUDToast("authorization granted", "Database decrypted. Mod dashboard unlocked.");
+            checkAdminSession();
+            loadActiveGameStatsIntoForm();
+          }, 600);
+        } else {
+          addLoginLog("ACCESS DENIED: INVALID SECURITY KEY", "error");
+          showHUDToast("security alert", "Access blocked. Unauthorized modification request.", 4000);
+        }
+      }, 700);
+    });
+  }
+
+  // Logout / Lock console Action
+  if (btnAdminLogout) {
+    btnAdminLogout.addEventListener('click', () => {
+      localStorage.removeItem('df_admin_session');
+      checkAdminSession();
+      if (loginFeedback) {
+        loginFeedback.innerHTML = '<div class="log-line text-dim">Gateway standing by. Awaiting key auth...</div>';
+      }
+      showHUDToast("system locked", "Administrative session terminated. Database encrypted.");
+    });
+  }
+
+  // Controla visibilidade de botões MOD no layout principal
+  const updateModUIVisibility = () => {
+    const isMod = localStorage.getItem('df_admin_session') === 'active';
+    if (isMod) {
+      if (btnOpenModControl) btnOpenModControl.style.display = 'block';
+      if (dfSyncActionRow) dfSyncActionRow.style.display = 'flex';
+    } else {
+      if (btnOpenModControl) btnOpenModControl.style.display = 'none';
+      if (dfSyncActionRow) dfSyncActionRow.style.display = 'none';
+    }
+  };
+
+  // Carrega as estatísticas do jogo ativo nos inputs do Modal
+  const loadActiveGameStatsIntoForm = () => {
+    const gameId = currentActiveGameId || 'deltaforce';
+    const data = gameData[gameId];
+    if (!data) return;
+
+    // Header
+    if (modActiveGameHeader) {
+      modActiveGameHeader.textContent = `// ACTIVE GAME CONFIG: ${data.name.toUpperCase()}`;
+    }
+
+    // CallSign e Avatar global
+    if (editGlobalName) {
+      const nameEl = document.querySelector('.hud-main-name');
+      editGlobalName.value = nameEl ? nameEl.textContent : "CLOUTCH";
+    }
+    if (editGlobalAvatar) {
+      const avatarEl = document.querySelector('.hud-avatar-img');
+      editGlobalAvatar.value = avatarEl ? avatarEl.getAttribute('src') : "img/Principal avatar.png";
+    }
+
+    // Dados base
+    if (editGameRankTitle) editGameRankTitle.value = data.rankTitle || "";
+    if (editGameRankScore) editGameRankScore.value = data.rankScore || "";
+    if (editGameBattles) editGameBattles.value = data.battles || "";
+    if (editGameHours) editGameHours.value = data.hours || "";
+
+    // Dados de performance extras dinâmicos
+    if (dynamicStatsFieldsContainer) {
+      dynamicStatsFieldsContainer.innerHTML = '';
+      if (data.detailsStats) {
+        data.detailsStats.forEach((stat, index) => {
+          const field = document.createElement('div');
+          field.className = 'editor-field';
+          field.innerHTML = `
+            <label>${stat.key.toUpperCase()}</label>
+            <input type="text" class="hud-input dynamic-stat-input" data-key="${stat.key}" value="${stat.val}">
+          `;
+          dynamicStatsFieldsContainer.appendChild(field);
+        });
+      }
+    }
+  };
+
+  // Open Sync / Mod Modal
+  if (btnOpenSync) {
+    btnOpenSync.addEventListener('click', () => {
+      if (syncModal) {
+        syncModal.classList.add('active');
+        checkAdminSession();
+        if (localStorage.getItem('df_admin_session') === 'active') {
+          loadActiveGameStatsIntoForm();
+        }
+      }
+    });
+  }
+
+  if (btnOpenModControl) {
+    btnOpenModControl.addEventListener('click', () => {
+      if (syncModal) {
+        syncModal.classList.add('active');
+        checkAdminSession();
+        if (localStorage.getItem('df_admin_session') === 'active') {
+          loadActiveGameStatsIntoForm();
+        }
+      }
+    });
+  }
+
+  // Close Sync Modal
+  const hideSyncModal = () => {
+    if (syncModal) syncModal.classList.remove('active');
+  };
+
+  if (closeSyncModal) closeSyncModal.addEventListener('click', hideSyncModal);
+  if (syncModalOverlay) syncModalOverlay.addEventListener('click', hideSyncModal);
+  if (btnCancelModPanel) btnCancelModPanel.addEventListener('click', hideSyncModal);
+
+  // Sync / Link account simulation inside Mod Panel
+  const updateConnectionUI = (linkedAccount) => {
+    if (!linkedAccount) {
+      syncStatusDot.className = 'ping-dot red';
+      syncStatusText.textContent = 'DISCONNECTED';
+      syncStatusText.className = 'status-text text-red';
+      linkedAccountDetails.className = 'hidden-details';
+      if (quickSyncIndicator) quickSyncIndicator.style.display = 'none';
+      if (btnSearchConnect) btnSearchConnect.innerHTML = `CONNECT`;
+    } else {
+      syncStatusDot.className = 'ping-dot green';
+      syncStatusText.textContent = 'CONNECTED';
+      syncStatusText.className = 'status-text text-green';
+      linkedName.textContent = linkedAccount.name;
+      linkedUID.textContent = linkedAccount.uid;
+      linkedAccountDetails.className = 'visible-details';
+
+      if (quickSyncIndicator && quickSyncName) {
+        quickSyncName.textContent = `${linkedAccount.name} (${linkedAccount.uid})`;
+        quickSyncIndicator.style.display = 'flex';
+      }
+      if (btnSearchConnect) btnSearchConnect.innerHTML = `DISCONNECT`;
+    }
+  };
+
+  // Check initial connection state from LocalStorage
+  let currentLinkedAccount = null;
+  const savedAccount = localStorage.getItem('df_linked_account');
+  if (savedAccount) {
+    try {
+      currentLinkedAccount = JSON.parse(savedAccount);
+      updateConnectionUI(currentLinkedAccount);
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  // Connect / Disconnect Action
+  if (btnSearchConnect) {
+    btnSearchConnect.addEventListener('click', () => {
+      if (currentLinkedAccount) {
+        currentLinkedAccount = null;
+        localStorage.removeItem('df_linked_account');
+        updateConnectionUI(null);
+        searchFeedback.innerHTML = '';
+        addConsoleLog("Connection terminated by user request.", "dim");
+        showHUDToast("database status", "Disconnected from Delta Force Network.");
+      } else {
+        const query = dfSearchNickname.value.trim();
+        if (!query) {
+          addConsoleLog("ERROR: Enter nickname/UID.", "error");
+          return;
+        }
+
+        searchFeedback.innerHTML = '';
+        addConsoleLog(`Initiating Handshake with DELTA_FORCE_NET...`, "normal");
+        btnSearchConnect.disabled = true;
+        btnSearchConnect.style.opacity = '0.5';
+
+        setTimeout(() => {
+          addConsoleLog("DNS resolved. Target node: hawkops-eu-central-3.garena.net", "dim");
+        }, 300);
+
+        setTimeout(() => {
+          addConsoleLog(`Searching database for: "${query}"...`, "normal");
+        }, 800);
+
+        setTimeout(() => {
+          const isNumeric = /^\d+$/.test(query);
+          const uid = isNumeric ? query : Math.floor(100000000 + Math.random() * 900000000);
+          const name = isNumeric ? `Operator_${query.substring(0, 4)}` : query.toUpperCase();
+
+          currentLinkedAccount = { name, uid };
+          localStorage.setItem('df_linked_account', JSON.stringify(currentLinkedAccount));
+
+          updateConnectionUI(currentLinkedAccount);
+          addConsoleLog("ACCOUNT SYNC SUCCESSFUL!", "normal");
+          addConsoleLog(`CallSign [${name}] UID [${uid}]`, "dim");
+
+          btnSearchConnect.disabled = false;
+          btnSearchConnect.style.opacity = '1';
+
+          showHUDToast("network link", `Connected to Garena profile: ${name}`);
+        }, 1400);
+      }
+    });
+  }
+
+  // ADICIONAR NOVO TÍTULO MILITAR (Mod Mode)
+  if (btnAddTitle) {
+    btnAddTitle.addEventListener('click', () => {
+      const name = newTitleName.value.trim();
+      const file = newTitleFile.value.trim();
+      const desc = newTitleDesc.value.trim();
+      const gameId = currentActiveGameId || 'deltaforce';
+
+      if (!name || !file) {
+        showHUDToast("editor error", "Please enter title name and banner file.");
+        return;
+      }
+
+      const newTitleObj = {
+        name: name,
+        id: `custom_${Date.now()}`,
+        file: file,
+        desc: desc || "Custom achievements title."
+      };
+
+      // Carregar títulos existentes na localStorage ou criar novo mapa
+      let customTitlesMap = {};
+      const saved = localStorage.getItem('df_custom_titles');
+      if (saved) {
+        try { customTitlesMap = JSON.parse(saved); } catch (e) { console.error(e); }
+      }
+
+      if (!customTitlesMap[gameId]) customTitlesMap[gameId] = [];
+      customTitlesMap[gameId].push(newTitleObj);
+
+      localStorage.setItem('df_custom_titles', JSON.stringify(customTitlesMap));
+
+      // Limpar formulário
+      newTitleName.value = '';
+      newTitleFile.value = '';
+      newTitleDesc.value = '';
+
+      // Recarregar memória e renderizar
+      loadLocalStorageData();
+
+      // Auto-equipar o novo título adicionado
+      if (gameData[gameId]) {
+        gameData[gameId].activeTitleId = newTitleObj.id;
+        gameData[gameId].titleName = newTitleObj.name;
+        gameData[gameId].titleDesc = newTitleObj.desc;
+      }
+
+      selectGame(gameId, true);
+
+      showHUDToast("military record", `Custom title "${name}" added to ${gameData[gameId].name}.`);
+    });
+  }
+
+  // ADICIONAR NOVO EMBLEMA COLETÁVEL (Mod Mode)
+  if (btnAddEmblem) {
+    btnAddEmblem.addEventListener('click', () => {
+      const name = newEmblemName.value.trim();
+      const file = newEmblemFile.value.trim();
+      const icon = newEmblemIcon.value.trim() || "fa-award";
+      const shape = newEmblemShape.value;
+      const color = newEmblemColor.value;
+      const unlocked = newEmblemUnlocked.value === 'true';
+      const desc = newEmblemDesc.value.trim();
+      const gameId = currentActiveGameId || 'deltaforce';
+
+      if (!name) {
+        showHUDToast("editor error", "Please enter emblem name.");
+        return;
+      }
+
+      const newEmbObj = {
+        name: name,
+        equipped: unlocked,
+        desc: desc || "Custom collectible emblem.",
+        shape: shape,
+        color: color
+      };
+
+      if (file) {
+        newEmbObj.file = file;
+      } else {
+        newEmbObj.icon = icon;
+      }
+
+      // Carregar emblemas da localStorage
+      let customEmblemsMap = {};
+      const saved = localStorage.getItem('df_custom_emblems');
+      if (saved) {
+        try { customEmblemsMap = JSON.parse(saved); } catch (e) { console.error(e); }
+      }
+
+      if (!customEmblemsMap[gameId]) customEmblemsMap[gameId] = [];
+      customEmblemsMap[gameId].push(newEmbObj);
+
+      localStorage.setItem('df_custom_emblems', JSON.stringify(customEmblemsMap));
+
+      // Limpar formulário
+      newEmblemName.value = '';
+      newEmblemFile.value = '';
+      newEmblemIcon.value = 'fa-award';
+      newEmblemDesc.value = '';
+
+      // Recarregar e atualizar UI
+      loadLocalStorageData();
+      selectGame(gameId, true);
+
+      showHUDToast("military record", `Custom emblem "${name}" added to ${gameData[gameId].name}.`);
+    });
+  }
+
+  // SALVAR TODAS AS ALTERAÇÕES (Mod Panel Submit)
+  if (btnSaveManualStats) {
+    btnSaveManualStats.addEventListener('click', () => {
+      const gameId = currentActiveGameId || 'deltaforce';
+      const data = gameData[gameId];
+      if (!data) return;
+
+      // 1. Atualizar Identidade Global
+      const nameVal = editGlobalName.value.trim();
+      const avatarVal = editGlobalAvatar.value.trim();
+
+      if (nameVal) localStorage.setItem('df_custom_callsign', nameVal);
+      if (avatarVal) localStorage.setItem('df_custom_avatar', avatarVal);
+
+      // 2. Atualizar Estatísticas do Jogo Selecionado
+      const rankTitleVal = editGameRankTitle.value.trim();
+      const rankScoreVal = editGameRankScore.value.trim();
+      const battlesVal = editGameBattles.value.trim();
+      const hoursVal = editGameHours.value.trim();
+
+      const gameOverrideObj = {
+        hours: hoursVal,
+        battles: battlesVal,
+        rankTitle: rankTitleVal,
+        rankScore: rankScoreVal,
+        detailsStats: []
+      };
+
+      // Ler os inputs dinamicamente gerados de performance extra
+      const dynamicFields = dynamicStatsFieldsContainer.querySelectorAll('.dynamic-stat-input');
+      dynamicFields.forEach(input => {
+        const key = input.getAttribute('data-key');
+        const val = input.value.trim();
+        gameOverrideObj.detailsStats.push({ key, val });
+      });
+
+      // Carregar mapa de overrides dos jogos da localStorage
+      let gameStatsMap = {};
+      const savedStats = localStorage.getItem('df_game_stats');
+      if (savedStats) {
+        try { gameStatsMap = JSON.parse(savedStats); } catch (e) { console.error(e); }
+      }
+
+      gameStatsMap[gameId] = gameOverrideObj;
+      localStorage.setItem('df_game_stats', JSON.stringify(gameStatsMap));
+
+      // 3. Suporte legacia para Delta Force (df_custom_stats)
+      if (gameId === 'deltaforce') {
+        const kdInput = Array.from(dynamicFields).find(input => input.getAttribute('data-key') === "Avg. K/D Ratio");
+        const killsInput = Array.from(dynamicFields).find(input => input.getAttribute('data-key') === "Operator Eliminations");
+        const profitInput = Array.from(dynamicFields).find(input => input.getAttribute('data-key') === "Avg. Profit/Loss");
+        const extractedInput = Array.from(dynamicFields).find(input => input.getAttribute('data-key') === "Total Extracted Value");
+        const missionInput = Array.from(dynamicFields).find(input => input.getAttribute('data-key') === "Mission Rewards");
+        const accuracyInput = Array.from(dynamicFields).find(input => input.getAttribute('data-key') === "Overall Accuracy");
+        const lethalityInput = Array.from(dynamicFields).find(input => input.getAttribute('data-key') === "Lethality Rate");
+        const extractionInput = Array.from(dynamicFields).find(input => input.getAttribute('data-key') === "Extraction Rate");
+        const mandelbricksInput = Array.from(dynamicFields).find(input => input.getAttribute('data-key') === "MandelBricks Decoded");
+        const friendlyExtractInput = Array.from(dynamicFields).find(input => input.getAttribute('data-key') === "Friendly Extraction Value");
+        const rescuesInput = Array.from(dynamicFields).find(input => input.getAttribute('data-key') === "Teammate Rescues");
+        const revivesInput = Array.from(dynamicFields).find(input => input.getAttribute('data-key') === "Revived Teammates");
+
+        const legacyObj = {
+          hours: hoursVal,
+          battles: battlesVal,
+          rankTitle: rankTitleVal,
+          rankScore: rankScoreVal,
+          avgProfit: profitInput ? profitInput.value : "1.4M",
+          totalExtracted: extractedInput ? extractedInput.value : "4.8b",
+          missionRewards: missionInput ? missionInput.value : "1.8M",
+          kdRatio: kdInput ? kdInput.value : "13 | 3.3 | 1.9",
+          kills: killsInput ? killsInput.value : "37,719",
+          accuracy: accuracyInput ? accuracyInput.value : "35.5%",
+          lethality: lethalityInput ? lethalityInput.value : "45.6%",
+          extractionRate: extractionInput ? extractionInput.value : "39.8%",
+          mandelbricks: mandelbricksInput ? mandelbricksInput.value : "122",
+          friendlyExtract: friendlyExtractInput ? friendlyExtractInput.value : "18.1M",
+          rescues: rescuesInput ? rescuesInput.value : "832",
+          revives: revivesInput ? revivesInput.value : "832"
+        };
+        localStorage.setItem('df_custom_stats', JSON.stringify(legacyObj));
+      }
+
+      // Sincronizar UI geral
+      loadLocalStorageData();
+      selectGame(gameId, true);
+
+      showHUDToast("mod database", "All customized records, credentials and identities have been secured.");
+      hideSyncModal();
+    });
+  }
+
+  // Manual database sync action (legacia de suporte Delta Force)
+  if (btnManualSyncAction) {
+    btnManualSyncAction.addEventListener('click', () => {
+      btnManualSyncAction.disabled = true;
+      btnManualSyncAction.classList.add('loading');
+      btnManualSyncAction.innerHTML = `<i class="fas fa-spinner"></i> SYNCING...`;
+
+      showHUDToast("Database sync", "Querying Garena servers for online match delta...");
+
+      setTimeout(() => {
+        const df = gameData.deltaforce;
+        if (df) {
+          const hoursNum = parseFloat(df.hours) + 0.8;
+          const battlesNum = parseInt(df.battles) + 2;
+
+          const getVal = (key) => parseFloat(df.detailsStats.find(s => s.key === key).val.replace(/[^\d.]/g, ''));
+          const currentKills = getVal("Operator Eliminations") + 4;
+          const currentExtracted = parseFloat(df.detailsStats.find(s => s.key === "Total Extracted Value").val) + 0.1;
+
+          const updatedStatsObj = {
+            hours: `${hoursNum.toFixed(1)}h`,
+            battles: String(battlesNum),
+            rankTitle: df.rankTitle,
+            rankScore: `Score: ${parseInt(df.rankScore.replace(/\D/g, '')) + 80}`,
+            avgProfit: df.detailsStats.find(s => s.key === "Avg. Profit/Loss").val,
+            totalExtracted: `${currentExtracted.toFixed(1)}b`,
+            missionRewards: df.detailsStats.find(s => s.key === "Mission Rewards").val,
+            kdRatio: df.detailsStats.find(s => s.key === "Avg. K/D Ratio").val,
+            kills: currentKills.toLocaleString(),
+            accuracy: df.detailsStats.find(s => s.key === "Overall Accuracy").val,
+            lethality: df.detailsStats.find(s => s.key === "Lethality Rate").val,
+            extractionRate: df.detailsStats.find(s => s.key === "Extraction Rate").val
+          };
+
+          localStorage.setItem('df_custom_stats', JSON.stringify(updatedStatsObj));
+          loadLocalStorageData();
+          selectGame('deltaforce', true);
+        }
+
+        btnManualSyncAction.disabled = false;
+        btnManualSyncAction.classList.remove('loading');
+        btnManualSyncAction.innerHTML = `SYNC NOW`;
+
+        showHUDToast("sync complete", "Stats synchronized with Delta Force servers.");
+      }, 1500);
+    });
+  }
+
+  // Background Auto-Sync Simulator Timer
+  let autoSyncInterval = null;
+  const triggerAutoSyncUpdate = () => {
+    const df = gameData.deltaforce;
+    if (!df) return;
+
+    if (Math.random() > 0.75) {
+      const hoursNum = parseFloat(df.hours) + 0.3;
+      const battlesNum = parseInt(df.battles) + 1;
+
+      const getValStr = (key) => df.detailsStats.find(s => s.key === key).val;
+      const currentKills = parseInt(getValStr("Operator Eliminations").replace(/\D/g, '')) + 2;
+
+      const updatedStatsObj = {
+        hours: `${hoursNum.toFixed(1)}h`,
+        battles: String(battlesNum),
+        rankTitle: df.rankTitle,
+        rankScore: `Score: ${parseInt(df.rankScore.replace(/\D/g, '')) + 50}`,
+        avgProfit: getValStr("Avg. Profit/Loss"),
+        totalExtracted: getValStr("Total Extracted Value"),
+        missionRewards: getValStr("Mission Rewards"),
+        kdRatio: getValStr("Avg. K/D Ratio"),
+        kills: currentKills.toLocaleString(),
+        accuracy: getValStr("Overall Accuracy"),
+        lethality: getValStr("Lethality Rate"),
+        extractionRate: getValStr("Extraction Rate")
+      };
+
+      localStorage.setItem('df_custom_stats', JSON.stringify(updatedStatsObj));
+      loadLocalStorageData();
+
+      const isDFActive = currentActiveGameId === 'deltaforce';
+      if (isDFActive) {
+        selectGame('deltaforce', true);
+      }
+
+      showHUDToast("live update", `Match recorded! Playtime +0.3h, battles +1, kills +2`);
+    }
+  };
+
+  const startAutoSync = () => {
+    if (autoSyncInterval) clearInterval(autoSyncInterval);
+    autoSyncInterval = setInterval(triggerAutoSyncUpdate, 60000);
+  };
+
+  const stopAutoSync = () => {
+    if (autoSyncInterval) {
+      clearInterval(autoSyncInterval);
+      autoSyncInterval = null;
+    }
+  };
+
+  // Auto sync switch toggle change listener
+  if (chkAutoSync) {
+    const savedAutoSync = localStorage.getItem('df_auto_sync') === 'true';
+    chkAutoSync.checked = savedAutoSync;
+    if (savedAutoSync) {
+      startAutoSync();
+    }
+
+    chkAutoSync.addEventListener('change', (e) => {
+      localStorage.setItem('df_auto_sync', e.target.checked);
+      if (e.target.checked) {
+        startAutoSync();
+        showHUDToast("Auto-Sync active", "Live gameplay background simulation enabled.");
+      } else {
+        stopAutoSync();
+        showHUDToast("Auto-Sync disabled", "Background simulator suspended.");
+      }
+    });
   }
 
   // Inicializar a página na tela inicial (Launcher de Jogos)

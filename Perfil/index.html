@@ -58,6 +58,19 @@
       <!-- Linha de Status Simples e Elegante -->
       <div class="hud-status-line" id="introTerminal">SYSTEM INITIALIZING...</div>
     </div>
+
+    <!-- Seletor de Modo na Inicialização (Lado Direito) -->
+    <div class="intro-mode-selector" id="introModeSelector">
+      <button class="mode-btn btn-small active" id="btnModeUser">USUÁRIO</button>
+      <button class="mode-btn btn-small" id="btnModeMod">MOD</button>
+      <div id="introPassInputWrapper" class="intro-pass-wrapper"
+        style="display: none; align-items: center; gap: 6px; margin-left: 8px;">
+        <input type="password" id="introPassKey" placeholder="SENHA..." class="hud-input input-mini"
+          style="font-family: 'Space Grotesk', sans-serif; font-size: 9px; padding: 4px 8px; border-radius: 3px; background: rgba(0,0,0,0.8); border: 1px solid var(--border); color: #fff; width: 100px;">
+        <button class="hud-btn-primary btn-mini" id="btnIntroUnlock"
+          style="font-family: 'Oxanium', sans-serif; font-size: 9px; padding: 4px 8px; border-radius: 3px; background: var(--primary); border: none; color: #000; cursor: pointer; font-weight: 700;">IR</button>
+      </div>
+    </div>
   </div>
 
   <!-- Background Video (Lazy loaded for optimized page boot) -->
@@ -156,6 +169,12 @@
             </button>
             <button class="tab-btn game-tab hidden" data-tab="conquistas">
               <i class="fas fa-trophy"></i> ACHIEVEMENTS
+            </button>
+
+            <!-- Botão de controle MOD (oculto por padrão, visível apenas no Mod mode) -->
+            <button class="tab-btn mod-control-btn" id="btnOpenModControl"
+              style="color: var(--secondary); border-left: 1px solid var(--border); display: none;">
+              <i class="fas fa-sliders-h"></i> MOD CONTROL
             </button>
           </div>
 
@@ -322,6 +341,20 @@
                 <!-- Lado Esquerdo: Estatísticas e Emblemas -->
                 <div class="df-profile-stats">
                   <div class="pd-header" id="profileHeader">// GENERAL OPERATOR DATA</div>
+
+                  <!-- Link/Sync Button for account connection -->
+                  <div class="df-action-row" id="dfSyncActionRow"
+                    style="margin-bottom: 20px; display: none; gap: 12px; flex-wrap: wrap; align-items: center;">
+                    <button class="hud-action-btn" id="btnOpenSync">
+                      <i class="fas fa-network-wired"></i> VINCULAR CONTA / ATUALIZAR
+                    </button>
+                    <div id="quickSyncIndicator" class="quick-sync-indicator"
+                      style="display: none; align-items: center; gap: 6px; font-size: 10px; font-family: 'Space Grotesk', sans-serif; color: var(--green);">
+                      <span class="ping-dot"
+                        style="background: var(--green); box-shadow: 0 0 6px var(--green); display: inline-block; width: 6px; height: 6px; border-radius: 50%;"></span>
+                      <span>CONNECTED: <span id="quickSyncName" style="font-weight: 700; color: #fff;"></span></span>
+                    </div>
+                  </div>
 
                   <!-- Classificação & Mini Grid -->
                   <div class="df-quick-stats-row">
@@ -517,6 +550,249 @@
   </div>
 
   <div id="hudTooltip" class="hud-tooltip"></div>
+
+  <!-- Modal Holográfico: Mod Control Dashboard -->
+  <div id="sync-modal" class="hud-modal">
+    <div class="hud-modal-overlay" id="syncModalOverlay"></div>
+    <div class="hud-modal-content" style="max-width: 720px; max-height: 90vh;">
+      <!-- Hud corners -->
+      <div class="hud-corner top-left"></div>
+      <div class="hud-corner top-right"></div>
+      <div class="hud-corner bottom-left"></div>
+      <div class="hud-corner bottom-right"></div>
+
+      <div class="hud-modal-header">
+        <span class="hud-modal-title" id="modModalTitle">// OPERATOR ACCESS: MOD DASHBOARD</span>
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <button class="hud-btn-secondary" id="btnAdminLogout"
+            style="font-size: 9px; padding: 4px 8px; border-radius: 3px; display: none;">
+            <i class="fas fa-sign-out-alt"></i> LOCK SESSION
+          </button>
+          <button class="hud-modal-close" id="closeSyncModal">&times;</button>
+        </div>
+      </div>
+
+      <div class="hud-modal-body">
+        <!-- VISTA 1: Tela de Login / Bloqueio (Default se não autenticado) -->
+        <div id="sync-login-view" class="sync-login-view">
+          <div class="hud-modal-section" style="text-align: center; padding: 30px 20px; margin-bottom: 0;">
+            <i class="fas fa-user-shield"
+              style="font-size: 32px; color: var(--secondary); margin-bottom: 16px; text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);"></i>
+            <div class="pd-header">// IDENTITY SECURITY PROTOCOL</div>
+            <p class="section-desc-info" style="margin-bottom: 20px;">Administrative privileges required. Enter
+              authentication passcode to decrypt control nodes.</p>
+
+            <div class="input-group" style="max-width: 320px; margin: 0 auto;">
+              <input type="password" id="adminPassKey" placeholder="ENTER ACCESS KEY..." class="hud-input"
+                style="text-align: center;">
+              <button class="hud-btn-primary" id="btnAdminUnlock">
+                <i class="fas fa-key"></i> UNLOCK
+              </button>
+            </div>
+
+            <div id="loginFeedback" class="search-feedback-log"
+              style="max-width: 320px; margin: 15px auto 0 auto; text-align: left; height: 50px;">
+              <div class="log-line text-dim">Gateway standing by. Awaiting key auth...</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- VISTA 2: Console do Admin (Oculto por padrão até logar) -->
+        <div id="sync-admin-view" class="sync-admin-view hidden-details">
+
+          <!-- Seção 1: Identidade do Operador (Global) -->
+          <div class="hud-modal-section">
+            <div class="pd-header">// GLOBAL OPERATOR IDENTITY</div>
+            <div class="stats-editor-grid" style="grid-template-columns: 1fr 1fr;">
+              <div class="editor-field">
+                <label>OPERATOR CALLSIGN (NAME)</label>
+                <input type="text" id="editGlobalName" class="hud-input" placeholder="e.g. CLOUTCH">
+              </div>
+              <div class="editor-field">
+                <label>AVATAR IMAGE URL / PATH</label>
+                <input type="text" id="editGlobalAvatar" class="hud-input" placeholder="img/Principal avatar.png">
+              </div>
+            </div>
+          </div>
+
+          <!-- Seção 2: Estatísticas Dinâmicas do Jogo Ativo -->
+          <div class="hud-modal-section">
+            <div class="pd-header" id="modActiveGameHeader">// ACTIVE GAME CONFIG: DELTA FORCE</div>
+            <p class="section-desc-info">Modify the records and metrics displayed on the active game dashboard tab.</p>
+
+            <div class="stats-editor-grid" style="grid-template-columns: 1fr 1fr; margin-bottom: 12px;">
+              <div class="editor-field">
+                <label>RANKING / PRESTIGE TITLE</label>
+                <input type="text" id="editGameRankTitle" class="hud-input">
+              </div>
+              <div class="editor-field">
+                <label>RANKING SCORE VALUE</label>
+                <input type="text" id="editGameRankScore" class="hud-input">
+              </div>
+              <div class="editor-field">
+                <label>TOTAL BATTLES / MATCHES</label>
+                <input type="text" id="editGameBattles" class="hud-input">
+              </div>
+              <div class="editor-field">
+                <label>PLAYTIME HOURS</label>
+                <input type="text" id="editGameHours" class="hud-input">
+              </div>
+            </div>
+
+            <div class="pd-header">// EXTRA PERFORMANCE ATTRIBUTES</div>
+            <!-- Container de Inputs Gerados Dinamicamente via JS -->
+            <div class="stats-editor-grid" id="dynamicStatsFieldsContainer"></div>
+          </div>
+
+          <!-- Seção 3: Adicionar Novo Título Militar -->
+          <div class="hud-modal-section">
+            <div class="pd-header">// ADD NEW MILITARY TITLE TO GAME</div>
+            <p class="section-desc-info">Create a new customizable prestige banner card and add it to the selector
+              database.</p>
+            <div class="stats-editor-grid" style="grid-template-columns: 1fr 1fr;">
+              <div class="editor-field">
+                <label>TITLE CALLSIGN (NAME)</label>
+                <input type="text" id="newTitleName" class="hud-input" placeholder="e.g. God of War T10">
+              </div>
+              <div class="editor-field">
+                <label>BANNER IMAGE FILENAME</label>
+                <input type="text" id="newTitleFile" class="hud-input"
+                  placeholder="e.g. tituloRust1.png (inside img/titulos/)">
+              </div>
+              <div class="editor-field" style="grid-column: span 2;">
+                <label>PRESTIGE REQUIREMENT / DESCRIPTION</label>
+                <input type="text" id="newTitleDesc" class="hud-input"
+                  placeholder="e.g. Reached top rank in Warzone Season 10">
+              </div>
+            </div>
+            <div style="display: flex; justify-content: flex-end; margin-top: 12px;">
+              <button class="hud-btn-secondary" id="btnAddTitle">
+                <i class="fas fa-plus"></i> ADD TITLE
+              </button>
+            </div>
+          </div>
+
+          <!-- Seção 4: Adicionar Novo Emblema Militar -->
+          <div class="hud-modal-section">
+            <div class="pd-header">// ADD NEW COLLECTIBLE EMBLEM / PATCH</div>
+            <p class="section-desc-info">Create a military patch badge collectible and add it to the unlocked items
+              grid.</p>
+            <div class="stats-editor-grid" style="grid-template-columns: 1fr 1fr 1fr;">
+              <div class="editor-field">
+                <label>EMBLEM NAME</label>
+                <input type="text" id="newEmblemName" class="hud-input" placeholder="e.g. Gold Eagle">
+              </div>
+              <div class="editor-field">
+                <label>CUSTOM IMAGE FILE PATH (OPTIONAL)</label>
+                <input type="text" id="newEmblemFile" class="hud-input"
+                  placeholder="e.g. emblemFile.png (inside img/emblemas/)">
+              </div>
+              <div class="editor-field">
+                <label>FONT AWESOME ICON CLASS (IF NO IMAGE)</label>
+                <input type="text" id="newEmblemIcon" class="hud-input" placeholder="e.g. fa-award" value="fa-award">
+              </div>
+
+              <div class="editor-field">
+                <label>EMBLEM SHAPE (SVG SHAPE CLASS)</label>
+                <select id="newEmblemShape" class="hud-input">
+                  <option value="shape-shield">Shield</option>
+                  <option value="shape-circle">Circle</option>
+                  <option value="shape-diamond">Diamond</option>
+                  <option value="shape-triangle">Triangle</option>
+                </select>
+              </div>
+              <div class="editor-field">
+                <label>EMBLEM COLOR CLASS</label>
+                <select id="newEmblemColor" class="hud-input">
+                  <option value="gold-emb">Gold</option>
+                  <option value="cyan-emb">Cyan</option>
+                  <option value="blue-emb">Blue</option>
+                  <option value="red-emb">Red</option>
+                  <option value="green-emb">Green</option>
+                </select>
+              </div>
+              <div class="editor-field">
+                <label>UNLOCKED STATE</label>
+                <select id="newEmblemUnlocked" class="hud-input">
+                  <option value="true">Unlocked</option>
+                  <option value="false">Locked</option>
+                </select>
+              </div>
+
+              <div class="editor-field" style="grid-column: span 3;">
+                <label>ACQUISITION DESCRIPTION</label>
+                <input type="text" id="newEmblemDesc" class="hud-input"
+                  placeholder="e.g. Awarded for 10 consecutive victories.">
+              </div>
+            </div>
+            <div style="display: flex; justify-content: flex-end; margin-top: 12px;">
+              <button class="hud-btn-secondary" id="btnAddEmblem">
+                <i class="fas fa-plus"></i> ADD EMBLEM
+              </button>
+            </div>
+          </div>
+
+          <!-- Seção 5: Conexão & Auto-Sync -->
+          <div class="hud-modal-section">
+            <div class="pd-header">// NETWORK LINK & SYNC SIMULATOR</div>
+            <div class="sync-options-row">
+              <div class="sync-option-card">
+                <span class="option-title">AUTO-SYNC SIMULATOR</span>
+                <p class="option-desc">Simulates live gameplay progression in the background.</p>
+                <label class="hud-switch">
+                  <input type="checkbox" id="chkAutoSync">
+                  <span class="slider"></span>
+                </label>
+              </div>
+
+              <div class="sync-option-card">
+                <span class="option-title">GAMES NETWORK STATUS</span>
+                <p class="option-desc">Connect/Disconnect to simulated main server node.</p>
+                <div class="link-status-container" style="padding: 6px 12px; margin-bottom: 0;">
+                  <div class="status-indicator">
+                    <span class="ping-dot red" id="syncStatusDot"></span>
+                    <span id="syncStatusText" class="status-text text-red" style="font-size: 9px;">DISCONNECTED</span>
+                  </div>
+                  <div id="linkedAccountDetails" class="hidden-details"
+                    style="font-size: 9px; flex-direction: column; gap: 2px;">
+                    <div>NAME: <span id="linkedName" class="text-highlight">None</span></div>
+                    <div>UID: <span id="linkedUID" class="text-dim">00000000</span></div>
+                  </div>
+                </div>
+
+                <div class="input-group" style="margin-top: 10px; gap: 5px;">
+                  <input type="text" id="dfSearchNickname" placeholder="NICKNAME / UID..." class="hud-input"
+                    style="padding: 6px 10px; font-size: 11px;">
+                  <button class="hud-btn-primary" id="btnSearchConnect" style="padding: 6px 12px; font-size: 10px;">
+                    CONNECT
+                  </button>
+                </div>
+                <div id="searchFeedback" class="search-feedback-log"
+                  style="height: 40px; min-height: 40px; margin-top: 8px; padding: 4px 8px; font-size: 8px;">
+                  <div class="log-line text-dim">System standby...</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Ações Gerais -->
+          <div class="editor-actions"
+            style="margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 10px;">
+            <button class="hud-btn-secondary" id="btnCancelModPanel" type="button">
+              CANCEL
+            </button>
+            <button class="hud-btn-primary" id="btnSaveManualStats" type="button">
+              <i class="fas fa-save"></i> SAVE ALL CHANGES
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notification Toast Container -->
+  <div id="hud-notification-container" class="hud-notification-container"></div>
 
   <script src="script.js?v=1.2.0"></script>
 </body>
