@@ -3012,3 +3012,47 @@ select.hud-input option {
     display: none !important;
   }
 }
+
+/* ==========================================================================
+   GAME LINKS AND WEBSITES STYLING
+   ========================================================================== */
+.df-links-section {
+  margin-top: 24px;
+  width: 100%;
+}
+
+.df-links-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.df-link-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(200, 130, 66, 0.06);
+  border: 1px solid var(--border);
+  color: var(--secondary) !important;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 8px 14px;
+  border-radius: 4px;
+  text-decoration: none !important;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  transition: var(--transition);
+}
+
+.df-link-btn:hover {
+  background: rgba(255, 215, 0, 0.08);
+  border-color: var(--secondary);
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.15);
+  text-shadow: 0 0 4px var(--secondary);
+}
+
+.df-link-btn i {
+  font-size: 10px;
+}

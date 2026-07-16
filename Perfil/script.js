@@ -489,7 +489,8 @@ document.addEventListener("DOMContentLoaded", () => {
         { key: "Revived Teammates", val: "832" }
       ],
 
-      radarPoints: "100,41 155,82 135,148 66,134 27,76"
+      radarPoints: "100,41 155,82 135,148 66,134 27,76",
+      officialLinks: [{ label: "Site Oficial", url: "https://www.playdeltaforce.com/" }, { label: "Discord Oficial", url: "https://discord.gg/deltaforce" }]
     },
     rust: {
       name: "Rust Mobile",
@@ -539,7 +540,8 @@ document.addEventListener("DOMContentLoaded", () => {
         { key: "Raids Executed", val: "84" },
         { key: "Helicopters Shot Down", val: "123" }
       ],
-      radarPoints: "100,25 168,75 140,155 60,155 32,75"
+      radarPoints: "100,25 168,75 140,155 60,155 32,75",
+      officialLinks: [{ label: "Site Oficial", url: "https://rust.facepunch.com/" }, { label: "Discord Oficial", url: "https://discord.gg/rust" }]
     },
     valorant: {
       name: "Valorant",
@@ -575,7 +577,8 @@ document.addEventListener("DOMContentLoaded", () => {
         { key: "Headshot Accuracy", val: "28.3%" },
         { key: "Average Damage Per Round", val: "152" }
       ],
-      radarPoints: "100,30 162,75 142,150 64,148 30,75"
+      radarPoints: "100,30 162,75 142,150 64,148 30,75",
+      officialLinks: [{ label: "Site Oficial", url: "https://playvalorant.com/" }, { label: "Discord Oficial", url: "https://discord.gg/valorant" }]
     },
     cs2: {
       name: "Counter-Strike 2",
@@ -611,7 +614,8 @@ document.addEventListener("DOMContentLoaded", () => {
         { key: "Total MVPs", val: "184" },
         { key: "Clutches Won", val: "42" }
       ],
-      radarPoints: "100,28 160,78 138,154 62,152 28,78"
+      radarPoints: "100,28 160,78 138,154 62,152 28,78",
+      officialLinks: [{ label: "Site Oficial", url: "https://www.counter-strike.net/cs2" }, { label: "Steam Hub", url: "https://steamcommunity.com/app/270120" }]
     },
     gta5: {
       name: "Grand Theft Auto V",
@@ -644,7 +648,8 @@ document.addEventListener("DOMContentLoaded", () => {
         { key: "Cars in Garage", val: "45" },
         { key: "Max Wanted Level", val: "5 Stars" }
       ],
-      radarPoints: "100,32 165,75 138,150 62,148 26,75"
+      radarPoints: "100,32 165,75 138,150 62,148 26,75",
+      officialLinks: [{ label: "Site Oficial", url: "https://www.rockstargames.com/gta-v" }, { label: "Rockstar Social Club", url: "https://socialclub.rockstargames.com/" }]
     }
   };
 
@@ -815,6 +820,9 @@ document.addEventListener("DOMContentLoaded", () => {
             if (gameOverride.battles) gameData[gameId].battles = gameOverride.battles;
             if (gameOverride.rankTitle) gameData[gameId].rankTitle = gameOverride.rankTitle;
             if (gameOverride.rankScore) gameData[gameId].rankScore = gameOverride.rankScore;
+            if (gameOverride.officialLinks) {
+              gameData[gameId].officialLinks = gameOverride.officialLinks;
+            }
 
             if (gameOverride.detailsStats) {
               gameOverride.detailsStats.forEach(overrideStat => {
@@ -958,6 +966,27 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         equippedGrid.appendChild(slot);
       });
+    }
+
+    // Renderizar links oficiais e da comunidade do jogo
+    const linksGrid = document.getElementById('dfLinksGrid');
+    const linksSection = document.getElementById('dfLinksSection');
+    if (linksGrid) {
+      linksGrid.innerHTML = '';
+      if (data.officialLinks && data.officialLinks.length > 0) {
+        if (linksSection) linksSection.style.display = 'block';
+        data.officialLinks.forEach(link => {
+          const a = document.createElement('a');
+          a.className = 'df-link-btn';
+          a.href = link.url;
+          a.target = '_blank';
+          a.rel = 'noopener noreferrer';
+          a.innerHTML = `<i class="fas fa-external-link-alt"></i> ${link.label.toUpperCase()}`;
+          linksGrid.appendChild(a);
+        });
+      } else {
+        if (linksSection) linksSection.style.display = 'none';
+      }
     }
 
     // 3. Carregar informações na aba DETALHES
@@ -1530,6 +1559,15 @@ document.addEventListener("DOMContentLoaded", () => {
     if (editGameBattles) editGameBattles.value = data.battles || "";
     if (editGameHours) editGameHours.value = data.hours || "";
 
+    const editGameLinks = document.getElementById('editGameLinks');
+    if (editGameLinks) {
+      if (data.officialLinks) {
+        editGameLinks.value = data.officialLinks.map(link => `${link.label}|${link.url}`).join('\n');
+      } else {
+        editGameLinks.value = '';
+      }
+    }
+
     // Dados de performance extras dinâmicos
     if (dynamicStatsFieldsContainer) {
       dynamicStatsFieldsContainer.innerHTML = '';
@@ -1800,12 +1838,25 @@ document.addEventListener("DOMContentLoaded", () => {
       const battlesVal = editGameBattles.value.trim();
       const hoursVal = editGameHours.value.trim();
 
+      // Parsear links da textarea
+      const editGameLinks = document.getElementById('editGameLinks');
+      const parsedLinks = [];
+      if (editGameLinks && editGameLinks.value.trim()) {
+        editGameLinks.value.trim().split('\n').forEach(line => {
+          const parts = line.split('|');
+          if (parts.length >= 2) {
+            parsedLinks.push({ label: parts[0].trim(), url: parts[1].trim() });
+          }
+        });
+      }
+
       const gameOverrideObj = {
         hours: hoursVal,
         battles: battlesVal,
         rankTitle: rankTitleVal,
         rankScore: rankScoreVal,
-        detailsStats: []
+        detailsStats: [],
+        officialLinks: parsedLinks
       };
 
       // Ler os inputs dinamicamente gerados de performance extra
