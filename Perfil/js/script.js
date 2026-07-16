@@ -142,7 +142,7 @@ document.addEventListener("DOMContentLoaded", () => {
         { name: "Deus da Guerra T4", id: "t4", file: "Screenshot_2026-07-01-15-18-32-566_com.garena.game.df.png", desc: "Temporada 4 - Classificação Deus da Guerra" }
       ],
       activeTitleId: "t6",
-      
+
       // Foto de perfil oficial (local)
       avatarUrl: "img/deltaforce_avatar.jpg",
 
@@ -213,7 +213,7 @@ document.addEventListener("DOMContentLoaded", () => {
       opLevel: "95",
       titleName: "Rei do AK",
       titleDesc: "Conquistou o domínio absoluto dos monumentos mais disputados do mapa.",
-      
+
       // Foto de perfil do Rust (local)
       avatarUrl: "img/rust_avatar.jpg",
 
@@ -254,7 +254,7 @@ document.addEventListener("DOMContentLoaded", () => {
       opLevel: "82",
       titleName: "Clutch Master",
       titleDesc: "Venceu mais de 100 rodadas jogando sozinho contra mais de 3 inimigos.",
-      
+
       // Foto de perfil do Valorant (local)
       avatarUrl: "img/valorant_avatar.jpg",
 
@@ -296,7 +296,7 @@ document.addEventListener("DOMContentLoaded", () => {
       opLevel: "74",
       titleName: "Defusal Veteran",
       titleDesc: "Desarmou 50 bombas com menos de 2 segundos restantes.",
-      
+
       // Foto de perfil do CS2 (local)
       avatarUrl: "img/Cs2 perfil.jpg",
 
@@ -414,7 +414,7 @@ document.addEventListener("DOMContentLoaded", () => {
     data.equippedEmblems.forEach(emb => {
       const slot = document.createElement('div');
       slot.className = `df-ee-slot`;
-      
+
       const matchingEmb = data.allEmblems ? data.allEmblems.find(ae => ae.name === emb.name) : null;
       const desc = matchingEmb ? matchingEmb.desc : "Emblema militar equipado.";
       setupTooltip(slot, emb.name, desc, "EQUIPADO");
@@ -462,7 +462,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (data.titles && data.titles.length > 0) {
       if (allTitlesSection) allTitlesSection.classList.remove('hidden');
-      
+
       // Encontrar título ativo
       const activeTitle = data.titles.find(t => t.id === data.activeTitleId) || data.titles[0];
 
@@ -531,12 +531,12 @@ document.addEventListener("DOMContentLoaded", () => {
     // Grid de 18 emblemas com visual de patch militar real
     const allEmblemsGrid = document.getElementById('dfAllEmblemsGrid');
     allEmblemsGrid.innerHTML = '';
-    
+
     const emblemsToLoad = data.allEmblems || [];
     emblemsToLoad.forEach(emb => {
       const card = document.createElement('div');
       card.className = `emblem-card-grid ${emb.equipped ? 'equipped' : ''}`;
-      
+
       setupTooltip(card, emb.name, emb.desc, emb.equipped ? "ADQUIRIDO" : "BLOQUEADO");
 
       if (emb.spriteIndex !== undefined && slicedEmblems[emb.spriteIndex]) {
@@ -639,7 +639,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const updateClock = () => {
     const now = new Date();
-    
+
     // Formatar Horário
     const hh = String(now.getHours()).padStart(2, '0');
     const mm = String(now.getMinutes()).padStart(2, '0');

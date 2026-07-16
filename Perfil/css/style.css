@@ -2933,3 +2933,65 @@ select.hud-input option {
   background: #ff4545;
   box-shadow: 0 0 10px #ff4545;
 }
+
+/* Responsive adjustments for Intro Overlay elements on Mobile */
+@media (max-width: 768px) {
+  .intro-mode-selector {
+    left: 50% !important;
+    right: auto !important;
+    bottom: 30px !important;
+    transform: translateX(-50%) !important;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px !important;
+    padding: 10px 16px !important;
+    background: rgba(12, 10, 9, 0.9) !important;
+    /* Darker background for readability */
+    border: 1px solid rgba(200, 130, 66, 0.3) !important;
+    width: 90% !important;
+    max-width: 320px !important;
+    pointer-events: auto !important;
+    /* Explicitly allow pointer events */
+  }
+
+  .intro-mode-selector .mode-btn {
+    font-size: 11px !important;
+    padding: 10px 18px !important;
+    min-height: 40px !important;
+    /* Touch target minimum height */
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: auto !important;
+  }
+
+  .intro-pass-wrapper {
+    margin-left: 0 !important;
+    margin-top: 10px !important;
+    width: 100% !important;
+    justify-content: center !important;
+    gap: 8px !important;
+  }
+
+  .intro-pass-wrapper .hud-input {
+    width: 100% !important;
+    font-size: 11px !important;
+    padding: 8px 12px !important;
+    min-height: 40px !important;
+  }
+
+  .intro-pass-wrapper .hud-btn-primary {
+    font-size: 11px !important;
+    padding: 8px 16px !important;
+    min-height: 40px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Prevent overlapping HUD telemetry on mobile screens */
+  .hud-info-panel {
+    display: none !important;
+  }
+}

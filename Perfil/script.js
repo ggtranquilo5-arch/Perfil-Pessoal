@@ -204,7 +204,7 @@ document.addEventListener("DOMContentLoaded", () => {
           introTerminal.textContent = bootMessages[messageIndex];
         }
       }
-    }, 280);
+    }, 800);
   }
 
   // Lógica de Autoplay inteligente na primeira interação
