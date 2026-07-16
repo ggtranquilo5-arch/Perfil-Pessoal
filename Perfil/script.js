@@ -757,6 +757,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (!gameData[gameId].allEmblems) gameData[gameId].allEmblems = [];
             parsedEmblems[gameId].forEach(customEmb => {
               if (!gameData[gameId].allEmblems.some(e => e.name === customEmb.name)) {
+                customEmb.custom = true;
                 gameData[gameId].allEmblems.push(customEmb);
 
                 // Force marked as equipped if it was equipped
@@ -1020,6 +1021,46 @@ document.addEventListener("DOMContentLoaded", () => {
 
           setupTooltip(titleCard, title.name, title.desc, title.id === data.activeTitleId ? "EQUIPPED" : "AVAILABLE");
 
+          // Botão de deletar item customizado se for Mod
+          const isMod = localStorage.getItem('df_admin_session') === 'active';
+          if (isMod && title.id && title.id.toString().startsWith('custom_')) {
+            const delBtn = document.createElement('div');
+            delBtn.className = 'custom-delete-badge';
+            delBtn.innerHTML = '&times;';
+            delBtn.title = 'Remove custom title';
+            delBtn.addEventListener('click', (e) => {
+              e.stopPropagation();
+
+              if (tooltipEl) tooltipEl.classList.remove('active');
+
+              // Remover de custom_titles
+              let customTitlesMap = {};
+              const saved = localStorage.getItem('df_custom_titles');
+              if (saved) {
+                try { customTitlesMap = JSON.parse(saved); } catch (err) { console.error(err); }
+              }
+              if (customTitlesMap[gameId]) {
+                customTitlesMap[gameId] = customTitlesMap[gameId].filter(t => t.id !== title.id);
+                localStorage.setItem('df_custom_titles', JSON.stringify(customTitlesMap));
+              }
+
+              // Remover da memória ativa
+              data.titles = data.titles.filter(t => t.id !== title.id);
+
+              // Se o título deletado era o ativo, reseta para o primeiro disponível
+              if (data.activeTitleId === title.id) {
+                const defaultTitle = data.titles[0] || { name: "None", id: "default" };
+                data.activeTitleId = defaultTitle.id;
+                data.titleName = defaultTitle.name;
+              }
+
+              // Re-render
+              selectGame(gameId, true);
+              showHUDToast("item removed", `Custom title "${title.name}" deleted.`);
+            });
+            titleCard.appendChild(delBtn);
+          }
+
           titleCard.addEventListener('click', () => {
             // Atualizar ID ativo
             data.activeTitleId = title.id;
@@ -1090,6 +1131,44 @@ document.addEventListener("DOMContentLoaded", () => {
           </div>
         `;
       }
+
+      // Botão de deletar emblema customizado se for Mod
+      const isMod = localStorage.getItem('df_admin_session') === 'active';
+      if (isMod && emb.custom) {
+        const delBtn = document.createElement('div');
+        delBtn.className = 'custom-delete-badge';
+        delBtn.innerHTML = '&times;';
+        delBtn.title = 'Remove custom emblem';
+        delBtn.style.zIndex = '5';
+        delBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+
+          if (tooltipEl) tooltipEl.classList.remove('active');
+
+          // Remover de custom_emblems
+          let customEmblemsMap = {};
+          const saved = localStorage.getItem('df_custom_emblems');
+          if (saved) {
+            try { customEmblemsMap = JSON.parse(saved); } catch (err) { console.error(err); }
+          }
+          if (customEmblemsMap[gameId]) {
+            customEmblemsMap[gameId] = customEmblemsMap[gameId].filter(e => e.name !== emb.name);
+            localStorage.setItem('df_custom_emblems', JSON.stringify(customEmblemsMap));
+          }
+
+          // Remover da memória ativa
+          data.allEmblems = data.allEmblems.filter(e => e.name !== emb.name);
+          if (data.equippedEmblems) {
+            data.equippedEmblems = data.equippedEmblems.filter(e => e.name !== emb.name);
+          }
+
+          // Re-render
+          selectGame(gameId, true);
+          showHUDToast("item removed", `Custom emblem "${emb.name}" deleted.`);
+        });
+        card.appendChild(delBtn);
+      }
+
       allEmblemsGrid.appendChild(card);
     });
 
@@ -1659,6 +1738,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const newEmbObj = {
         name: name,
+        custom: true,
         equipped: unlocked,
         desc: desc || "Custom collectible emblem.",
         shape: shape,
