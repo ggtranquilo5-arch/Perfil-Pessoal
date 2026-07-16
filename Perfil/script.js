@@ -2,6 +2,23 @@ document.addEventListener("DOMContentLoaded", () => {
   // Limpa sessão admin residual no carregamento para que usuários comuns não herdem privilégios do Mod
   localStorage.removeItem('df_admin_session');
 
+  // Corrigir links antigos do Rust Mobile na localStorage se existirem
+  try {
+    const savedGameStats = localStorage.getItem('df_game_stats');
+    if (savedGameStats) {
+      const parsed = JSON.parse(savedGameStats);
+      if (parsed.rust) {
+        parsed.rust.officialLinks = [
+          { label: "Site Oficial", url: "https://www.rustmobile.com/en/" },
+          { label: "Discord Oficial", url: "https://discord.gg/rustmobile" }
+        ];
+        localStorage.setItem('df_game_stats', JSON.stringify(parsed));
+      }
+    }
+  } catch (e) {
+    console.error("Erro corrigindo links do Rust:", e);
+  }
+
   // Elementos do áudio
   const audio = document.getElementById('bgAudio');
   let isPlaying = false;
@@ -541,7 +558,7 @@ document.addEventListener("DOMContentLoaded", () => {
         { key: "Helicopters Shot Down", val: "123" }
       ],
       radarPoints: "100,25 168,75 140,155 60,155 32,75",
-      officialLinks: [{ label: "Site Oficial", url: "https://rust.facepunch.com/" }, { label: "Discord Oficial", url: "https://discord.gg/rust" }]
+      officialLinks: [{ label: "Site Oficial", url: "https://www.rustmobile.com/en/" }, { label: "Discord Oficial", url: "https://discord.gg/rustmobile" }]
     },
     valorant: {
       name: "Valorant",

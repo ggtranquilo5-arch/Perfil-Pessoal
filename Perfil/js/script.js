@@ -2,6 +2,23 @@ document.addEventListener("DOMContentLoaded", () => {
   // Limpa sessão admin residual no carregamento
   localStorage.removeItem('df_admin_session');
 
+  // Corrigir links antigos do Rust Mobile na localStorage se existirem
+  try {
+    const savedGameStats = localStorage.getItem('df_game_stats');
+    if (savedGameStats) {
+      const parsed = JSON.parse(savedGameStats);
+      if (parsed.rust) {
+        parsed.rust.officialLinks = [
+          { label: "Site Oficial", url: "https://www.rustmobile.com/en/" },
+          { label: "Discord Oficial", url: "https://discord.gg/rustmobile" }
+        ];
+        localStorage.setItem('df_game_stats', JSON.stringify(parsed));
+      }
+    }
+  } catch (e) {
+    console.error("Erro corrigindo links do Rust:", e);
+  }
+
   // Elementos do áudio
   const audio = document.getElementById('bgAudio');
   const audBtn = document.getElementById('audBtn');
@@ -241,6 +258,7 @@ document.addEventListener("DOMContentLoaded", () => {
         { key: "Helicópteros Derrubados", val: "16" }
       ],
       radarPoints: "100,25 168,75 140,155 60,155 32,75",
+      officialLinks: [{ label: "Site Oficial", url: "https://www.rustmobile.com/en/" }, { label: "Discord Oficial", url: "https://discord.gg/rustmobile" }],
       history: [
         { mode: "Monument Raid", desc: "Monumento Airfield conquistado", status: "VITÓRIA", resultClass: "victory" },
         { mode: "Base Defense", desc: "Defesa de raid online bem sucedida", status: "VITÓRIA", resultClass: "victory" }
