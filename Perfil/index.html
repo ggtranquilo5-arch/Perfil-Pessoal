@@ -16,7 +16,7 @@
     href="https://fonts.googleapis.com/css2?family=Oxanium:wght@300;400;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700;800&display=swap"
     rel="stylesheet">
 
-  <link rel="stylesheet" href="css/style.css?v=1.2.2">
+  <link rel="stylesheet" href="css/style.css?v=1.2.3">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
@@ -134,6 +134,69 @@
               <span id="dynamicStatusText" class="hud-status-text">CONNECTING...</span>
               <span class="hud-status-cursor">_</span>
             </div>
+          </div>
+        </div>
+
+        <!-- LEVEL & XP PROGRESS BAR -->
+        <div class="hud-xp-widget">
+          <div class="hud-xp-header">
+            <span>OPERATOR LEVEL</span>
+            <span class="hud-xp-val">LEVEL 72</span>
+          </div>
+          <div class="hud-xp-bar-wrap">
+            <div class="hud-xp-bar-fill" id="hudXpFill" style="width: 0%"></div>
+          </div>
+          <div class="hud-xp-footer">
+            <span>XP: 24,560 / 30,000</span>
+            <span class="hud-xp-pct">81%</span>
+          </div>
+        </div>
+
+        <!-- CYBERPUNK MUSIC PLAYER & VISUALIZER -->
+        <div class="cyber-player-widget">
+          <div class="cyber-player-header">// HUD AUDIO CONSOLE</div>
+          <div class="cyber-player-track">
+            <i class="fas fa-music pulse-music"></i>
+            <div class="track-scroller">
+              <span class="track-name" id="playerTrackName">Cluster Buster - The Dead Next Door</span>
+            </div>
+          </div>
+          <div class="cyber-player-controls">
+            <button class="player-btn" id="btnPlayerPlayPause" type="button">
+              <i class="fas fa-play" id="btnPlayPauseIcon"></i>
+            </button>
+            <div class="visualizer-container" id="playerVisualizer">
+              <div class="v-bar"></div>
+              <div class="v-bar"></div>
+              <div class="v-bar"></div>
+              <div class="v-bar"></div>
+              <div class="v-bar"></div>
+              <div class="v-bar"></div>
+              <div class="v-bar"></div>
+              <div class="v-bar"></div>
+              <div class="v-bar"></div>
+              <div class="v-bar"></div>
+            </div>
+            <div class="volume-container">
+              <i class="fas fa-volume-up"></i>
+              <input type="range" min="0" max="100" value="45" class="volume-slider" id="playerVolume">
+            </div>
+          </div>
+        </div>
+
+        <!-- RADAR WIDGET -->
+        <div class="radar-widget-card">
+          <div class="radar-widget-header">// DEFENSE RADAR SCAN</div>
+          <div class="radar-scan-canvas-wrap">
+            <canvas id="radarScanCanvas" class="radar-scan-canvas"></canvas>
+          </div>
+        </div>
+
+        <!-- LIVE DIAGNOSTIC TERMINAL -->
+        <div class="hud-terminal-widget">
+          <div class="hud-terminal-header">// COGNITIVE SYS_DIAGNOSTICS</div>
+          <div class="hud-terminal-log" id="hudTerminalLog">
+            <div class="log-entry">> LOADING SYS DIAGNOSTICS MODULES...</div>
           </div>
         </div>
 
@@ -794,7 +857,7 @@
   <!-- Notification Toast Container -->
   <div id="hud-notification-container" class="hud-notification-container"></div>
 
-  <script src="script.js?v=1.2.2"></script>
+  <script src="script.js?v=1.2.3"></script>
 </body>
 
 </html>

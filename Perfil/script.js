@@ -2003,6 +2003,209 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // ══════════════════════════
+  // SISTEMA DOS NOVOS WIDGETS INTERATIVOS HUD
+  // ══════════════════════════
+
+  // 1. Inicializar XP Bar com animação gradual
+  const initLevelBar = () => {
+    const xpFill = document.getElementById('hudXpFill');
+    if (xpFill) {
+      setTimeout(() => {
+        xpFill.style.width = '81%';
+      }, 1200);
+    }
+  };
+
+  // 2. Music Player & Visualizer Sync
+  const btnPlayerPlayPause = document.getElementById('btnPlayerPlayPause');
+  const playerVolume = document.getElementById('playerVolume');
+  let visualizerInterval;
+
+  const startVisualizer = () => {
+    const bars = document.querySelectorAll('.v-bar');
+    if (!bars.length) return;
+    if (visualizerInterval) clearInterval(visualizerInterval);
+
+    visualizerInterval = setInterval(() => {
+      bars.forEach(bar => {
+        const height = Math.floor(Math.random() * 16) + 2; // de 2px a 18px
+        bar.style.height = `${height}px`;
+      });
+    }, 100);
+  };
+
+  const stopVisualizer = () => {
+    if (visualizerInterval) clearInterval(visualizerInterval);
+    const bars = document.querySelectorAll('.v-bar');
+    bars.forEach(bar => {
+      bar.style.height = '2px';
+    });
+  };
+
+  if (btnPlayerPlayPause) {
+    btnPlayerPlayPause.addEventListener('click', () => {
+      if (!audio) return;
+      if (audio.paused) {
+        audio.play().then(() => {
+          isPlaying = true;
+        }).catch(err => console.log("Erro ao iniciar áudio:", err));
+      } else {
+        audio.pause();
+        isPlaying = false;
+      }
+    });
+  }
+
+  if (playerVolume) {
+    playerVolume.addEventListener('input', (e) => {
+      if (audio) {
+        audio.volume = e.target.value / 100;
+      }
+    });
+  }
+
+  // Ouvir eventos nativos do elemento de áudio
+  if (audio) {
+    audio.addEventListener('play', () => {
+      isPlaying = true;
+      const playIcon = document.getElementById('btnPlayPauseIcon');
+      if (playIcon) playIcon.className = 'fas fa-pause';
+      startVisualizer();
+    });
+
+    audio.addEventListener('pause', () => {
+      isPlaying = false;
+      const playIcon = document.getElementById('btnPlayPauseIcon');
+      if (playIcon) playIcon.className = 'fas fa-play';
+      stopVisualizer();
+    });
+  }
+
+  // 3. Inicializar Sonar Radar Scan Canvas
+  const initRadar = () => {
+    const rCanvas = document.getElementById('radarScanCanvas');
+    if (!rCanvas) return;
+    const rCtx = rCanvas.getContext('2d');
+
+    rCanvas.width = 130;
+    rCanvas.height = 130;
+
+    let angle = 0;
+    let blips = [
+      { x: 35, y: 40, size: 3, opacity: 0 },
+      { x: 85, y: 70, size: 2.5, opacity: 0 },
+      { x: 60, y: 95, size: 2, opacity: 0 }
+    ];
+
+    const drawRadar = () => {
+      rCtx.fillStyle = 'rgba(0, 0, 0, 0.08)';
+      rCtx.fillRect(0, 0, rCanvas.width, rCanvas.height);
+
+      const cx = rCanvas.width / 2;
+      const cy = rCanvas.height / 2;
+      const radius = rCanvas.width / 2 - 5;
+
+      // Desenhar círculos do radar
+      rCtx.strokeStyle = 'rgba(200, 130, 66, 0.1)';
+      rCtx.lineWidth = 1;
+      rCtx.beginPath();
+      rCtx.arc(cx, cy, radius * 0.3, 0, Math.PI * 2);
+      rCtx.arc(cx, cy, radius * 0.6, 0, Math.PI * 2);
+      rCtx.arc(cx, cy, radius, 0, Math.PI * 2);
+      rCtx.stroke();
+
+      // Linhas cruzadas
+      rCtx.beginPath();
+      rCtx.moveTo(cx - radius, cy);
+      rCtx.lineTo(cx + radius, cy);
+      rCtx.moveTo(cx, cy - radius);
+      rCtx.lineTo(cx, cy + radius);
+      rCtx.stroke();
+
+      // Varredura da linha
+      const sweepX = cx + Math.cos(angle) * radius;
+      const sweepY = cy + Math.sin(angle) * radius;
+
+      rCtx.strokeStyle = 'rgba(200, 130, 66, 0.4)';
+      rCtx.lineWidth = 1.5;
+      rCtx.beginPath();
+      rCtx.moveTo(cx, cy);
+      rCtx.lineTo(sweepX, sweepY);
+      rCtx.stroke();
+
+      // Animar os blips
+      blips.forEach(blip => {
+        const blipAngle = Math.atan2(blip.y - cy, blip.x - cx);
+        const diff = Math.abs((angle % (Math.PI * 2)) - (blipAngle < 0 ? blipAngle + Math.PI * 2 : blipAngle));
+
+        if (diff < 0.1) {
+          blip.opacity = 1.0;
+        }
+
+        if (blip.opacity > 0) {
+          rCtx.fillStyle = `rgba(0, 255, 136, ${blip.opacity})`;
+          rCtx.beginPath();
+          rCtx.arc(blip.x, blip.y, blip.size, 0, Math.PI * 2);
+          rCtx.fill();
+
+          rCtx.strokeStyle = `rgba(0, 255, 136, ${blip.opacity * 0.3})`;
+          rCtx.beginPath();
+          rCtx.arc(blip.x, blip.y, blip.size * 2, 0, Math.PI * 2);
+          rCtx.stroke();
+
+          blip.opacity -= 0.01;
+        }
+      });
+
+      angle += 0.015;
+      requestAnimationFrame(drawRadar);
+    };
+
+    drawRadar();
+  };
+
+  // 4. Inicializar Terminal de Diagnóstico do Sistema
+  const initDiagnosticTerminal = () => {
+    const logContainer = document.getElementById('hudTerminalLog');
+    if (!logContainer) return;
+
+    const messages = [
+      { text: "ESTABLISHING SECURE P2P CONNECTION...", type: "info" },
+      { text: "CORE TEMP SCAN: 39.4°C [NOMINAL]", type: "normal" },
+      { text: "MEM: SYNCHRONIZING OFFLINE CACHE...", type: "normal" },
+      { text: "NET: SECURITY PROTOCOLS INTACT.", type: "success" },
+      { text: "SYS: RECONCILING OPERATOR METRICS...", type: "info" },
+      { text: "DECRYPT KEY: 0x7F2A ACTIVE.", type: "normal" },
+      { text: "SYS: CLOUD DATABASE REPLICATING...", type: "normal" },
+      { text: "PING DETECTED: 22ms NODE-US", type: "success" },
+      { text: "LIQUID COOLING: FAN SPEED 1400RPM", type: "normal" },
+      { text: "DATA PIPELINE: FLOW RATE 98.4%", type: "success" },
+      { text: "SYS STATE: MONITORING THREATS...", type: "info" },
+      { text: "FIREWALL TRACE: NO INTRUSIONS.", type: "success" }
+    ];
+
+    setInterval(() => {
+      const msg = messages[Math.floor(Math.random() * messages.length)];
+      const entry = document.createElement('div');
+      entry.className = `log-entry ${msg.type}`;
+      entry.textContent = `> ${msg.text}`;
+      logContainer.appendChild(entry);
+
+      const entries = logContainer.querySelectorAll('.log-entry');
+      if (entries.length > 20) {
+        entries[0].remove();
+      }
+
+      logContainer.scrollTop = logContainer.scrollHeight;
+    }, 4500);
+  };
+
+  // Chamar inicializações dos widgets
+  initLevelBar();
+  initRadar();
+  initDiagnosticTerminal();
+
+  // ══════════════════════════
   // EFEITO SPOTLIGHT AMBIENTE (SEGUIR CURSOR)
   // ══════════════════════════
   document.addEventListener('mousemove', (event) => {
