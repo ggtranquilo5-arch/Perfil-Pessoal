@@ -976,12 +976,28 @@ document.addEventListener("DOMContentLoaded", () => {
       if (data.officialLinks && data.officialLinks.length > 0) {
         if (linksSection) linksSection.style.display = 'block';
         data.officialLinks.forEach(link => {
+          const labelLower = link.label.toLowerCase();
+          let iconClass = 'fas fa-external-link-alt'; // default
+          if (labelLower.includes('discord')) {
+            iconClass = 'fab fa-discord';
+          } else if (labelLower.includes('site') || labelLower.includes('oficial') || labelLower.includes('web')) {
+            iconClass = 'fas fa-globe';
+          } else if (labelLower.includes('steam')) {
+            iconClass = 'fab fa-steam';
+          } else if (labelLower.includes('youtube')) {
+            iconClass = 'fab fa-youtube';
+          } else if (labelLower.includes('wiki') || labelLower.includes('info')) {
+            iconClass = 'fas fa-info-circle';
+          } else if (labelLower.includes('social') || labelLower.includes('rockstar') || labelLower.includes('comunidade')) {
+            iconClass = 'fas fa-users';
+          }
+
           const a = document.createElement('a');
           a.className = 'df-link-btn';
           a.href = link.url;
           a.target = '_blank';
           a.rel = 'noopener noreferrer';
-          a.innerHTML = `<i class="fas fa-external-link-alt"></i> ${link.label.toUpperCase()}`;
+          a.innerHTML = `<i class="${iconClass}"></i> <span>${link.label.toUpperCase()}</span>`;
           linksGrid.appendChild(a);
         });
       } else {

@@ -438,6 +438,43 @@ document.addEventListener("DOMContentLoaded", () => {
       equippedGrid.appendChild(slot);
     });
 
+    // Renderizar links oficiais e da comunidade do jogo
+    const linksGrid = document.getElementById('dfLinksGrid');
+    const linksSection = document.getElementById('dfLinksSection');
+    if (linksGrid) {
+      linksGrid.innerHTML = '';
+      if (data.officialLinks && data.officialLinks.length > 0) {
+        if (linksSection) linksSection.style.display = 'block';
+        data.officialLinks.forEach(link => {
+          const labelLower = link.label.toLowerCase();
+          let iconClass = 'fas fa-external-link-alt';
+          if (labelLower.includes('discord')) {
+            iconClass = 'fab fa-discord';
+          } else if (labelLower.includes('site') || labelLower.includes('oficial') || labelLower.includes('web')) {
+            iconClass = 'fas fa-globe';
+          } else if (labelLower.includes('steam')) {
+            iconClass = 'fab fa-steam';
+          } else if (labelLower.includes('youtube')) {
+            iconClass = 'fab fa-youtube';
+          } else if (labelLower.includes('wiki') || labelLower.includes('info')) {
+            iconClass = 'fas fa-info-circle';
+          } else if (labelLower.includes('social') || labelLower.includes('rockstar') || labelLower.includes('comunidade')) {
+            iconClass = 'fas fa-users';
+          }
+
+          const a = document.createElement('a');
+          a.className = 'df-link-btn';
+          a.href = link.url;
+          a.target = '_blank';
+          a.rel = 'noopener noreferrer';
+          a.innerHTML = `<i class="${iconClass}"></i> <span>${link.label.toUpperCase()}</span>`;
+          linksGrid.appendChild(a);
+        });
+      } else {
+        if (linksSection) linksSection.style.display = 'none';
+      }
+    }
+
     // 3. Carregar informações na aba DETALHES
     document.getElementById('detailsHeader').textContent = `// DESEMPENHO EM ${data.name.toUpperCase()}`;
     const detailsGrid = document.getElementById('dfDetailsGrid');
