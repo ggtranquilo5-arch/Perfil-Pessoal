@@ -93,6 +93,13 @@
   <!-- Container Principal com Efeitos 3D -->
   <div class="container" id="hudContainer">
 
+    <!-- Seletor de Idioma HUD Premium (Top Right) -->
+    <div class="hud-lang-switcher">
+      <button class="lang-btn active" data-lang="pt">PT</button>
+      <span class="lang-divider">|</span>
+      <button class="lang-btn" data-lang="en">EN</button>
+    </div>
+
     <main class="hud-dashboard">
 
       <!-- COLUNA ESQUERDA (Left HUD - Réplica Canva) -->
@@ -115,6 +122,9 @@
           <div class="hud-avatar-border">
             <img src="img/Principal avatar.png" alt="Avatar de CLOUTCH" class="hud-avatar-img">
           </div>
+
+          <!-- Container para Imagens Holográficas Flutuantes (Órbita de Bolhas ao redor do perfil) -->
+          <div id="floating-holograms-container"></div>
         </div>
 
         <div class="hud-name-wrapper">
@@ -131,7 +141,8 @@
             </div>
             <div class="hud-status-text-container">
               <span class="hud-status-label">SYS_STATE:</span>
-              <span id="dynamicStatusText" class="hud-status-text">CONNECTING...</span>
+              <span id="dynamicStatusText" class="hud-status-text" data-i18n="statusText">CLOUTCH // CONEXÃO
+                SEGURA</span>
               <span class="hud-status-cursor">_</span>
             </div>
           </div>
@@ -146,34 +157,34 @@
           <div class="tabs-header" id="tabsHeader">
             <!-- Botão de Voltar para Jogos (oculto no início) -->
             <button class="tab-btn back-to-games hidden" id="backToGamesBtn">
-              <i class="fas fa-arrow-left"></i> GAMES
+              <i class="fas fa-arrow-left"></i> <span data-i18n="games">VOLTAR</span>
             </button>
 
             <!-- Aba Inicial de Jogos -->
             <button class="tab-btn active" data-tab="jogos" id="tabGamesBtn">
-              <i class="fas fa-gamepad"></i> MY GAMES
+              <i class="fas fa-gamepad"></i> <span data-i18n="myGames">MEUS JOGOS</span>
             </button>
 
             <!-- Aba do Amigo Próximo -->
             <button class="tab-btn" data-tab="amigo" id="tabAmigoBtn">
-              <i class="fas fa-user-friends"></i> CLOSE FRIEND
+              <i class="fas fa-user-friends"></i> <span data-i18n="closeFriend">AMIGO PRÓXIMO</span>
             </button>
 
             <!-- Abas do Jogo Selecionado (ocultas por padrão) -->
             <button class="tab-btn game-tab hidden" data-tab="perfil">
-              <i class="fas fa-user-astronaut"></i> PROFILE
+              <i class="fas fa-user-astronaut"></i> <span data-i18n="profile">PERFIL</span>
             </button>
             <button class="tab-btn game-tab hidden" data-tab="detalhes">
-              <i class="fas fa-chart-bar"></i> STATS
+              <i class="fas fa-chart-bar"></i> <span data-i18n="stats">DETALHES</span>
             </button>
             <button class="tab-btn game-tab hidden" data-tab="conquistas">
-              <i class="fas fa-trophy"></i> ACHIEVEMENTS
+              <i class="fas fa-trophy"></i> <span data-i18n="achievements">CONQUISTAS</span>
             </button>
 
             <!-- Botão de controle MOD (oculto por padrão, visível apenas no Mod mode) -->
             <button class="tab-btn mod-control-btn" id="btnOpenModControl"
               style="color: var(--secondary); border-left: 1px solid var(--border); display: none;">
-              <i class="fas fa-sliders-h"></i> MOD CONTROL
+              <i class="fas fa-sliders-h"></i> <span data-i18n="modControl">PAINEL MOD</span>
             </button>
           </div>
 
@@ -182,7 +193,7 @@
 
             <!-- Aba: Seleção Inicial de Jogos -->
             <div class="tab-panel active" id="tab-jogos">
-              <div class="pd-header">// SELECT A GAME PROFILE</div>
+              <div class="pd-header" data-i18n="selectGameHeader">// SELECIONE UM PERFIL DE JOGO</div>
 
               <div class="games-selector-grid">
 
@@ -259,7 +270,7 @@
 
               <!-- LISTA DE AMIGOS (Visível por padrão) -->
               <div id="friends-list-view" class="friends-list-view">
-                <div class="pd-header">// OPERADORES AMIGOS DISPONÍVEIS</div>
+                <div class="pd-header" data-i18n="availableFriendsHeader">// OPERADORES AMIGOS DISPONÍVEIS</div>
                 <div class="friends-grid" id="friendsGrid">
                   <!-- Gerado dinamicamente via JS -->
                 </div>
@@ -269,7 +280,7 @@
               <div id="friend-profile-view" class="friend-profile-view hidden">
                 <div class="friend-profile-back-bar">
                   <button class="hud-action-btn" id="btnBackToFriends">
-                    <i class="fas fa-arrow-left"></i> VOLTAR PARA A LISTA
+                    <i class="fas fa-arrow-left"></i> <span data-i18n="backToList">VOLTAR PARA A LISTA</span>
                   </button>
                 </div>
                 <div class="df-profile-layout friend-profile" style="margin-top: 15px;">
@@ -317,25 +328,10 @@
 
                     <!-- Seção de Jogos do Amigo -->
                     <div id="friendGamesSection" style="display: none; margin-top: 18px;">
-                      <div class="pd-header">// ACTIVE GAMES / JOGOS ATIVOS</div>
+                      <div class="pd-header" data-i18n="friendActiveGames">// JOGOS JOGADOS POR ELE</div>
                       <div class="friend-games-grid" id="friendGamesGrid"
                         style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px;">
                         <!-- Gerado dinamicamente via JS -->
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Lado Direito: Render da Conta do Amigo -->
-                  <div class="df-profile-char">
-                    <div class="char-hud-frame">
-                      <div class="char-image-container">
-                        <img src="img/indio-mito.jpg" alt="Render do Amigo" class="char-avatar-render" id="friendAvatar"
-                          loading="lazy">
-                      </div>
-                      <div class="char-hud-banner">
-                        <div class="char-hud-name" id="friendHudName">INDIO-MITO</div>
-                        <div class="char-hud-title" id="friendHudTitle">Tactical Vigilante</div>
-                        <div class="char-hud-tagline" id="friendHudTagline">Always on the lookout</div>
                       </div>
                     </div>
                   </div>
@@ -350,13 +346,15 @@
 
                 <!-- Lado Esquerdo: Estatísticas e Emblemas -->
                 <div class="df-profile-stats">
-                  <div class="pd-header" id="profileHeader">// GENERAL OPERATOR DATA</div>
+                  <div class="pd-header" id="profileHeader" data-i18n="generalOperatorData">// DADOS GERAIS DO OPERADOR
+                  </div>
 
                   <!-- Link/Sync Button for account connection -->
                   <div class="df-action-row" id="dfSyncActionRow"
                     style="margin-bottom: 20px; display: none; gap: 12px; flex-wrap: wrap; align-items: center;">
                     <button class="hud-action-btn" id="btnOpenSync">
-                      <i class="fas fa-network-wired"></i> VINCULAR CONTA / ATUALIZAR
+                      <i class="fas fa-network-wired"></i> <span data-i18n="linkAccount">VINCULAR CONTA /
+                        ATUALIZAR</span>
                     </button>
                     <div id="quickSyncIndicator" class="quick-sync-indicator"
                       style="display: none; align-items: center; gap: 6px; font-size: 10px; font-family: 'Space Grotesk', sans-serif; color: var(--green);">
@@ -452,7 +450,8 @@
 
                 <!-- Lado Esquerdo: Estatísticas completas -->
                 <div class="df-details-stats">
-                  <div class="pd-header" id="detailsHeader">// PERFORMANCE DETAILS</div>
+                  <div class="pd-header" id="detailsHeader" data-i18n="performanceDetails">// DETALHES DE DESEMPENHO
+                  </div>
                   <div class="details-full-grid" id="dfDetailsGrid">
                     <!-- Carregado via JS -->
                   </div>
@@ -460,7 +459,8 @@
 
                 <!-- Lado Direito: Gráfico de Radar SVG -->
                 <div class="df-details-radar">
-                  <div class="pd-header" style="text-align: center;">// COMBAT ATTRIBUTES</div>
+                  <div class="pd-header" style="text-align: center;" data-i18n="combatAttributes">// ATRIBUTOS DE
+                    COMBATE</div>
                   <div class="radar-container-wrap">
                     <svg viewBox="0 0 200 200" class="hud-radar-svg">
                       <!-- Grelha -->
@@ -497,7 +497,7 @@
 
               <!-- Título Militar Equipado -->
               <div class="df-active-title-card">
-                <div class="pd-header">// MILITARY TITLE IN USE</div>
+                <div class="pd-header" data-i18n="militaryTitleInUse">// TÍTULO MILITAR EM USO</div>
                 <div id="dfTitleDisplay">
                   <!-- Banner Dinâmico em Imagem -->
                   <div class="df-title-display-fallback">
@@ -513,7 +513,7 @@
 
               <!-- Seletor de Banners/Títulos -->
               <div class="df-all-titles-section" id="dfAllTitlesSection">
-                <div class="pd-header">// BANNERS & TITLES SELECTOR</div>
+                <div class="pd-header" data-i18n="bannersSelector">// SELETOR DE BANNERS E TÍTULOS</div>
                 <div class="df-titles-selector-grid" id="dfTitlesGrid">
                   <!-- Carregado via JS -->
                 </div>
@@ -521,7 +521,7 @@
 
               <!-- Painel de Emblemas de Operador -->
               <div class="df-all-emblems-section">
-                <div class="pd-header">// COLLECTIBLES & MILITARY EMBLEMS</div>
+                <div class="pd-header" data-i18n="collectiblesHeader">// COLECIONÁVEIS E EMBLEMAS MILITARES</div>
                 <div class="df-emblems-grid" id="dfAllEmblemsGrid">
                   <!-- Carregado via JS -->
                 </div>
@@ -541,39 +541,12 @@
       <i class="fas fa-chevron-down"></i>
     </div>
 
-    <!-- SOCIAL MEDIA SECTION (Holographic Footer) -->
-    <section class="social-footer-hud reveal-item reveal-bottom" aria-label="Social Media">
-      <div class="social-hud-header">
-        <span class="sh-tag">// SOCIAL CONNECTIONS</span>
-        <span class="sh-line"></span>
+    <!-- COPYRIGHT FOOTER (Clean Black & White) -->
+    <footer class="hud-clean-footer">
+      <div class="footer-copyright-text">
+        ©2026 Created by CLOUTCH. All rights reserved.
       </div>
-      <div class="social-hud-grid">
-        <a href="https://www.tiktok.com/" target="_blank" class="social-hud-card tiktok">
-          <i class="fab fa-tiktok"></i>
-          <span class="sh-name">TikTok</span>
-        </a>
-        <a href="https://discord.gg/" target="_blank" class="social-hud-card discord">
-          <i class="fab fa-discord"></i>
-          <span class="sh-name">Discord</span>
-        </a>
-        <a href="https://steamcommunity.com/" target="_blank" class="social-hud-card steam">
-          <i class="fab fa-steam"></i>
-          <span class="sh-name">Steam</span>
-        </a>
-        <a href="https://youtube.com/" target="_blank" class="social-hud-card youtube">
-          <i class="fab fa-youtube"></i>
-          <span class="sh-name">YouTube</span>
-        </a>
-        <a href="https://instagram.com/" target="_blank" class="social-hud-card instagram">
-          <i class="fab fa-instagram"></i>
-          <span class="sh-name">Instagram</span>
-        </a>
-        <a href="https://x.com/" target="_blank" class="social-hud-card twitter">
-          <i class="fab fa-x-twitter"></i>
-          <span class="sh-name">Twitter / X</span>
-        </a>
-      </div>
-    </section>
+    </footer>
 
   </div>
 
@@ -830,9 +803,6 @@
 
   <!-- Notification Toast Container -->
   <div id="hud-notification-container" class="hud-notification-container"></div>
-
-  <!-- Container para Imagens Holográficas Flutuantes no Plano de Fundo -->
-  <div id="floating-holograms-container"></div>
 
   <script src="script.js?v=1.2.6"></script>
 </body>

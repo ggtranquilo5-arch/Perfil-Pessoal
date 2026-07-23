@@ -2,6 +2,125 @@ document.addEventListener("DOMContentLoaded", () => {
   // Limpa sessão admin residual no carregamento para que usuários comuns não herdem privilégios do Mod
   localStorage.removeItem('df_admin_session');
 
+  // ══════════════════════════
+  // SISTEMA DE INTERNACIONALIZAÇÃO (i18n)
+  // ══════════════════════════
+  let currentLang = localStorage.getItem('hud_lang') || 'pt';
+
+  const i18n = {
+    pt: {
+      myGames: "MEUS JOGOS",
+      closeFriend: "AMIGO PRÓXIMO",
+      profile: "PERFIL",
+      stats: "DETALHES",
+      achievements: "CONQUISTAS",
+      modControl: "PAINEL MOD",
+      games: "VOLTAR",
+      statusText: "CLOUTCH // CONEXÃO SEGURA",
+      selectGameHeader: "// SELECIONE UM PERFIL DE JOGO",
+      availableFriendsHeader: "// OPERADORES AMIGOS DISPONÍVEIS",
+      backToList: "VOLTAR PARA A LISTA",
+      friendActiveGames: "// JOGOS JOGADOS POR ELE",
+      generalOperatorData: "// DADOS GERAIS DO OPERADOR",
+      linkAccount: "VINCULAR CONTA / ATUALIZAR",
+      performanceDetails: "// DETALHES DE DESEMPENHO",
+      combatAttributes: "// ATRIBUTOS DE COMBATE",
+      militaryTitleInUse: "// TÍTULO MILITAR EM USO",
+      bannersSelector: "// SELETOR DE BANNERS E TÍTULOS",
+      collectiblesHeader: "// COLECIONÁVEIS E EMBLEMAS MILITARES",
+      copyrightText: "©2026 Criado por CLOUTCH. Todos os direitos reservados."
+    },
+    en: {
+      myGames: "MY GAMES",
+      closeFriend: "CLOSE FRIEND",
+      profile: "PROFILE",
+      stats: "STATS",
+      achievements: "ACHIEVEMENTS",
+      modControl: "MOD CONTROL",
+      games: "GAMES",
+      statusText: "CLOUTCH // SECURE ACTIVE",
+      selectGameHeader: "// SELECT A GAME PROFILE",
+      availableFriendsHeader: "// AVAILABLE FRIEND OPERATORS",
+      backToList: "BACK TO LIST",
+      friendActiveGames: "// ACTIVE GAMES PLAYED BY HIM",
+      generalOperatorData: "// GENERAL OPERATOR DATA",
+      linkAccount: "LINK ACCOUNT / REFRESH",
+      performanceDetails: "// PERFORMANCE DETAILS",
+      combatAttributes: "// COMBAT ATTRIBUTES",
+      militaryTitleInUse: "// MILITARY TITLE IN USE",
+      bannersSelector: "// BANNERS & TITLES SELECTOR",
+      collectiblesHeader: "// COLLECTIBLES & MILITARY EMBLEMS",
+      copyrightText: "©2026 Created by CLOUTCH. All rights reserved."
+    }
+  };
+
+  const applyTranslations = () => {
+    // 1. Elementos HTML estáticos com data-i18n
+    document.querySelectorAll("[data-i18n]").forEach(el => {
+      const key = el.getAttribute("data-i18n");
+      if (i18n[currentLang] && i18n[currentLang][key]) {
+        // Preservar ícone FA se existir
+        const icon = el.querySelector("i");
+        if (icon) {
+          el.innerHTML = "";
+          el.appendChild(icon);
+          const span = document.createElement("span");
+          span.textContent = " " + i18n[currentLang][key];
+          el.appendChild(span);
+        } else {
+          el.textContent = i18n[currentLang][key];
+        }
+      }
+    });
+
+    // 2. Botões de toggle de idioma
+    document.querySelectorAll(".hud-lang-switcher .lang-btn").forEach(btn => {
+      if (btn.getAttribute("data-lang") === currentLang) {
+        btn.classList.add("active");
+      } else {
+        btn.classList.remove("active");
+      }
+    });
+
+    // 3. Placeholder da senha do admin
+    const adminPassInput = document.getElementById("adminPassKey");
+    if (adminPassInput) {
+      adminPassInput.placeholder = currentLang === 'pt' ? "DIGITE A CHAVE DE ACESSO..." : "ENTER ACCESS KEY...";
+    }
+  };
+
+  const initLanguageSwitcher = () => {
+    document.querySelectorAll(".hud-lang-switcher .lang-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const selectedLang = btn.getAttribute("data-lang");
+        if (selectedLang !== currentLang) {
+          currentLang = selectedLang;
+          localStorage.setItem('hud_lang', currentLang);
+          applyTranslations();
+
+          // Re-renderizar seções ativas
+          renderFriendsList();
+
+          const profileView = document.getElementById("friend-profile-view");
+          if (profileView && !profileView.classList.contains("hidden")) {
+            const activeFriendName = document.getElementById("friendHudName").textContent;
+            let activeFriendKey = "indio-mito";
+            if (activeFriendName === "FREEZY") activeFriendKey = "freezy";
+            showFriendProfile(activeFriendKey);
+          }
+
+          // Re-selecionar o jogo ativo para atualizar
+          const activeGameCard = document.querySelector(".launcher-game-card.active") || document.querySelector("[data-game]");
+          if (activeGameCard) {
+            const activeGameId = activeGameCard.getAttribute("data-game");
+            selectGame(activeGameId, true);
+          }
+        }
+      });
+    });
+    applyTranslations();
+  };
+
   // Corrigir links antigos do Rust Mobile na localStorage se existirem
   try {
     const savedGameStats = localStorage.getItem('df_game_stats');
@@ -9,8 +128,8 @@ document.addEventListener("DOMContentLoaded", () => {
       const parsed = JSON.parse(savedGameStats);
       if (parsed.rust) {
         parsed.rust.officialLinks = [
-          { label: "Site Oficial", url: "https://www.rustmobile.com/en/" },
-          { label: "Discord Oficial", url: "https://discord.gg/rustmobile" }
+          { label: "Official Website", url: "https://www.rustmobile.com/en/" },
+          { label: "Official Discord", url: "https://discord.gg/rustmobile" }
         ];
         localStorage.setItem('df_game_stats', JSON.stringify(parsed));
       }
@@ -246,66 +365,11 @@ document.addEventListener("DOMContentLoaded", () => {
   document.addEventListener('keydown', playAudio, { once: true });
 
   // ══════════════════════════
-  // WIDGET DE STATUS DINÂMICO (DECRYPTER TERMINAL EFFECT)
+  // WIDGET DE STATUS (MENSAGEM FIXA ATIVA)
   // ══════════════════════════
   const dynamicStatusText = document.getElementById('dynamicStatusText');
   if (dynamicStatusText) {
-    const statusData = [
-      "OPERATOR ACTIVE",
-      "SECURE LINK // 24ms",
-      "SYS: OPERATIONAL",
-      "LOC: 40.7128 N 74.0060 W",
-      "FIREWALL: NOMINAL",
-      "CLOUTCH_SECURE // READY"
-    ];
-    let dataIndex = 0;
-    let charIndex = 0;
-    let isDeleting = false;
-    let typingSpeed = 75;
-
-    const typeStatus = () => {
-      const currentWord = statusData[dataIndex];
-
-      if (isDeleting) {
-        // Apagando caracteres com glitch aleatório
-        const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ#@$%&*!?";
-        const tempText = currentWord.substring(0, charIndex - 1);
-        if (charIndex > 0) {
-          dynamicStatusText.textContent = tempText + (Math.random() > 0.65 ? chars[Math.floor(Math.random() * chars.length)] : "");
-        } else {
-          dynamicStatusText.textContent = "";
-        }
-        charIndex--;
-        typingSpeed = 30; // Velocidade de apagar
-      } else {
-        // Digitando com decodificador (glitch de letra rápido)
-        const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#@$%&*!?";
-
-        dynamicStatusText.textContent = currentWord.substring(0, charIndex) + (charIndex < currentWord.length ? chars[Math.floor(Math.random() * chars.length)] : "");
-
-        setTimeout(() => {
-          dynamicStatusText.textContent = currentWord.substring(0, charIndex + 1);
-          charIndex++;
-        }, 15);
-
-        typingSpeed = 90;
-      }
-
-      // Troca de estados
-      if (!isDeleting && charIndex === currentWord.length) {
-        isDeleting = true;
-        typingSpeed = 2500; // Tempo que a palavra fica exibida
-      } else if (isDeleting && charIndex === 0) {
-        isDeleting = false;
-        dataIndex = (dataIndex + 1) % statusData.length;
-        typingSpeed = 400; // Pausa antes de digitar a próxima palavra
-      }
-
-      setTimeout(typeStatus, typingSpeed);
-    };
-
-    // Iniciar efeito após o boot completo do sistema (2.2s)
-    setTimeout(typeStatus, 2200);
+    dynamicStatusText.textContent = "CLOUTCH // SECURE ACTIVE";
   }
 
   // Emblemas otimizados do Delta Force fornecidos pelo usuário
@@ -446,7 +510,7 @@ document.addEventListener("DOMContentLoaded", () => {
       opLevel: "60",
       titleName: "God of War T6",
       titleDesc: "Proof of reaching the highest rank in Risk Zone during Season War Albaze!",
-      playstyle: "Especialista em infiltração de alto risco na Risk Zone, jogando como batedor/assalto. Foco em loot de alto valor e resgate estratégico da equipe.",
+      playstyle: "High-risk Hazard Zone infiltration specialist, playing as scout/assault. Focused on high-value loot extraction and strategic team rescues.",
       titles: [
         { name: "God of War T9", id: "t9", file: "Screenshot_2026-07-01-15-17-13-442_com.garena.game.df.png", desc: "Season 9 - God of War Rank" },
         { name: "God of War T8", id: "t8", file: "Screenshot_2026-07-01-15-17-50-703_com.garena.game.df.png", desc: "Season 8 - God of War Rank" },
@@ -508,7 +572,7 @@ document.addEventListener("DOMContentLoaded", () => {
       ],
 
       radarPoints: "100,41 155,82 135,148 66,134 27,76",
-      officialLinks: [{ label: "Site Oficial", url: "https://www.playdeltaforce.com/" }, { label: "Discord Oficial", url: "https://discord.gg/deltaforce" }]
+      officialLinks: [{ label: "Official Website", url: "https://www.playdeltaforce.com/" }, { label: "Official Discord", url: "https://discord.gg/deltaforce" }]
     },
     rust: {
       name: "Rust Mobile",
@@ -519,7 +583,7 @@ document.addEventListener("DOMContentLoaded", () => {
       opLevel: "95",
       titleName: "Supreme Glory",
       titleDesc: "Reached the top of the Hall of Fame on the global server ranking.",
-      playstyle: "Sobrevivente hardcore focado em sobrevivência e fortificação. Especialista em construir bases impenetráveis contra raids e domínio de PvP na ilha.",
+      playstyle: "Hardcore survivor focused on survival and fortification. Expert in building raid-proof bases and dominating PvP on the island.",
 
       // Foto de perfil do Rust (local)
       avatarUrl: "img/avatarRust1.png",
@@ -560,7 +624,7 @@ document.addEventListener("DOMContentLoaded", () => {
         { key: "Helicopters Shot Down", val: "123" }
       ],
       radarPoints: "100,25 168,75 140,155 60,155 32,75",
-      officialLinks: [{ label: "Site Oficial", url: "https://www.rustmobile.com/en/" }, { label: "Discord Oficial", url: "https://discord.gg/rustmobile" }]
+      officialLinks: [{ label: "Official Website", url: "https://www.rustmobile.com/en/" }, { label: "Official Discord", url: "https://discord.gg/rustmobile" }]
     },
     valorant: {
       name: "Valorant",
@@ -572,7 +636,7 @@ document.addEventListener("DOMContentLoaded", () => {
       opLevel: "82",
       titleName: "Clutch Master",
       titleDesc: "Won 100+ rounds alone against 3+ enemies.",
-      playstyle: "Duelista/Iniciador focado em controle de mapa e clutches. Especialista em garantir rounds em desvantagem numérica com alta precisão.",
+      playstyle: "Duelist/Initiator focused on map control and clutches. Expert in securing rounds in numerical disadvantage with high precision.",
 
       // Foto de perfil do Valorant (local)
       avatarUrl: "img/valorant_avatar.jpg",
@@ -598,7 +662,7 @@ document.addEventListener("DOMContentLoaded", () => {
         { key: "Average Damage Per Round", val: "152" }
       ],
       radarPoints: "100,30 162,75 142,150 64,148 30,75",
-      officialLinks: [{ label: "Site Oficial", url: "https://playvalorant.com/" }, { label: "Discord Oficial", url: "https://discord.gg/valorant" }]
+      officialLinks: [{ label: "Official Website", url: "https://playvalorant.com/" }, { label: "Official Discord", url: "https://discord.gg/valorant" }]
     },
     cs2: {
       name: "Counter-Strike 2",
@@ -610,7 +674,7 @@ document.addEventListener("DOMContentLoaded", () => {
       opLevel: "74",
       titleName: "Defusal Veteran",
       titleDesc: "Defused 50 bombs with less than 2 seconds remaining.",
-      playstyle: "AWPer principal e IGL (In-Game Leader). Foco total em táticas coordenadas de bomb, controle de recuo de mira e alta taxa de headshots.",
+      playstyle: "Main AWPer and IGL (In-Game Leader). Full focus on coordinated bomb site tactics, recoil control, and high headshot rate.",
 
       // Foto de perfil do CS2 (local)
       avatarUrl: "img/Cs2 perfil.jpg",
@@ -636,7 +700,7 @@ document.addEventListener("DOMContentLoaded", () => {
         { key: "Clutches Won", val: "42" }
       ],
       radarPoints: "100,28 160,78 138,154 62,152 28,78",
-      officialLinks: [{ label: "Site Oficial", url: "https://www.counter-strike.net/cs2" }, { label: "Steam Hub", url: "https://steamcommunity.com/app/270120" }]
+      officialLinks: [{ label: "Official Website", url: "https://www.counter-strike.net/cs2" }, { label: "Steam Hub", url: "https://steamcommunity.com/app/270120" }]
     },
     gta5: {
       name: "Grand Theft Auto V",
@@ -648,7 +712,7 @@ document.addEventListener("DOMContentLoaded", () => {
       opLevel: "120",
       titleName: "Heist Mastermind",
       titleDesc: "Completed all heists on hard difficulty with the same team without anyone dying.",
-      playstyle: "Piloto profissional em fugas e planejador tático de golpes de elite. Foco em roleplay policial/corporativo com alta performance.",
+      playstyle: "Professional getaway driver and tactical planner for elite heists. Focus on high-performance police/corporate roleplay.",
       avatarUrl: "img/Gta 5 avatar.jpg",
       equippedEmblems: [
         { name: "Driver", icon: "fa-car", shape: "shape-circle", color: "gold-emb" },
@@ -671,7 +735,7 @@ document.addEventListener("DOMContentLoaded", () => {
         { key: "Max Wanted Level", val: "5 Stars" }
       ],
       radarPoints: "100,32 165,75 138,150 62,148 26,75",
-      officialLinks: [{ label: "Site Oficial", url: "https://www.rockstargames.com/" }, { label: "Rockstar Social Club", url: "https://socialclub.rockstargames.com/" }]
+      officialLinks: [{ label: "Official Website", url: "https://www.rockstargames.com/" }, { label: "Rockstar Social Club", url: "https://socialclub.rockstargames.com/" }]
     }
   };
 
@@ -1294,6 +1358,21 @@ document.addEventListener("DOMContentLoaded", () => {
         panel.classList.remove('active');
       }
     });
+
+    // Gerenciar visibilidade do rodapé de redes sociais
+    const socialFooter = document.querySelector(".social-footer-hud");
+    if (socialFooter) {
+      if (tabName !== 'amigo') {
+        socialFooter.style.display = "flex";
+      } else {
+        const profileView = document.getElementById("friend-profile-view");
+        if (profileView && !profileView.classList.contains("hidden")) {
+          socialFooter.style.display = "none";
+        } else {
+          socialFooter.style.display = "flex";
+        }
+      }
+    }
   };
 
   // Ouvintes de clique nos cards de jogos do launcher
@@ -2105,6 +2184,7 @@ document.addEventListener("DOMContentLoaded", () => {
       tagline: "SEMPRE EM ALERTA",
       bio: "Always on the lookout, guarding the perimeter with tactical precision.",
       avatar: "img/indio-mito.jpg",
+      render3d: "img/deltaforce_avatar.jpg",
       online: true,
       games: ["ARC Raiders", "Delta Force Mobile", "Todos os Resident Evil", "Rust Mobile", "Pubg Mobile"]
     },
@@ -2113,7 +2193,8 @@ document.addEventListener("DOMContentLoaded", () => {
       role: "Especialista Gélido",
       tagline: "SOB ZERO",
       bio: "Incredibly cool under pressure, master of ice-cold tactical play.",
-      avatar: "img/Cs2 perfil.jpg",
+      avatar: "img/amigos/Freezy perfil.jpg",
+      render3d: "img/amigos/Freezy perfil.jpg",
       online: true,
       games: ["Pubg Mobile", "Mission Evo", "Valorant"]
     }
@@ -2129,6 +2210,11 @@ document.addEventListener("DOMContentLoaded", () => {
       const card = document.createElement("div");
       card.className = `friend-card ${friend.online ? 'online' : 'offline'}`;
       card.setAttribute("data-friend", key);
+
+      // Aplicar imagem do banner com máscara de gradiente escuro tático
+      card.style.backgroundImage = `linear-gradient(90deg, rgba(18, 14, 11, 0.95) 45%, rgba(18, 14, 11, 0.35) 100%), url('${friend.banner}')`;
+      card.style.backgroundSize = "cover";
+      card.style.backgroundPosition = "center";
 
       card.innerHTML = `
         <img src="${friend.avatar}" alt="${friend.name}" class="friend-card-avatar" loading="lazy">
@@ -2154,12 +2240,21 @@ document.addEventListener("DOMContentLoaded", () => {
     const friend = friendsData[friendId];
     if (!friend) return;
 
-    // Preencher dados no HTML
-    document.getElementById("friendProfileHeader").textContent = `// OPERADOR AMIGO: ${friend.name}`;
-    document.getElementById("friendAvatar").src = friend.avatar;
-    document.getElementById("friendHudName").textContent = friend.name;
-    document.getElementById("friendHudTitle").textContent = friend.role;
-    document.getElementById("friendHudTagline").textContent = friend.tagline;
+    // Preencher dados no HTML de forma segura
+    const headerEl = document.getElementById("friendProfileHeader");
+    if (headerEl) headerEl.textContent = `// OPERADOR AMIGO: ${friend.name}`;
+
+    const avatarEl = document.getElementById("friendAvatar");
+    if (avatarEl) avatarEl.src = friend.render3d || friend.avatar;
+
+    const hudNameEl = document.getElementById("friendHudName");
+    if (hudNameEl) hudNameEl.textContent = friend.name;
+
+    const hudTitleEl = document.getElementById("friendHudTitle");
+    if (hudTitleEl) hudTitleEl.textContent = friend.role;
+
+    const hudTaglineEl = document.getElementById("friendHudTagline");
+    if (hudTaglineEl) hudTaglineEl.textContent = friend.tagline;
 
     // Exibir a biografia do amigo
     const bioBox = document.getElementById("friendBioBox");
@@ -2202,7 +2297,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (nameLower.includes("resident evil")) return "img/amigos/residentEvil.webp";
       if (nameLower.includes("raiders")) return "img/amigos/ArcRaiders.webp";
       if (nameLower.includes("mission evo")) return "img/amigos/Mission evo.jpg";
-      return "img/deltaforce_avatar.jpg"; 
+      return "img/deltaforce_avatar.jpg";
     };
 
     if (gamesSection && gamesGrid) {
@@ -2215,7 +2310,7 @@ document.addEventListener("DOMContentLoaded", () => {
           const card = document.createElement("div");
           card.className = "friend-game-card";
           card.style.backgroundImage = `linear-gradient(90deg, rgba(8, 6, 5, 0.95) 45%, rgba(8, 6, 5, 0.3) 100%), url('${bannerUrl}')`;
-          
+
           card.innerHTML = `
             <div class="fgc-avatar-container">
               <img src="${avatarUrl}" alt="${game}" class="fgc-avatar" loading="lazy">
@@ -2237,6 +2332,12 @@ document.addEventListener("DOMContentLoaded", () => {
       listView.classList.add("hidden");
       profileView.classList.remove("hidden");
     }
+
+    // Ocultar redes sociais gerais no rodapé ao exibir detalhes do amigo
+    const socialFooter = document.querySelector(".social-footer-hud");
+    if (socialFooter) {
+      socialFooter.style.display = "none";
+    }
   };
 
   const btnBackToFriends = document.getElementById("btnBackToFriends");
@@ -2248,6 +2349,12 @@ document.addEventListener("DOMContentLoaded", () => {
       if (listView && profileView) {
         listView.classList.remove("hidden");
         profileView.classList.add("hidden");
+      }
+
+      // Reexibir redes sociais gerais no rodapé ao voltar
+      const socialFooter = document.querySelector(".social-footer-hud");
+      if (socialFooter) {
+        socialFooter.style.display = "flex";
       }
     });
   }
@@ -2268,25 +2375,34 @@ document.addEventListener("DOMContentLoaded", () => {
       "img/fortnite avatar.jpeg"
     ];
 
-    const hologramsCount = 6;
+    const hologramsCount = hologramImages.length; // Exatamente uma bolha para cada jogo (sem duplicações!)
     const holograms = [];
 
     for (let i = 0; i < hologramsCount; i++) {
       const holo = document.createElement("div");
       holo.className = "floating-hologram";
 
+      // Bolhas ainda menores e mais discretas (entre 20px e 28px)
+      const size = Math.random() * 8 + 20;
+      holo.style.width = `${size}px`;
+      holo.style.height = `${size}px`;
+
       const img = document.createElement("img");
       img.src = hologramImages[i % hologramImages.length];
       img.alt = "Holograma";
       holo.appendChild(img);
 
-      const left = Math.random() * 85;
-      const top = Math.random() * 85;
-      holo.style.left = `${left}vw`;
-      holo.style.top = `${top}vh`;
+      // Coordenadas polares perfeitamente centralizadas e mais próximas da foto de perfil
+      const angle = i * (2 * Math.PI / hologramsCount); // Sem jitter para manter uma distribuição perfeita de 360°
+      const radius = Math.random() * 15 + 88; // Órbita mais justa e próxima, circulando os anéis do avatar
 
-      const duration = Math.random() * 12 + 15;
-      const delay = Math.random() * -12;
+      const left = 110 + radius * Math.cos(angle) - size / 2;
+      const top = 110 + radius * Math.sin(angle) - size / 2;
+      holo.style.left = `${left}px`;
+      holo.style.top = `${top}px`;
+
+      const duration = Math.random() * 8 + 10;
+      const delay = Math.random() * -10;
       holo.style.animationName = "floatHologram";
       holo.style.animationDuration = `${duration}s`;
       holo.style.animationDelay = `${delay}s`;
@@ -2299,8 +2415,8 @@ document.addEventListener("DOMContentLoaded", () => {
         el: holo,
         x: left,
         y: top,
-        factorX: Math.random() * 20 + 8,
-        factorY: Math.random() * 20 + 8
+        factorX: Math.random() * 10 + 4, // Resposta de paralaxe mais contida para não afastar do avatar
+        factorY: Math.random() * 10 + 4
       });
     }
 
