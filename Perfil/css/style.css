@@ -57,6 +57,10 @@ body {
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
   min-height: 100vh;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 }
 
 body::before {
@@ -746,17 +750,39 @@ body::before {
   justify-content: space-between;
   gap: 16px;
   cursor: pointer;
-  transition: var(--transition);
+  transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), border-color 0.3s ease, box-shadow 0.3s ease;
   position: relative;
   overflow: hidden;
   background-clip: padding-box;
-  transform: translateZ(0);
+  transform: translate3d(0, 0, 0);
+  will-change: transform, border-color, box-shadow;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.launcher-game-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(200, 130, 66, 0.15), transparent);
+  transform: skewX(-25deg);
+  transition: 0.75s;
+  z-index: 1;
+}
+
+.launcher-game-card:hover::after {
+  left: 150%;
 }
 
 .launcher-game-card:hover {
-  transform: translateX(6px);
+  transform: translate3d(6px, 0, 0);
   border-color: var(--primary);
-  box-shadow: 0 0 20px rgba(200, 130, 66, 0.35);
+  box-shadow: 0 8px 25px rgba(200, 130, 66, 0.25);
   background-position: 50% 45%;
 }
 
@@ -3071,4 +3097,380 @@ select.hud-input option {
 .df-link-btn:hover i {
   color: #ffffff;
   transform: scale(1.15);
+}
+
+/* ==========================================================================
+   DYNAMIC FRIENDS LIST AND CARDS STYLING
+   ========================================================================== */
+.friends-list-view {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 100%;
+  animation: modalFadeIn 0.3s ease-out;
+}
+
+.friends-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+  margin-top: 15px;
+}
+
+.friend-card {
+  background: rgba(18, 14, 11, 0.9);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--border);
+  border-radius: 8px;
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  position: relative;
+  overflow: hidden;
+  transform: translate3d(0, 0, 0);
+  will-change: transform, border-color, box-shadow;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.friend-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0) 50%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.friend-card:hover {
+  border-color: rgba(200, 130, 66, 0.45);
+  border-left-color: var(--primary);
+  background: rgba(200, 130, 66, 0.08);
+  box-shadow: 0 8px 25px rgba(200, 130, 66, 0.15), inset 0 0 10px rgba(200, 130, 66, 0.05);
+  transform: translate3d(0, -3px, 0);
+}
+
+.friend-card.online {
+  border-left-color: var(--green);
+}
+
+.friend-card.online:hover {
+  border-left-color: var(--green);
+  box-shadow: 0 8px 25px rgba(0, 255, 136, 0.1), inset 0 0 10px rgba(0, 255, 136, 0.02);
+}
+
+.friend-card-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 6px;
+  border: 1.5px solid rgba(255, 255, 255, 0.08);
+  object-fit: cover;
+  background: #141218;
+  flex-shrink: 0;
+  transition: var(--transition);
+}
+
+.friend-card:hover .friend-card-avatar {
+  border-color: rgba(255, 255, 255, 0.25);
+  transform: scale(1.05);
+}
+
+.friend-card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex-grow: 1;
+}
+
+.friend-card-name {
+  font-family: 'Oxanium', sans-serif;
+  font-weight: 700;
+  font-size: 13.5px;
+  color: #ffffff;
+  letter-spacing: 0.5px;
+}
+
+.friend-card-role {
+  font-size: 10px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.friend-card-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 9px;
+  margin-top: 5px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.friend-card-status .status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--text-dim);
+  display: inline-block;
+}
+
+.friend-card-status.online {
+  color: var(--green);
+}
+
+.friend-card-status.online .status-dot {
+  background: var(--green);
+  box-shadow: 0 0 6px var(--green);
+}
+
+.friend-card-status.offline {
+  color: var(--text-dim);
+}
+
+.friend-profile-back-bar {
+  display: flex;
+  margin-bottom: 15px;
+}
+
+/* ==========================================================================
+   GAME BRIEFING & PLAYSTYLE CARD
+   ========================================================================== */
+.df-playstyle-card {
+  background: rgba(18, 14, 11, 0.65);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--primary);
+  border-radius: 6px;
+  padding: 16px 20px;
+  margin-top: 24px;
+  position: relative;
+  box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  animation: modalFadeIn 0.3s ease-out;
+}
+
+.df-playstyle-card .playstyle-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'Oxanium', sans-serif;
+  font-weight: 800;
+  font-size: 11px;
+  color: var(--primary);
+  letter-spacing: 1.5px;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+
+.df-playstyle-card .playstyle-header i {
+  color: var(--primary);
+  text-shadow: 0 0 6px var(--primary);
+}
+
+.df-playstyle-card .playstyle-body {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 11px;
+  color: var(--text-mid);
+  line-height: 1.6;
+}
+
+/* ==========================================================================
+   FLOATING HOLOGRAMS BACKGROUND
+   ========================================================================== */
+#floating-holograms-container {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -6;
+  overflow: hidden;
+  width: 100vw;
+  height: 100vh;
+}
+
+.floating-hologram {
+  position: absolute;
+  width: 90px;
+  height: 90px;
+  opacity: 0.05;
+  filter: blur(0.5px) drop-shadow(0 0 8px var(--primary));
+  border: 1.5px solid var(--primary);
+  border-radius: 10px;
+  padding: 4px;
+  background: rgba(12, 10, 9, 0.4);
+  transition: transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
+  will-change: transform, top, left;
+}
+
+.floating-hologram img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 6px;
+  filter: grayscale(40%);
+}
+
+@keyframes floatHologram {
+  0% {
+    transform: translateY(0) rotate(0deg);
+  }
+
+  50% {
+    transform: translateY(-25px) rotate(3deg);
+  }
+
+  100% {
+    transform: translateY(20px) rotate(-3deg);
+  }
+}
+
+.friend-games-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-top: 15px;
+  width: 100%;
+}
+
+.friend-game-card {
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--primary);
+  border-radius: 8px;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 72px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), border-color 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.6);
+  background-color: rgba(18, 14, 11, 0.88);
+  transform: translate3d(0, 0, 0);
+  will-change: transform, border-color, box-shadow;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.friend-game-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0) 50%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.friend-game-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.15), transparent);
+  transform: skewX(-25deg);
+  transition: 0.75s;
+  z-index: 1;
+}
+
+.friend-game-card:hover::after {
+  left: 150%;
+}
+
+.friend-game-card:hover {
+  border-color: rgba(200, 130, 66, 0.5);
+  border-left-color: var(--secondary);
+  box-shadow: 0 8px 20px rgba(200, 130, 66, 0.15), inset 0 0 10px rgba(200, 130, 66, 0.05);
+  transform: translate3d(0, -3px, 0);
+}
+
+.fgc-avatar-container {
+  width: 44px;
+  height: 44px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  overflow: hidden;
+  flex-shrink: 0;
+  z-index: 2;
+  transition: all 0.3s ease;
+  background: #141218;
+}
+
+.fgc-avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.friend-game-card:hover .fgc-avatar-container {
+  border-color: var(--primary);
+  box-shadow: 0 0 8px rgba(200, 130, 66, 0.45);
+}
+
+.friend-game-card:hover .fgc-avatar {
+  transform: scale(1.12);
+}
+
+/* Caixa de biografia premium */
+.friend-bio-box {
+  margin-top: 12px;
+  font-size: 11px;
+  color: var(--text-mid);
+  line-height: 1.55;
+  font-family: 'Space Grotesk', sans-serif;
+  background: rgba(200, 130, 66, 0.03);
+  border: 1px solid rgba(200, 130, 66, 0.15);
+  border-left: 3px solid var(--primary);
+  border-radius: 4px;
+  padding: 10px 14px;
+  backdrop-filter: blur(4px);
+  animation: modalFadeIn 0.3s ease-out;
+}
+
+.fgc-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  z-index: 2;
+}
+
+.fgc-name {
+  font-family: 'Oxanium', sans-serif;
+  font-weight: 800;
+  font-size: 12px;
+  color: #ffffff;
+  letter-spacing: 0.5px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9);
+}
+
+.fgc-status {
+  font-size: 8px;
+  font-weight: 700;
+  color: var(--green);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-shadow: 0 0 4px rgba(0, 255, 136, 0.4);
+}
+
+@media (max-width: 600px) {
+  .friend-games-grid {
+    grid-template-columns: 1fr;
+  }
 }

@@ -254,83 +254,94 @@
               </div>
             </div>
 
-            <!-- Aba: Amigo Próximo (Modelo de Perfil) -->
+            <!-- Aba: Amigo Próximo (Modelo de Perfil Dinâmico) -->
             <div class="tab-panel" id="tab-amigo">
-              <div class="df-profile-layout friend-profile">
 
-                <!-- Lado Esquerdo: Estatísticas e Detalhes do Amigo -->
-                <div class="df-profile-stats">
-                  <div class="pd-header">// FRIEND OPERATOR: INDIO-MITO</div>
-
-                  <!-- Classificação & Mini Grid do Amigo -->
-                  <div class="df-quick-stats-row">
-                    <div class="df-rank-badge-card">
-                      <span class="df-rb-label">ELITE RANKING</span>
-                      <div class="df-rb-title">DF Pinnacle ⭐</div>
-                      <div class="df-rb-score">Score: 94,200</div>
-                    </div>
-                    <div class="df-stats-mini-grid">
-                      <div class="df-sm-item">
-                        <span class="df-sm-lbl">PLAYTIME</span>
-                        <span class="df-sm-val">4,354h</span>
-                      </div>
-                      <div class="df-sm-item">
-                        <span class="df-sm-lbl">BATTLES</span>
-                        <span class="df-sm-val">11,130</span>
-                      </div>
-                      <div class="df-sm-item">
-                        <span class="df-sm-lbl">OVERALL K.D</span>
-                        <span class="df-sm-val highlighted-kd">3.10</span>
-                      </div>
-                      <div class="df-sm-item">
-                        <span class="df-sm-lbl">KILLS</span>
-                        <span class="df-sm-val">34,503</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Detalhes de Desempenho -->
-                  <div class="pd-header">// PERFORMANCE DETAILS</div>
-                  <div class="details-full-grid">
-                    <div class="pd-row">
-                      <span class="pd-key">HEADSHOT KILLS</span>
-                      <span class="pd-val">38.7%</span>
-                    </div>
-                    <div class="pd-row">
-                      <span class="pd-key">EXTRACTION RATE</span>
-                      <span class="pd-val">49.5%</span>
-                    </div>
-                    <div class="pd-row">
-                      <span class="pd-key">SHOOTING ACCURACY</span>
-                      <span class="pd-val">41.2%</span>
-                    </div>
-                    <div class="pd-row">
-                      <span class="pd-key">OPERATOR LEVEL</span>
-                      <span class="pd-val">Lv 60</span>
-                    </div>
-                    <div class="pd-row">
-                      <span class="pd-key">MATCH MVPs</span>
-                      <span class="pd-val">2,845</span>
-                    </div>
-                  </div>
-
+              <!-- LISTA DE AMIGOS (Visível por padrão) -->
+              <div id="friends-list-view" class="friends-list-view">
+                <div class="pd-header">// OPERADORES AMIGOS DISPONÍVEIS</div>
+                <div class="friends-grid" id="friendsGrid">
+                  <!-- Gerado dinamicamente via JS -->
                 </div>
-
-                <!-- Lado Direito: Render da Conta do Amigo -->
-                <div class="df-profile-char">
-                  <div class="char-hud-frame">
-                    <div class="char-image-container">
-                      <img src="img/indio-mito.jpg" alt="Render do Amigo" class="char-avatar-render" loading="lazy">
-                    </div>
-                    <div class="char-hud-banner">
-                      <div class="char-hud-name">INDIO-MITO</div>
-                      <div class="char-hud-title">Tactical Vigilante</div>
-                      <div class="char-hud-tagline">Always on the lookout</div>
-                    </div>
-                  </div>
-                </div>
-
               </div>
+
+              <!-- DETALHES DO AMIGO SELECIONADO (Oculto por padrão) -->
+              <div id="friend-profile-view" class="friend-profile-view hidden">
+                <div class="friend-profile-back-bar">
+                  <button class="hud-action-btn" id="btnBackToFriends">
+                    <i class="fas fa-arrow-left"></i> VOLTAR PARA A LISTA
+                  </button>
+                </div>
+                <div class="df-profile-layout friend-profile" style="margin-top: 15px;">
+                  <!-- Lado Esquerdo: Estatísticas e Detalhes do Amigo -->
+                  <div class="df-profile-stats">
+                    <div class="pd-header" id="friendProfileHeader">// OPERADOR AMIGO: INDIO-MITO</div>
+
+                    <!-- Biografia do Amigo -->
+                    <div class="friend-bio-box" id="friendBioBox">
+                      <!-- Carregado via JS -->
+                    </div>
+
+                    <!-- Classificação & Mini Grid do Amigo -->
+                    <div class="df-quick-stats-row" id="friendQuickStats">
+                      <div class="df-rank-badge-card">
+                        <span class="df-rb-label">ELITE RANKING</span>
+                        <div class="df-rb-title" id="friendRankTitle">DF Pinnacle ⭐</div>
+                        <div class="df-rb-score" id="friendRankScore">Score: 94,200</div>
+                      </div>
+                      <div class="df-stats-mini-grid">
+                        <div class="df-sm-item">
+                          <span class="df-sm-lbl">PLAYTIME</span>
+                          <span class="df-sm-val" id="friendPlaytime">4,354h</span>
+                        </div>
+                        <div class="df-sm-item">
+                          <span class="df-sm-lbl">BATTLES</span>
+                          <span class="df-sm-val" id="friendBattles">11,130</span>
+                        </div>
+                        <div class="df-sm-item">
+                          <span class="df-sm-lbl">OVERALL K.D</span>
+                          <span class="df-sm-val highlighted-kd" id="friendKD">3.10</span>
+                        </div>
+                        <div class="df-sm-item">
+                          <span class="df-sm-lbl">KILLS</span>
+                          <span class="df-sm-val" id="friendKills">34,503</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Detalhes de Desempenho -->
+                    <div class="pd-header" id="friendPerformanceHeader">// PERFORMANCE DETAILS</div>
+                    <div class="details-full-grid" id="friendDetailsGrid">
+                      <!-- Carregado dinamicamente via JS -->
+                    </div>
+
+                    <!-- Seção de Jogos do Amigo -->
+                    <div id="friendGamesSection" style="display: none; margin-top: 18px;">
+                      <div class="pd-header">// ACTIVE GAMES / JOGOS ATIVOS</div>
+                      <div class="friend-games-grid" id="friendGamesGrid"
+                        style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px;">
+                        <!-- Gerado dinamicamente via JS -->
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Lado Direito: Render da Conta do Amigo -->
+                  <div class="df-profile-char">
+                    <div class="char-hud-frame">
+                      <div class="char-image-container">
+                        <img src="img/indio-mito.jpg" alt="Render do Amigo" class="char-avatar-render" id="friendAvatar"
+                          loading="lazy">
+                      </div>
+                      <div class="char-hud-banner">
+                        <div class="char-hud-name" id="friendHudName">INDIO-MITO</div>
+                        <div class="char-hud-title" id="friendHudTitle">Tactical Vigilante</div>
+                        <div class="char-hud-tagline" id="friendHudTagline">Always on the lookout</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
             </div>
 
             <!-- Aba: Perfil do Jogo (Dinamizado por JS) -->
@@ -396,6 +407,16 @@
                       <div class="df-ee-grid" id="dfEquippedGrid">
                         <!-- Carregado via JS -->
                       </div>
+                    </div>
+                  </div>
+
+                  <!-- Briefing da Operação / Estilo de Jogo -->
+                  <div class="df-playstyle-card" id="dfPlaystyleCard" style="display: none;">
+                    <div class="playstyle-header">
+                      <i class="fas fa-satellite-dish"></i> // MISSION BRIEFING & PLAYSTYLE
+                    </div>
+                    <div class="playstyle-body" id="dfPlaystyleText">
+                      <!-- Carregado via JS -->
                     </div>
                   </div>
 
@@ -809,6 +830,9 @@
 
   <!-- Notification Toast Container -->
   <div id="hud-notification-container" class="hud-notification-container"></div>
+
+  <!-- Container para Imagens Holográficas Flutuantes no Plano de Fundo -->
+  <div id="floating-holograms-container"></div>
 
   <script src="script.js?v=1.2.6"></script>
 </body>

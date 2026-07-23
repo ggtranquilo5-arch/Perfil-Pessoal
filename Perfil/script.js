@@ -446,6 +446,7 @@ document.addEventListener("DOMContentLoaded", () => {
       opLevel: "60",
       titleName: "God of War T6",
       titleDesc: "Proof of reaching the highest rank in Risk Zone during Season War Albaze!",
+      playstyle: "Especialista em infiltração de alto risco na Risk Zone, jogando como batedor/assalto. Foco em loot de alto valor e resgate estratégico da equipe.",
       titles: [
         { name: "God of War T9", id: "t9", file: "Screenshot_2026-07-01-15-17-13-442_com.garena.game.df.png", desc: "Season 9 - God of War Rank" },
         { name: "God of War T8", id: "t8", file: "Screenshot_2026-07-01-15-17-50-703_com.garena.game.df.png", desc: "Season 8 - God of War Rank" },
@@ -518,6 +519,7 @@ document.addEventListener("DOMContentLoaded", () => {
       opLevel: "95",
       titleName: "Supreme Glory",
       titleDesc: "Reached the top of the Hall of Fame on the global server ranking.",
+      playstyle: "Sobrevivente hardcore focado em sobrevivência e fortificação. Especialista em construir bases impenetráveis contra raids e domínio de PvP na ilha.",
 
       // Foto de perfil do Rust (local)
       avatarUrl: "img/avatarRust1.png",
@@ -570,6 +572,7 @@ document.addEventListener("DOMContentLoaded", () => {
       opLevel: "82",
       titleName: "Clutch Master",
       titleDesc: "Won 100+ rounds alone against 3+ enemies.",
+      playstyle: "Duelista/Iniciador focado em controle de mapa e clutches. Especialista em garantir rounds em desvantagem numérica com alta precisão.",
 
       // Foto de perfil do Valorant (local)
       avatarUrl: "img/valorant_avatar.jpg",
@@ -607,6 +610,7 @@ document.addEventListener("DOMContentLoaded", () => {
       opLevel: "74",
       titleName: "Defusal Veteran",
       titleDesc: "Defused 50 bombs with less than 2 seconds remaining.",
+      playstyle: "AWPer principal e IGL (In-Game Leader). Foco total em táticas coordenadas de bomb, controle de recuo de mira e alta taxa de headshots.",
 
       // Foto de perfil do CS2 (local)
       avatarUrl: "img/Cs2 perfil.jpg",
@@ -644,6 +648,7 @@ document.addEventListener("DOMContentLoaded", () => {
       opLevel: "120",
       titleName: "Heist Mastermind",
       titleDesc: "Completed all heists on hard difficulty with the same team without anyone dying.",
+      playstyle: "Piloto profissional em fugas e planejador tático de golpes de elite. Foco em roleplay policial/corporativo com alta performance.",
       avatarUrl: "img/Gta 5 avatar.jpg",
       equippedEmblems: [
         { name: "Driver", icon: "fa-car", shape: "shape-circle", color: "gold-emb" },
@@ -666,7 +671,7 @@ document.addEventListener("DOMContentLoaded", () => {
         { key: "Max Wanted Level", val: "5 Stars" }
       ],
       radarPoints: "100,32 165,75 138,150 62,148 26,75",
-      officialLinks: [{ label: "Site Oficial", url: "https://www.rockstargames.com/gta-v" }, { label: "Rockstar Social Club", url: "https://socialclub.rockstargames.com/" }]
+      officialLinks: [{ label: "Site Oficial", url: "https://www.rockstargames.com/" }, { label: "Rockstar Social Club", url: "https://socialclub.rockstargames.com/" }]
     }
   };
 
@@ -939,6 +944,18 @@ document.addEventListener("DOMContentLoaded", () => {
     const charAvatar = document.querySelector('#tab-perfil .char-avatar-render');
     if (charAvatar) {
       charAvatar.src = data.avatarUrl;
+    }
+
+    // Carregar Briefing/Playstyle
+    const playstyleCard = document.getElementById('dfPlaystyleCard');
+    const playstyleText = document.getElementById('dfPlaystyleText');
+    if (playstyleCard && playstyleText) {
+      if (data.playstyle) {
+        playstyleText.textContent = data.playstyle;
+        playstyleCard.style.display = 'block';
+      } else {
+        playstyleCard.style.display = 'none';
+      }
     }
 
     // Grid de emblemas equipados com design de patch militar real
@@ -2078,6 +2095,230 @@ document.addEventListener("DOMContentLoaded", () => {
   // Inicializar a página na tela inicial (Launcher de Jogos)
   resetToLauncher();
 
+  // ==========================================================================
+  // DADOS E ESTRUTURAÇÃO DO SISTEMA DE AMIGOS
+  // ==========================================================================
+  const friendsData = {
+    "indio-mito": {
+      name: "ÍNDIO-MITO",
+      role: "Vigilante Tático",
+      tagline: "SEMPRE EM ALERTA",
+      bio: "Always on the lookout, guarding the perimeter with tactical precision.",
+      avatar: "img/indio-mito.jpg",
+      online: true,
+      games: ["ARC Raiders", "Delta Force Mobile", "Todos os Resident Evil", "Rust Mobile", "Pubg Mobile"]
+    },
+    "freezy": {
+      name: "FREEZY",
+      role: "Especialista Gélido",
+      tagline: "SOB ZERO",
+      bio: "Incredibly cool under pressure, master of ice-cold tactical play.",
+      avatar: "img/Cs2 perfil.jpg",
+      online: true,
+      games: ["Pubg Mobile", "Mission Evo", "Valorant"]
+    }
+  };
+
+  const renderFriendsList = () => {
+    const grid = document.getElementById("friendsGrid");
+    if (!grid) return;
+    grid.innerHTML = "";
+
+    Object.keys(friendsData).forEach(key => {
+      const friend = friendsData[key];
+      const card = document.createElement("div");
+      card.className = `friend-card ${friend.online ? 'online' : 'offline'}`;
+      card.setAttribute("data-friend", key);
+
+      card.innerHTML = `
+        <img src="${friend.avatar}" alt="${friend.name}" class="friend-card-avatar" loading="lazy">
+        <div class="friend-card-info">
+          <div class="friend-card-name">${friend.name}</div>
+          <div class="friend-card-role">${friend.role}</div>
+          <div class="friend-card-status ${friend.online ? 'online' : 'offline'}">
+            <span class="status-dot"></span>
+            <span>${friend.online ? 'ONLINE' : 'OFFLINE'}</span>
+          </div>
+        </div>
+      `;
+
+      card.addEventListener("click", () => {
+        showFriendProfile(key);
+      });
+
+      grid.appendChild(card);
+    });
+  };
+
+  const showFriendProfile = (friendId) => {
+    const friend = friendsData[friendId];
+    if (!friend) return;
+
+    // Preencher dados no HTML
+    document.getElementById("friendProfileHeader").textContent = `// OPERADOR AMIGO: ${friend.name}`;
+    document.getElementById("friendAvatar").src = friend.avatar;
+    document.getElementById("friendHudName").textContent = friend.name;
+    document.getElementById("friendHudTitle").textContent = friend.role;
+    document.getElementById("friendHudTagline").textContent = friend.tagline;
+
+    // Exibir a biografia do amigo
+    const bioBox = document.getElementById("friendBioBox");
+    if (bioBox) {
+      bioBox.textContent = friend.bio;
+      bioBox.style.display = "block";
+    }
+
+    // Ocultar estatísticas (conforme solicitado: sem estatísticas no indio mito nem no freezy)
+    const quickStats = document.getElementById("friendQuickStats");
+    const perfHeader = document.getElementById("friendPerformanceHeader");
+    const detailsGrid = document.getElementById("friendDetailsGrid");
+
+    if (quickStats) quickStats.style.display = "none";
+    if (perfHeader) perfHeader.style.display = "none";
+    if (detailsGrid) detailsGrid.style.display = "none";
+
+    // Exibir e renderizar lista de jogos ativos com cards premium e as fotos/banners correspondentes
+    const gamesSection = document.getElementById("friendGamesSection");
+    const gamesGrid = document.getElementById("friendGamesGrid");
+
+    const getGameBanner = (gameName) => {
+      const nameLower = gameName.toLowerCase();
+      if (nameLower.includes("delta force")) return "img/Delta Force banner.jpg";
+      if (nameLower.includes("rust")) return "img/Rust banner.jpg";
+      if (nameLower.includes("valorant")) return "img/amigos/Banner valorant.jpg";
+      if (nameLower.includes("pubg")) return "img/amigos/Banner Pubg mobile.jpg";
+      if (nameLower.includes("resident evil")) return "img/amigos/Banner Resident Evil.jpg";
+      if (nameLower.includes("raiders")) return "img/amigos/Banner ArcRaiders.webp";
+      if (nameLower.includes("mission evo")) return "img/amigos/Banner mission evo.jpg";
+      return "img/Fnda da imagem.png";
+    };
+
+    const getGameAvatar = (gameName) => {
+      const nameLower = gameName.toLowerCase();
+      if (nameLower.includes("delta force")) return "img/amigos/DeltaForcemobile.jpg";
+      if (nameLower.includes("rust")) return "img/amigos/Rustmobile.png";
+      if (nameLower.includes("valorant")) return "img/amigos/Valorant.jpg";
+      if (nameLower.includes("pubg")) return "img/amigos/Pubgmobile.jpg";
+      if (nameLower.includes("resident evil")) return "img/amigos/residentEvil.webp";
+      if (nameLower.includes("raiders")) return "img/amigos/ArcRaiders.webp";
+      if (nameLower.includes("mission evo")) return "img/amigos/Mission evo.jpg";
+      return "img/deltaforce_avatar.jpg"; 
+    };
+
+    if (gamesSection && gamesGrid) {
+      gamesSection.style.display = "block";
+      gamesGrid.innerHTML = "";
+      if (friend.games) {
+        friend.games.forEach(game => {
+          const bannerUrl = getGameBanner(game);
+          const avatarUrl = getGameAvatar(game);
+          const card = document.createElement("div");
+          card.className = "friend-game-card";
+          card.style.backgroundImage = `linear-gradient(90deg, rgba(8, 6, 5, 0.95) 45%, rgba(8, 6, 5, 0.3) 100%), url('${bannerUrl}')`;
+          
+          card.innerHTML = `
+            <div class="fgc-avatar-container">
+              <img src="${avatarUrl}" alt="${game}" class="fgc-avatar" loading="lazy">
+            </div>
+            <div class="fgc-info">
+              <div class="fgc-name">${game}</div>
+              <div class="fgc-status">ACTIVE CLIENT</div>
+            </div>
+          `;
+          gamesGrid.appendChild(card);
+        });
+      }
+    }
+
+    const listView = document.getElementById("friends-list-view");
+    const profileView = document.getElementById("friend-profile-view");
+
+    if (listView && profileView) {
+      listView.classList.add("hidden");
+      profileView.classList.remove("hidden");
+    }
+  };
+
+  const btnBackToFriends = document.getElementById("btnBackToFriends");
+  if (btnBackToFriends) {
+    btnBackToFriends.addEventListener("click", () => {
+      const listView = document.getElementById("friends-list-view");
+      const profileView = document.getElementById("friend-profile-view");
+
+      if (listView && profileView) {
+        listView.classList.remove("hidden");
+        profileView.classList.add("hidden");
+      }
+    });
+  }
+
+  // ==========================================================================
+  // INICIALIZAÇÃO DE HOLOGRAMAS FLUTUANTES NO BACKGOUND
+  // ==========================================================================
+  const initFloatingHolograms = () => {
+    const container = document.getElementById("floating-holograms-container");
+    if (!container) return;
+
+    const hologramImages = [
+      "img/deltaforce_avatar.jpg",
+      "img/avatarRust1.png",
+      "img/valorant_avatar.jpg",
+      "img/Cs2 perfil.jpg",
+      "img/Gta 5 avatar.jpg",
+      "img/fortnite avatar.jpeg"
+    ];
+
+    const hologramsCount = 6;
+    const holograms = [];
+
+    for (let i = 0; i < hologramsCount; i++) {
+      const holo = document.createElement("div");
+      holo.className = "floating-hologram";
+
+      const img = document.createElement("img");
+      img.src = hologramImages[i % hologramImages.length];
+      img.alt = "Holograma";
+      holo.appendChild(img);
+
+      const left = Math.random() * 85;
+      const top = Math.random() * 85;
+      holo.style.left = `${left}vw`;
+      holo.style.top = `${top}vh`;
+
+      const duration = Math.random() * 12 + 15;
+      const delay = Math.random() * -12;
+      holo.style.animationName = "floatHologram";
+      holo.style.animationDuration = `${duration}s`;
+      holo.style.animationDelay = `${delay}s`;
+      holo.style.animationIterationCount = "infinite";
+      holo.style.animationTimingFunction = "ease-in-out";
+      holo.style.animationDirection = "alternate";
+
+      container.appendChild(holo);
+      holograms.push({
+        el: holo,
+        x: left,
+        y: top,
+        factorX: Math.random() * 20 + 8,
+        factorY: Math.random() * 20 + 8
+      });
+    }
+
+    document.addEventListener("mousemove", (e) => {
+      const mouseX = e.clientX / window.innerWidth - 0.5;
+      const mouseY = e.clientY / window.innerHeight - 0.5;
+
+      holograms.forEach(holo => {
+        const transX = mouseX * holo.factorX;
+        const transY = mouseY * holo.factorY;
+        holo.el.style.transform = `translate3d(${transX}px, ${transY}px, 0)`;
+      });
+    });
+  };
+
+  renderFriendsList();
+  initFloatingHolograms();
+
   // Inicializar tooltips para elementos estáticos com data attributes
   document.querySelectorAll('[data-tooltip-title]').forEach(el => {
     const title = el.getAttribute('data-tooltip-title');
@@ -2085,8 +2326,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const status = el.getAttribute('data-tooltip-status') || '';
     setupTooltip(el, title, desc, status);
   });
-
-
 
   // ══════════════════════════
   // EFEITO SPOTLIGHT AMBIENTE (SEGUIR CURSOR)
