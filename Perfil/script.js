@@ -2538,11 +2538,22 @@ document.addEventListener("DOMContentLoaded", () => {
   // CONTROLES DO VÍDEO DE GAMEPLAY 4K
   // ══════════════════════════
   const gameplayVideo = document.getElementById('gameplayVideo');
+  const btnToggleVideoFit = document.getElementById('btnToggleVideoFit');
   const btnToggleVideoPlay = document.getElementById('btnToggleVideoPlay');
   const btnToggleVideoMute = document.getElementById('btnToggleVideoMute');
   const btnToggleVideoFullscreen = document.getElementById('btnToggleVideoFullscreen');
 
   if (gameplayVideo) {
+    if (btnToggleVideoFit) {
+      btnToggleVideoFit.addEventListener('click', () => {
+        gameplayVideo.classList.toggle('fit-contain');
+        if (gameplayVideo.classList.contains('fit-contain')) {
+          btnToggleVideoFit.innerHTML = '<i class="fas fa-expand-alt"></i>';
+        } else {
+          btnToggleVideoFit.innerHTML = '<i class="fas fa-compress-alt"></i>';
+        }
+      });
+    }
     if (btnToggleVideoPlay) {
       btnToggleVideoPlay.addEventListener('click', () => {
         if (gameplayVideo.paused) {
