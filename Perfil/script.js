@@ -103,27 +103,82 @@ document.addEventListener("DOMContentLoaded", () => {
           applyTranslations();
 
           // Re-renderizar seções ativas
-          renderFriendsList();
+          if (typeof renderFriendsList === 'function') renderFriendsList();
 
           const profileView = document.getElementById("friend-profile-view");
           if (profileView && !profileView.classList.contains("hidden")) {
-            const activeFriendName = document.getElementById("friendHudName").textContent;
+            const activeFriendName = document.getElementById("friendHudName") ? document.getElementById("friendHudName").textContent : "";
             let activeFriendKey = "indio-mito";
             if (activeFriendName === "FREEZY") activeFriendKey = "freezy";
-            showFriendProfile(activeFriendKey);
+            if (typeof showFriendProfile === 'function') showFriendProfile(activeFriendKey);
           }
 
-          // Re-selecionar o jogo ativo para atualizar
-          const activeGameCard = document.querySelector(".launcher-game-card.active") || document.querySelector("[data-game]");
-          if (activeGameCard) {
-            const activeGameId = activeGameCard.getAttribute("data-game");
-            selectGame(activeGameId, true);
-          }
+          // Re-selecionar o jogo ativo para atualizar os textos com o novo idioma
+          selectGame(currentActiveGameId || 'deltaforce', true);
         }
       });
     });
     applyTranslations();
   };
+
+  // Inicializar o seletor de idiomas
+  initLanguageSwitcher();
+
+  // ══════════════════════════
+  // SISTEMA DE BLOQUEIO DE ZOOM (DESKTOP & MOBILE)
+  // ══════════════════════════
+  const preventZoom = () => {
+    // 1. Prevenir Ctrl + Mouse Scroll Wheel no Desktop
+    document.addEventListener('wheel', (e) => {
+      if (e.ctrlKey || e.metaKey) {
+        e.preventDefault();
+      }
+    }, { passive: false });
+
+    // 2. Prevenir Teclas Atalho de Zoom (Ctrl +, Ctrl -, Ctrl 0, Cmd +, etc.)
+    document.addEventListener('keydown', (e) => {
+      if (
+        (e.ctrlKey || e.metaKey) &&
+        (e.key === '+' ||
+          e.key === '-' ||
+          e.key === '=' ||
+          e.key === '0' ||
+          e.keyCode === 187 ||
+          e.keyCode === 189 ||
+          e.keyCode === 107 ||
+          e.keyCode === 109 ||
+          e.keyCode === 96 ||
+          e.keyCode === 48)
+      ) {
+        e.preventDefault();
+      }
+    });
+
+    // 3. Prevenir Gestos de Pinça / Multi-touch em Dispositivos Touch e Touchpads
+    document.addEventListener('touchstart', (e) => {
+      if (e.touches && e.touches.length > 1) {
+        e.preventDefault();
+      }
+    }, { passive: false });
+
+    document.addEventListener('touchmove', (e) => {
+      if (e.touches && e.touches.length > 1) {
+        e.preventDefault();
+      }
+    }, { passive: false });
+
+    // 4. Prevenir Toque Duplo (Double Tap Zoom) em Dispositivos Móveis
+    let lastTouchEnd = 0;
+    document.addEventListener('touchend', (e) => {
+      const now = Date.now();
+      if (now - lastTouchEnd <= 300) {
+        e.preventDefault();
+      }
+      lastTouchEnd = now;
+    }, false);
+  };
+
+  preventZoom();
 
   // Corrigir links antigos do Rust Mobile na localStorage se existirem
   try {
@@ -974,7 +1029,8 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // 2. Carregar informações reais na aba PERFIL
-    document.getElementById('profileHeader').textContent = `// OPERATOR: ${data.name.toUpperCase()}`;
+    const opLabel = currentLang === 'pt' ? '// DADOS DO OPERADOR:' : '// OPERATOR DATA:';
+    document.getElementById('profileHeader').textContent = `${opLabel} ${data.name.toUpperCase()}`;
     document.getElementById('dfRankTitle').textContent = data.rankTitle;
     document.getElementById('dfRankScore').textContent = data.rankScore;
     document.getElementById('dfHours').textContent = data.hours;
@@ -1133,7 +1189,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // 3. Carregar informações na aba DETALHES
-    document.getElementById('detailsHeader').textContent = `// PERFORMANCE IN ${data.name.toUpperCase()}`;
+    const detailsLabel = currentLang === 'pt' ? '// DESEMPENHO EM' : '// PERFORMANCE IN';
+    document.getElementById('detailsHeader').textContent = `${detailsLabel} ${data.name.toUpperCase()}`;
     const detailsGrid = document.getElementById('dfDetailsGrid');
     detailsGrid.innerHTML = '';
     data.detailsStats.forEach(stat => {

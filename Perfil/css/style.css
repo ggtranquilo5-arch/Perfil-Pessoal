@@ -35,6 +35,8 @@ html {
   scrollbar-color: var(--primary) rgba(255, 255, 255, .05);
   overflow-x: hidden;
   width: 100%;
+  touch-action: pan-x pan-y;
+  -ms-touch-action: pan-x pan-y;
 }
 
 html::-webkit-scrollbar {
@@ -61,6 +63,8 @@ body {
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
+  touch-action: pan-x pan-y;
+  -ms-touch-action: pan-x pan-y;
 }
 
 body::before {
