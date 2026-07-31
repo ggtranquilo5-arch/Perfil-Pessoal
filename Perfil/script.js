@@ -28,6 +28,8 @@ document.addEventListener("DOMContentLoaded", () => {
       militaryTitleInUse: "// TÍTULO MILITAR EM USO",
       bannersSelector: "// SELETOR DE BANNERS E TÍTULOS",
       collectiblesHeader: "// COLECIONÁVEIS E EMBLEMAS MILITARES",
+      missionBriefing: "// INFORMAÇÕES SOBRE A MISSÃO E ESTILO DE JOGO",
+      gameplay4k: "TRANSMISSÃO DA GAMEPLAY 4K",
       copyrightText: "©2026 Criado por CLOUTCH. Todos os direitos reservados."
     },
     en: {
@@ -50,6 +52,8 @@ document.addEventListener("DOMContentLoaded", () => {
       militaryTitleInUse: "// MILITARY TITLE IN USE",
       bannersSelector: "// BANNERS & TITLES SELECTOR",
       collectiblesHeader: "// COLLECTIBLES & MILITARY EMBLEMS",
+      missionBriefing: "// MISSION BRIEFING & PLAYSTYLE",
+      gameplay4k: "4K GAMEPLAY TRANSMISSION",
       copyrightText: "©2026 Created by CLOUTCH. All rights reserved."
     }
   };
@@ -511,6 +515,7 @@ document.addEventListener("DOMContentLoaded", () => {
       titleName: "God of War T6",
       titleDesc: "Proof of reaching the highest rank in Risk Zone during Season War Albaze!",
       playstyle: "High-risk Hazard Zone infiltration specialist, playing as scout/assault. Focused on high-value loot extraction and strategic team rescues.",
+      videoUrl: "videoplayback (1).webm",
       titles: [
         { name: "God of War T9", id: "t9", file: "Screenshot_2026-07-01-15-17-13-442_com.garena.game.df.png", desc: "Season 9 - God of War Rank" },
         { name: "God of War T8", id: "t8", file: "Screenshot_2026-07-01-15-17-50-703_com.garena.game.df.png", desc: "Season 8 - God of War Rank" },
@@ -584,6 +589,7 @@ document.addEventListener("DOMContentLoaded", () => {
       titleName: "Supreme Glory",
       titleDesc: "Reached the top of the Hall of Fame on the global server ranking.",
       playstyle: "Hardcore survivor focused on survival and fortification. Expert in building raid-proof bases and dominating PvP on the island.",
+      videoUrl: "videoplayback (1).webm",
 
       // Foto de perfil do Rust (local)
       avatarUrl: "img/avatarRust1.png",
@@ -637,6 +643,7 @@ document.addEventListener("DOMContentLoaded", () => {
       titleName: "Clutch Master",
       titleDesc: "Won 100+ rounds alone against 3+ enemies.",
       playstyle: "Duelist/Initiator focused on map control and clutches. Expert in securing rounds in numerical disadvantage with high precision.",
+      videoUrl: "videoplayback (1).webm",
 
       // Foto de perfil do Valorant (local)
       avatarUrl: "img/valorant_avatar.jpg",
@@ -675,6 +682,7 @@ document.addEventListener("DOMContentLoaded", () => {
       titleName: "Defusal Veteran",
       titleDesc: "Defused 50 bombs with less than 2 seconds remaining.",
       playstyle: "Main AWPer and IGL (In-Game Leader). Full focus on coordinated bomb site tactics, recoil control, and high headshot rate.",
+      videoUrl: "videoplayback (1).webm",
 
       // Foto de perfil do CS2 (local)
       avatarUrl: "img/Cs2 perfil.jpg",
@@ -713,6 +721,7 @@ document.addEventListener("DOMContentLoaded", () => {
       titleName: "Heist Mastermind",
       titleDesc: "Completed all heists on hard difficulty with the same team without anyone dying.",
       playstyle: "Professional getaway driver and tactical planner for elite heists. Focus on high-performance police/corporate roleplay.",
+      videoUrl: "videoplayback (1).webm",
       avatarUrl: "img/Gta 5 avatar.jpg",
       equippedEmblems: [
         { name: "Driver", icon: "fa-car", shape: "shape-circle", color: "gold-emb" },
@@ -906,6 +915,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (gameOverride.battles) gameData[gameId].battles = gameOverride.battles;
             if (gameOverride.rankTitle) gameData[gameId].rankTitle = gameOverride.rankTitle;
             if (gameOverride.rankScore) gameData[gameId].rankScore = gameOverride.rankScore;
+            if (gameOverride.videoUrl) gameData[gameId].videoUrl = gameOverride.videoUrl;
             if (gameOverride.officialLinks) {
               gameData[gameId].officialLinks = gameOverride.officialLinks;
             }
@@ -1010,15 +1020,34 @@ document.addEventListener("DOMContentLoaded", () => {
       charAvatar.src = data.avatarUrl;
     }
 
-    // Carregar Briefing/Playstyle
+    // Carregar Briefing/Playstyle & Vídeo de Gameplay 4K
     const playstyleCard = document.getElementById('dfPlaystyleCard');
     const playstyleText = document.getElementById('dfPlaystyleText');
+    const gameplayVideo = document.getElementById('gameplayVideo');
+    const gameplayVideoSource = document.getElementById('gameplayVideoSource');
+    const vhoGameTitle = document.getElementById('vhoGameTitle');
+
     if (playstyleCard && playstyleText) {
       if (data.playstyle) {
         playstyleText.textContent = data.playstyle;
         playstyleCard.style.display = 'block';
       } else {
         playstyleCard.style.display = 'none';
+      }
+    }
+
+    if (gameplayVideo && gameplayVideoSource) {
+      const targetVideo = data.videoUrl || 'videoplayback (1).webm';
+      const currentSrc = gameplayVideoSource.getAttribute('src');
+      if (currentSrc !== targetVideo) {
+        gameplayVideoSource.setAttribute('src', targetVideo);
+        gameplayVideo.load();
+        gameplayVideo.play().catch(err => console.log("Gameplay video autoplay blocked:", err));
+      } else if (gameplayVideo.paused) {
+        gameplayVideo.play().catch(err => console.log("Gameplay video play blocked:", err));
+      }
+      if (vhoGameTitle) {
+        vhoGameTitle.textContent = `${data.name.toUpperCase()} 4K GAMEPLAY`;
       }
     }
 
@@ -1687,6 +1716,8 @@ document.addEventListener("DOMContentLoaded", () => {
     if (editGameRankScore) editGameRankScore.value = data.rankScore || "";
     if (editGameBattles) editGameBattles.value = data.battles || "";
     if (editGameHours) editGameHours.value = data.hours || "";
+    const editGameVideoUrl = document.getElementById('editGameVideoUrl');
+    if (editGameVideoUrl) editGameVideoUrl.value = data.videoUrl || 'videoplayback (1).webm';
 
     const editGameLinks = document.getElementById('editGameLinks');
     if (editGameLinks) {
@@ -1966,6 +1997,8 @@ document.addEventListener("DOMContentLoaded", () => {
       const rankScoreVal = editGameRankScore.value.trim();
       const battlesVal = editGameBattles.value.trim();
       const hoursVal = editGameHours.value.trim();
+      const editGameVideoUrl = document.getElementById('editGameVideoUrl');
+      const videoUrlVal = editGameVideoUrl ? editGameVideoUrl.value.trim() : '';
 
       // Parsear links da textarea
       const editGameLinks = document.getElementById('editGameLinks');
@@ -1984,6 +2017,7 @@ document.addEventListener("DOMContentLoaded", () => {
         battles: battlesVal,
         rankTitle: rankTitleVal,
         rankScore: rankScoreVal,
+        videoUrl: videoUrlVal || 'videoplayback (1).webm',
         detailsStats: [],
         officialLinks: parsedLinks
       };
@@ -2442,6 +2476,58 @@ document.addEventListener("DOMContentLoaded", () => {
     const status = el.getAttribute('data-tooltip-status') || '';
     setupTooltip(el, title, desc, status);
   });
+
+  // ══════════════════════════
+  // CONTROLES DO VÍDEO DE GAMEPLAY 4K
+  // ══════════════════════════
+  const gameplayVideo = document.getElementById('gameplayVideo');
+  const btnToggleVideoPlay = document.getElementById('btnToggleVideoPlay');
+  const btnToggleVideoMute = document.getElementById('btnToggleVideoMute');
+  const btnToggleVideoFullscreen = document.getElementById('btnToggleVideoFullscreen');
+
+  if (gameplayVideo) {
+    if (btnToggleVideoPlay) {
+      btnToggleVideoPlay.addEventListener('click', () => {
+        if (gameplayVideo.paused) {
+          gameplayVideo.play();
+          btnToggleVideoPlay.innerHTML = '<i class="fas fa-pause"></i>';
+        } else {
+          gameplayVideo.pause();
+          btnToggleVideoPlay.innerHTML = '<i class="fas fa-play"></i>';
+        }
+      });
+    }
+
+    if (btnToggleVideoMute) {
+      btnToggleVideoMute.addEventListener('click', () => {
+        gameplayVideo.muted = !gameplayVideo.muted;
+        if (gameplayVideo.muted) {
+          btnToggleVideoMute.innerHTML = '<i class="fas fa-volume-mute"></i>';
+        } else {
+          btnToggleVideoMute.innerHTML = '<i class="fas fa-volume-up"></i>';
+        }
+      });
+    }
+
+    if (btnToggleVideoFullscreen) {
+      btnToggleVideoFullscreen.addEventListener('click', () => {
+        if (gameplayVideo.requestFullscreen) {
+          gameplayVideo.requestFullscreen();
+        } else if (gameplayVideo.webkitRequestFullscreen) {
+          gameplayVideo.webkitRequestFullscreen();
+        } else if (gameplayVideo.msRequestFullscreen) {
+          gameplayVideo.msRequestFullscreen();
+        }
+      });
+    }
+
+    gameplayVideo.addEventListener('play', () => {
+      if (btnToggleVideoPlay) btnToggleVideoPlay.innerHTML = '<i class="fas fa-pause"></i>';
+    });
+    gameplayVideo.addEventListener('pause', () => {
+      if (btnToggleVideoPlay) btnToggleVideoPlay.innerHTML = '<i class="fas fa-play"></i>';
+    });
+  }
 
   // ══════════════════════════
   // EFEITO SPOTLIGHT AMBIENTE (SEGUIR CURSOR)

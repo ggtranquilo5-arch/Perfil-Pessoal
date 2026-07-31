@@ -1078,6 +1078,227 @@ body::before {
   background: rgba(255, 255, 255, 0.03);
 }
 
+/* ═══════════════════════════════════════════════════
+   CARD DE BRIEFING DE MISSÃO & TELA DE GAMEPLAY 4K
+   ═══════════════════════════════════════════════════ */
+.df-playstyle-card {
+  background: rgba(18, 14, 11, 0.75);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--primary);
+  border-radius: 12px;
+  padding: 16px 18px;
+  margin-top: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: var(--transition);
+}
+
+.df-playstyle-card:hover {
+  border-color: rgba(200, 130, 66, 0.4);
+  box-shadow: 0 12px 35px rgba(200, 130, 66, 0.15);
+}
+
+.playstyle-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--orange);
+  letter-spacing: 1.5px;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+}
+
+.playstyle-header-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.playstyle-header-title i {
+  font-size: 12px;
+  color: var(--primary);
+  animation: antennaPulse 2s infinite ease-in-out;
+}
+
+@keyframes antennaPulse {
+
+  0%,
+  100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+}
+
+.gameplay-4k-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 140, 0, 0.12);
+  border: 1px solid rgba(255, 140, 0, 0.35);
+  border-radius: 4px;
+  padding: 3px 8px;
+  font-family: 'Oxanium', sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 1px;
+  text-shadow: 0 0 6px rgba(255, 140, 0, 0.5);
+}
+
+.pulse-red-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #ff3b30;
+  box-shadow: 0 0 8px #ff3b30;
+  animation: redDotPulse 1.5s infinite ease-in-out;
+}
+
+@keyframes redDotPulse {
+
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.4;
+    transform: scale(0.7);
+  }
+}
+
+/* Gameplay Video Screen Container */
+.gameplay-video-screen {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid rgba(200, 130, 66, 0.3);
+  background: #000000;
+  margin-bottom: 14px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7);
+}
+
+.gameplay-video-screen video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.gameplay-video-screen .hud-corner {
+  width: 10px;
+  height: 10px;
+  border-width: 1.5px;
+  border-color: var(--primary);
+  z-index: 5;
+}
+
+.gameplay-video-screen .hud-corner.top-left {
+  top: 6px;
+  left: 6px;
+}
+
+.gameplay-video-screen .hud-corner.top-right {
+  top: 6px;
+  right: 6px;
+}
+
+.gameplay-video-screen .hud-corner.bottom-left {
+  bottom: 6px;
+  left: 6px;
+}
+
+.gameplay-video-screen .hud-corner.bottom-right {
+  bottom: 6px;
+  right: 6px;
+}
+
+/* Video Overlay HUD Controls */
+.video-hud-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 8px 12px;
+  background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.85) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 6;
+  opacity: 0.85;
+  transition: opacity 0.3s ease;
+}
+
+.gameplay-video-screen:hover .video-hud-overlay {
+  opacity: 1;
+}
+
+.vho-status {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--text-mid);
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.vho-status i {
+  color: var(--primary);
+}
+
+.vho-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.vho-btn {
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #fff;
+  border-radius: 4px;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 10px;
+  transition: var(--transition);
+}
+
+.vho-btn:hover {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #000;
+  box-shadow: 0 0 8px rgba(200, 130, 66, 0.5);
+}
+
+.playstyle-body {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 11.5px;
+  line-height: 1.6;
+  color: var(--text-mid);
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 6px;
+  padding: 10px 14px;
+  border: 1px dashed rgba(200, 130, 66, 0.15);
+}
+
 /* Render do Personagem Lado Direito (CONTER AVATAR) */
 .df-profile-char {
   display: flex;

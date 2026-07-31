@@ -408,11 +408,49 @@
                     </div>
                   </div>
 
-                  <!-- Briefing da Operação / Estilo de Jogo -->
+                  <!-- Briefing da Operação / Estilo de Jogo & Gameplay Screen 4K -->
                   <div class="df-playstyle-card" id="dfPlaystyleCard" style="display: none;">
                     <div class="playstyle-header">
-                      <i class="fas fa-satellite-dish"></i> // MISSION BRIEFING & PLAYSTYLE
+                      <div class="playstyle-header-title">
+                        <i class="fas fa-satellite-dish"></i> <span id="missionBriefingTitle"
+                          data-i18n="missionBriefing">// MISSION BRIEFING & PLAYSTYLE</span>
+                      </div>
+                      <div class="gameplay-4k-badge">
+                        <span class="pulse-red-dot"></span> 4K ULTRA HD
+                      </div>
                     </div>
+
+                    <!-- Gameplay 4K Video Screen Container -->
+                    <div class="gameplay-video-screen" id="gameplayVideoContainer">
+                      <div class="hud-corner top-left"></div>
+                      <div class="hud-corner top-right"></div>
+                      <div class="hud-corner bottom-left"></div>
+                      <div class="hud-corner bottom-right"></div>
+
+                      <video id="gameplayVideo" autoplay loop muted playsinline preload="metadata">
+                        <source id="gameplayVideoSource" src="videoplayback (1).webm" type="video/webm">
+                        Seu navegador não suporta vídeos HTML5.
+                      </video>
+
+                      <!-- Overlay HUD controls on video -->
+                      <div class="video-hud-overlay">
+                        <div class="vho-status">
+                          <i class="fas fa-play-circle"></i> <span id="vhoGameTitle">DELTA FORCE 4K GAMEPLAY</span>
+                        </div>
+                        <div class="vho-controls">
+                          <button class="vho-btn" id="btnToggleVideoPlay" type="button" title="Play / Pause">
+                            <i class="fas fa-pause"></i>
+                          </button>
+                          <button class="vho-btn" id="btnToggleVideoMute" type="button" title="Mute / Unmute">
+                            <i class="fas fa-volume-mute"></i>
+                          </button>
+                          <button class="vho-btn" id="btnToggleVideoFullscreen" type="button" title="Fullscreen">
+                            <i class="fas fa-expand"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+
                     <div class="playstyle-body" id="dfPlaystyleText">
                       <!-- Carregado via JS -->
                     </div>
@@ -637,6 +675,11 @@
               <div class="editor-field">
                 <label>PLAYTIME HOURS</label>
                 <input type="text" id="editGameHours" class="hud-input">
+              </div>
+              <div class="editor-field" style="grid-column: span 2;">
+                <label>GAMEPLAY VIDEO URL / FILE PATH (4K)</label>
+                <input type="text" id="editGameVideoUrl" class="hud-input"
+                  placeholder="e.g. videoplayback (1).webm or https://path/to/video.mp4">
               </div>
             </div>
 
