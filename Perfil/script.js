@@ -800,6 +800,52 @@ document.addEventListener("DOMContentLoaded", () => {
       ],
       radarPoints: "100,32 165,75 138,150 62,148 26,75",
       officialLinks: [{ label: "Official Website", url: "https://www.rockstargames.com/" }, { label: "Rockstar Social Club", url: "https://socialclub.rockstargames.com/" }]
+    },
+    missionevo: {
+      name: "Mission Evo",
+      rankTitle: "Apex Survivor ⚡",
+      rankScore: "Score: 8,850",
+      hours: "1,420h",
+      battles: "620",
+      assets: "180.5M",
+      extractionRate: "42.5%",
+      opLevel: "78",
+      titleName: "Evo Mastermind",
+      titleDesc: "Survived the ultimate apocalypse and established dominance on Emberland island.",
+      playstyle: "Strategic survival specialist focusing on resource gathering, base building, and tactical PvP combat on Emberland.",
+      videoUrl: "videoplayback (1).webm",
+      avatarUrl: "img/Mission evo Avatar.jpg",
+
+      titles: [
+        { name: "Evo Mastermind", id: "t_me1", desc: "Established dominance on Emberland island." },
+        { name: "Apex Predator", id: "t_me2", desc: "Eliminated over 500 rival survivors in high-tier zones." },
+        { name: "Fortress Architect", id: "t_me3", desc: "Built an impenetrable steel shelter during the outbreak." }
+      ],
+      activeTitleId: "t_me1",
+
+      equippedEmblems: [
+        { name: "Emberland Pioneer", icon: "fa-fire-flame-curved", shape: "shape-shield", color: "gold-emb" },
+        { name: "Shelter Builder", icon: "fa-house-shield", shape: "shape-shield", color: "cyan-emb" },
+        { name: "Survival Instinct", icon: "fa-biohazard", shape: "shape-triangle", color: "red-emb" },
+        { name: "Tactical Scavenger", icon: "fa-box-open", shape: "shape-diamond", color: "blue-emb" }
+      ],
+      allEmblems: [
+        { name: "Emberland Pioneer", icon: "fa-fire-flame-curved", equipped: true, desc: "Pioneered early exploration of Emberland.", shape: "shape-shield", color: "gold-emb" },
+        { name: "Shelter Builder", icon: "fa-house-shield", equipped: true, desc: "Constructed high-tier fortified shelters.", shape: "shape-shield", color: "cyan-emb" },
+        { name: "Survival Instinct", icon: "fa-biohazard", equipped: true, desc: "Survived bio-hazard radiation surges.", shape: "shape-triangle", color: "red-emb" },
+        { name: "Tactical Scavenger", icon: "fa-box-open", equipped: true, desc: "Extracted high-tier blueprint crates.", shape: "shape-diamond", color: "blue-emb" }
+      ],
+      detailsStats: [
+        { key: "Total Matches", val: "620" },
+        { key: "Survival Hours", val: "1,420h" },
+        { key: "PVP Eliminations", val: "2,150" },
+        { key: "Base Raids Defended", val: "94" },
+        { key: "Extraction Rate", val: "42.5%" },
+        { key: "Bosses Defeated", val: "48" }
+      ],
+
+      radarPoints: "100,35 160,80 142,150 64,148 30,78",
+      officialLinks: [{ label: "Official Website", url: "https://www.missionevo.com/" }, { label: "Official Discord", url: "https://discord.gg/missionevo" }]
     }
   };
 
@@ -1021,7 +1067,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (tabAmigoBtn) tabAmigoBtn.classList.add('hidden');
     if (backToGamesBtn) backToGamesBtn.classList.remove('hidden');
     gameTabs.forEach(tab => {
-      if (tab.getAttribute('data-tab') === 'conquistas' && gameId !== 'deltaforce' && gameId !== 'rust') {
+      if (tab.getAttribute('data-tab') === 'conquistas' && gameId !== 'deltaforce' && gameId !== 'rust' && gameId !== 'missionevo') {
         tab.classList.add('hidden');
       } else {
         tab.classList.remove('hidden');
@@ -1110,7 +1156,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Grid de emblemas equipados com design de patch militar real
     const equippedEmblemsContainer = document.querySelector('.df-equipped-emblems');
     if (equippedEmblemsContainer) {
-      if (gameId === 'deltaforce' || gameId === 'rust') {
+      if (gameId === 'deltaforce' || gameId === 'rust' || gameId === 'missionevo') {
         equippedEmblemsContainer.style.display = 'block';
       } else {
         equippedEmblemsContainer.style.display = 'none';
@@ -1119,7 +1165,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const equippedGrid = document.getElementById('dfEquippedGrid');
     equippedGrid.innerHTML = '';
-    if ((gameId === 'deltaforce' || gameId === 'rust') && data.equippedEmblems) {
+    if ((gameId === 'deltaforce' || gameId === 'rust' || gameId === 'missionevo') && data.equippedEmblems) {
       data.equippedEmblems.forEach(emb => {
         const slot = document.createElement('div');
         slot.className = `df-ee-slot`;
@@ -2463,7 +2509,8 @@ document.addEventListener("DOMContentLoaded", () => {
       "img/valorant_avatar.jpg",
       "img/Cs2 perfil.jpg",
       "img/Gta 5 avatar.jpg",
-      "img/fortnite avatar.jpeg"
+      "img/fortnite avatar.jpeg",
+      "img/Mission evo Avatar.jpg"
     ];
 
     const hologramsCount = hologramImages.length; // Exatamente uma bolha para cada jogo (sem duplicações!)

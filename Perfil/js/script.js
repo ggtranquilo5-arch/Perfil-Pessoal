@@ -384,6 +384,53 @@ document.addEventListener("DOMContentLoaded", () => {
         { mode: "GOLPE", desc: "Golpe a Cayo Perico (Elite)", status: "VITÓRIA", resultClass: "victory" },
         { mode: "GOLPE", desc: "Golpe ao Casino Diamond (Dinheiro)", status: "VITÓRIA", resultClass: "victory" }
       ]
+    },
+    missionevo: {
+      name: "Mission Evo",
+      rankTitle: "Sobrevivente Apex ⚡",
+      rankScore: "Pontuação: 8,850",
+      hours: "1,420h",
+      battles: "620",
+      assets: "180.5M",
+      extractionRate: "42.5%",
+      opLevel: "78",
+      titleName: "Mestre Supremo Evo",
+      titleDesc: "Sobreviveu ao apocalipse e estabeleceu domínio na ilha de Emberland.",
+      playstyle: "Especialista em sobrevivência estratégica, coleta de recursos, construção e combate PvP em Emberland.",
+      avatarUrl: "img/Mission evo Avatar.jpg",
+
+      titles: [
+        { name: "Mestre Supremo Evo", id: "t_me1", desc: "Estabeleceu domínio na ilha de Emberland." },
+        { name: "Predador Apex", id: "t_me2", desc: "Eliminou mais de 500 sobreviventes rivais." },
+        { name: "Arquiteto de Fortaleza", id: "t_me3", desc: "Construiu um abrigo impenetrável de aço." }
+      ],
+      activeTitleId: "t_me1",
+
+      equippedEmblems: [
+        { name: "Pioneiro de Emberland", icon: "fa-fire-flame-curved", shape: "shape-shield", color: "gold-emb" },
+        { name: "Construtor de Abrigo", icon: "fa-house-shield", shape: "shape-shield", color: "cyan-emb" },
+        { name: "Instinto de Sobrevivência", icon: "fa-biohazard", shape: "shape-triangle", color: "red-emb" },
+        { name: "Saqueador Tático", icon: "fa-box-open", shape: "shape-diamond", color: "blue-emb" }
+      ],
+      allEmblems: [
+        { name: "Pioneiro de Emberland", icon: "fa-fire-flame-curved", equipped: true, desc: "Pioneiro na exploração de Emberland.", shape: "shape-shield", color: "gold-emb" },
+        { name: "Construtor de Abrigo", icon: "fa-house-shield", equipped: true, desc: "Construiu abrigos fortificados.", shape: "shape-shield", color: "cyan-emb" },
+        { name: "Instinto de Sobrevivência", icon: "fa-biohazard", equipped: true, desc: "Sobreviveu a ondas de radiação.", shape: "shape-triangle", color: "red-emb" },
+        { name: "Saqueador Tático", icon: "fa-box-open", equipped: true, desc: "Extraiu caixas de projetos raras.", shape: "shape-diamond", color: "blue-emb" }
+      ],
+      detailsStats: [
+        { key: "Total de Partidas", val: "620" },
+        { key: "Horas de Sobrevivência", val: "1,420h" },
+        { key: "Eliminações PVP", val: "2,150" },
+        { key: "Raids Defendidos", val: "94" },
+        { key: "Taxa de Extração", val: "42.5%" },
+        { key: "Chefões Derrotados", val: "48" }
+      ],
+      radarPoints: "100,35 160,80 142,150 64,148 30,78",
+      history: [
+        { mode: "SOBREVIVÊNCIA", desc: "Extração de Caixas de Projetos", status: "VITÓRIA", resultClass: "victory" },
+        { mode: "RAID", desc: "Defesa de Base bem-sucedida", status: "VITÓRIA", resultClass: "victory" }
+      ]
     }
   };
 
