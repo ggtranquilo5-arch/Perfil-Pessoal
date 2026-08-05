@@ -1138,14 +1138,39 @@ document.addEventListener("DOMContentLoaded", () => {
     if (gameplayVideo && gameplayVideoSource) {
       const targetVideo = data.videoUrl || 'img/Videos/deltaforce.mp4';
       const currentSrc = gameplayVideoSource.getAttribute('src');
+
+      // Muted and playsinline attributes required for iOS Safari / Android Chrome mobile autoplay
+      gameplayVideo.muted = true;
+      gameplayVideo.defaultMuted = true;
+      gameplayVideo.setAttribute('muted', '');
+      gameplayVideo.setAttribute('playsinline', '');
+      gameplayVideo.setAttribute('webkit-playsinline', '');
+
       if (currentSrc !== targetVideo) {
         gameplayVideoSource.setAttribute('src', targetVideo);
         const ext = targetVideo.split('.').pop().toLowerCase();
         gameplayVideoSource.setAttribute('type', ext === 'webm' ? 'video/webm' : 'video/mp4');
         gameplayVideo.load();
-        gameplayVideo.play().catch(err => console.log("Gameplay video autoplay blocked:", err));
+
+        const playPromise = gameplayVideo.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(err => {
+            console.log("Gameplay video mobile autoplay handling:", err);
+            const playOnTouch = () => {
+              gameplayVideo.play().catch(() => { });
+            };
+            document.addEventListener('touchstart', playOnTouch, { once: true });
+            document.addEventListener('click', playOnTouch, { once: true });
+          });
+        }
       } else if (gameplayVideo.paused) {
-        gameplayVideo.play().catch(err => console.log("Gameplay video play blocked:", err));
+        gameplayVideo.play().catch(err => {
+          const playOnTouch = () => {
+            gameplayVideo.play().catch(() => { });
+          };
+          document.addEventListener('touchstart', playOnTouch, { once: true });
+          document.addEventListener('click', playOnTouch, { once: true });
+        });
       }
       if (vhoGameTitle) {
         vhoGameTitle.textContent = `${data.name.toUpperCase()} 4K GAMEPLAY`;

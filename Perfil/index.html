@@ -74,8 +74,8 @@
     </div>
   </div>
 
-  <!-- Background Video (Optimized for instant page load) -->
-  <video id="video-background" autoplay loop muted playsinline preload="none">
+  <!-- Background Video (Optimized for instant page load & mobile playback) -->
+  <video id="video-background" autoplay loop muted playsinline webkit-playsinline preload="metadata">
     <source id="video-source" src="img/Videos/deltaforce.mp4" type="video/mp4">
   </video>
 
@@ -469,7 +469,7 @@
                       <div class="hud-corner bottom-left"></div>
                       <div class="hud-corner bottom-right"></div>
 
-                      <video id="gameplayVideo" autoplay loop muted playsinline preload="none">
+                      <video id="gameplayVideo" autoplay loop muted playsinline webkit-playsinline preload="metadata">
                         <source id="gameplayVideoSource" src="img/Videos/deltaforce.mp4" type="video/mp4">
                         Seu navegador não suporta vídeos HTML5.
                       </video>
