@@ -74,9 +74,9 @@
     </div>
   </div>
 
-  <!-- Background Video (Lazy loaded for optimized page boot) -->
+  <!-- Background Video (Optimized for instant page load) -->
   <video id="video-background" autoplay loop muted playsinline preload="none">
-    <source id="video-source" data-src="videoplayback (1).webm" type="video/webm">
+    <source id="video-source" src="img/Videos/deltaforce.mp4" type="video/mp4">
   </video>
 
   <!-- Overlays HUD para profundidade -->
@@ -276,6 +276,19 @@
                   <div class="lgc-arrow"><i class="fas fa-chevron-right"></i></div>
                 </div>
 
+                <!-- Fortnite Card -->
+                <div class="launcher-game-card" data-game="fortnite"
+                  style="background-image: linear-gradient(90deg, rgba(5, 4, 8, 0.95) 40%, rgba(5, 4, 8, 0.45) 100%), url('img/Fortnit banner.jpg');">
+                  <div class="lgc-icon"
+                    style="background-image: url('img/fortnite avatar.jpeg'); background-size: cover; background-position: center;">
+                  </div>
+                  <div class="lgc-info">
+                    <div class="lgc-name">Fortnite</div>
+                    <div class="lgc-meta">1,850 Hours Played &bull; Joined in 2021</div>
+                  </div>
+                  <div class="lgc-arrow"><i class="fas fa-chevron-right"></i></div>
+                </div>
+
               </div>
             </div>
 
@@ -441,8 +454,8 @@
                       <div class="hud-corner bottom-left"></div>
                       <div class="hud-corner bottom-right"></div>
 
-                      <video id="gameplayVideo" autoplay loop muted playsinline preload="metadata">
-                        <source id="gameplayVideoSource" src="videoplayback (1).webm" type="video/webm">
+                      <video id="gameplayVideo" autoplay loop muted playsinline preload="none">
+                        <source id="gameplayVideoSource" src="img/Videos/deltaforce.mp4" type="video/mp4">
                         Seu navegador não suporta vídeos HTML5.
                       </video>
 

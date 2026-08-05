@@ -3937,3 +3937,30 @@ select.hud-input option {
     padding: 4px 8px;
   }
 }
+
+/* ═══════════════════════════════════════════════════
+   PERFORMANCE & GPU HARDWARE ACCELERATION OPTIMIZATIONS
+   ═══════════════════════════════════════════════════ */
+.bg-video-container video,
+.gameplay-video-screen video,
+.hud-avatar-wrapper,
+.spinning-circle,
+.launcher-game-card,
+.hud-modal-content,
+.hud-tooltip {
+  will-change: transform, opacity;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+.launcher-game-card,
+.tab-panel,
+.pd-row,
+.df-ee-slot,
+.emblem-card-grid {
+  contain: layout style paint;
+}
+
+img {
+  content-visibility: auto;
+}

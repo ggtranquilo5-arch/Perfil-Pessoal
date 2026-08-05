@@ -543,11 +543,14 @@ document.addEventListener("DOMContentLoaded", () => {
       positionTooltip(e);
     });
 
+    let tooltipRafId = null;
     element.addEventListener('mousemove', (e) => {
-      positionTooltip(e);
+      if (tooltipRafId) cancelAnimationFrame(tooltipRafId);
+      tooltipRafId = requestAnimationFrame(() => positionTooltip(e));
     });
 
     element.addEventListener('mouseleave', () => {
+      if (tooltipRafId) cancelAnimationFrame(tooltipRafId);
       tooltipEl.classList.remove('active');
     });
   };
@@ -570,7 +573,7 @@ document.addEventListener("DOMContentLoaded", () => {
       titleName: "God of War T6",
       titleDesc: "Proof of reaching the highest rank in Risk Zone during Season War Albaze!",
       playstyle: "High-risk Hazard Zone infiltration specialist, playing as scout/assault. Focused on high-value loot extraction and strategic team rescues.",
-      videoUrl: "videoplayback (1).webm",
+      videoUrl: "img/Videos/deltaforce.mp4",
       titles: [
         { name: "God of War T9", id: "t9", file: "Screenshot_2026-07-01-15-17-13-442_com.garena.game.df.png", desc: "Season 9 - God of War Rank" },
         { name: "God of War T8", id: "t8", file: "Screenshot_2026-07-01-15-17-50-703_com.garena.game.df.png", desc: "Season 8 - God of War Rank" },
@@ -644,7 +647,7 @@ document.addEventListener("DOMContentLoaded", () => {
       titleName: "Supreme Glory",
       titleDesc: "Reached the top of the Hall of Fame on the global server ranking.",
       playstyle: "Hardcore survivor focused on survival and fortification. Expert in building raid-proof bases and dominating PvP on the island.",
-      videoUrl: "videoplayback (1).webm",
+      videoUrl: "img/Videos/rust.mp4",
 
       // Foto de perfil do Rust (local)
       avatarUrl: "img/avatarRust1.png",
@@ -698,7 +701,7 @@ document.addEventListener("DOMContentLoaded", () => {
       titleName: "Clutch Master",
       titleDesc: "Won 100+ rounds alone against 3+ enemies.",
       playstyle: "Duelist/Initiator focused on map control and clutches. Expert in securing rounds in numerical disadvantage with high precision.",
-      videoUrl: "videoplayback (1).webm",
+      videoUrl: "img/Videos/valorant.mp4",
 
       // Foto de perfil do Valorant (local)
       avatarUrl: "img/valorant_avatar.jpg",
@@ -737,7 +740,7 @@ document.addEventListener("DOMContentLoaded", () => {
       titleName: "Defusal Veteran",
       titleDesc: "Defused 50 bombs with less than 2 seconds remaining.",
       playstyle: "Main AWPer and IGL (In-Game Leader). Full focus on coordinated bomb site tactics, recoil control, and high headshot rate.",
-      videoUrl: "videoplayback (1).webm",
+      videoUrl: "img/Videos/cs2.mp4",
 
       // Foto de perfil do CS2 (local)
       avatarUrl: "img/Cs2 perfil.jpg",
@@ -776,7 +779,7 @@ document.addEventListener("DOMContentLoaded", () => {
       titleName: "Heist Mastermind",
       titleDesc: "Completed all heists on hard difficulty with the same team without anyone dying.",
       playstyle: "Professional getaway driver and tactical planner for elite heists. Focus on high-performance police/corporate roleplay.",
-      videoUrl: "videoplayback (1).webm",
+      videoUrl: "img/Videos/gta5.mp4",
       avatarUrl: "img/Gta 5 avatar.jpg",
       equippedEmblems: [
         { name: "Driver", icon: "fa-car", shape: "shape-circle", color: "gold-emb" },
@@ -813,7 +816,7 @@ document.addEventListener("DOMContentLoaded", () => {
       titleName: "Evo Mastermind",
       titleDesc: "Survived the ultimate apocalypse and established dominance on Emberland island.",
       playstyle: "Strategic survival specialist focusing on resource gathering, base building, and tactical PvP combat on Emberland.",
-      videoUrl: "videoplayback (1).webm",
+      videoUrl: "img/Videos/missionevo.mp4",
       avatarUrl: "img/Mission evo Avatar.jpg",
 
       titles: [
@@ -846,6 +849,43 @@ document.addEventListener("DOMContentLoaded", () => {
 
       radarPoints: "100,35 160,80 142,150 64,148 30,78",
       officialLinks: [{ label: "Official Website", url: "https://www.missionevo.com/" }, { label: "Official Discord", url: "https://discord.gg/missionevo" }]
+    },
+    fortnite: {
+      name: "Fortnite",
+      rankTitle: "Unreal Rank #142",
+      rankScore: "Score: 12,450",
+      hours: "1,850h",
+      battles: "1,240 Matches",
+      opLevel: "88",
+      titleName: "Victory Royale Legend",
+      titleDesc: "Achieved over 500 Victory Royales in Battle Royale mode.",
+      playstyle: "Aggressive builder and marksman. Expert in fast box-fighting, high-ground retakes, and late-game rotations.",
+      videoUrl: "img/Videos/fortnite.mp4",
+      avatarUrl: "img/fortnite avatar.jpeg",
+
+      equippedEmblems: [
+        { name: "Crown Victory", icon: "fa-crown", shape: "shape-shield", color: "gold-emb" },
+        { name: "Box Fighter", icon: "fa-cube", shape: "shape-shield", color: "cyan-emb" },
+        { name: "Sniper Ace", icon: "fa-bullseye", shape: "shape-triangle", color: "red-emb" },
+        { name: "Storm Master", icon: "fa-bolt", shape: "shape-diamond", color: "blue-emb" }
+      ],
+      allEmblems: [
+        { name: "Crown Victory", icon: "fa-crown", equipped: true, desc: "Won 50 Victory Royales with Victory Crown.", shape: "shape-shield", color: "gold-emb" },
+        { name: "Box Fighter", icon: "fa-cube", equipped: true, desc: "Eliminated 100 players inside close-range boxes.", shape: "shape-shield", color: "cyan-emb" },
+        { name: "Sniper Ace", icon: "fa-bullseye", equipped: true, desc: "200m+ headshot elimination with sniper rifle.", shape: "shape-triangle", color: "red-emb" },
+        { name: "Storm Master", icon: "fa-bolt", equipped: true, desc: "Survived 500 storm phases without taking damage.", shape: "shape-diamond", color: "blue-emb" }
+      ],
+      detailsStats: [
+        { key: "Total Matches", val: "1,240" },
+        { key: "Victory Royales", val: "512" },
+        { key: "Hours Played", val: "1,850h" },
+        { key: "Overall K/D Ratio", val: "3.42" },
+        { key: "Win Rate", val: "41.2%" },
+        { key: "Total Eliminations", val: "4,240" }
+      ],
+
+      radarPoints: "100,26 165,72 140,152 62,150 28,74",
+      officialLinks: [{ label: "Official Website", url: "https://www.fortnite.com/" }, { label: "Epic Games Store", url: "https://store.epicgames.com/fortnite" }]
     }
   };
 
@@ -1067,7 +1107,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (tabAmigoBtn) tabAmigoBtn.classList.add('hidden');
     if (backToGamesBtn) backToGamesBtn.classList.remove('hidden');
     gameTabs.forEach(tab => {
-      if (tab.getAttribute('data-tab') === 'conquistas' && gameId !== 'deltaforce' && gameId !== 'rust' && gameId !== 'missionevo') {
+      if (tab.getAttribute('data-tab') === 'conquistas' && !data.allEmblems && !data.titles) {
         tab.classList.add('hidden');
       } else {
         tab.classList.remove('hidden');
@@ -1139,10 +1179,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (gameplayVideo && gameplayVideoSource) {
-      const targetVideo = data.videoUrl || 'videoplayback (1).webm';
+      const targetVideo = data.videoUrl || 'img/Videos/deltaforce.mp4';
       const currentSrc = gameplayVideoSource.getAttribute('src');
       if (currentSrc !== targetVideo) {
         gameplayVideoSource.setAttribute('src', targetVideo);
+        const ext = targetVideo.split('.').pop().toLowerCase();
+        gameplayVideoSource.setAttribute('type', ext === 'webm' ? 'video/webm' : 'video/mp4');
         gameplayVideo.load();
         gameplayVideo.play().catch(err => console.log("Gameplay video autoplay blocked:", err));
       } else if (gameplayVideo.paused) {
@@ -1156,7 +1198,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Grid de emblemas equipados com design de patch militar real
     const equippedEmblemsContainer = document.querySelector('.df-equipped-emblems');
     if (equippedEmblemsContainer) {
-      if (gameId === 'deltaforce' || gameId === 'rust' || gameId === 'missionevo') {
+      if (data.equippedEmblems && data.equippedEmblems.length > 0) {
         equippedEmblemsContainer.style.display = 'block';
       } else {
         equippedEmblemsContainer.style.display = 'none';
@@ -1165,7 +1207,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const equippedGrid = document.getElementById('dfEquippedGrid');
     equippedGrid.innerHTML = '';
-    if ((gameId === 'deltaforce' || gameId === 'rust' || gameId === 'missionevo') && data.equippedEmblems) {
+    if (data.equippedEmblems && data.equippedEmblems.length > 0) {
+      const eqFrag = document.createDocumentFragment();
       data.equippedEmblems.forEach(emb => {
         const slot = document.createElement('div');
         slot.className = `df-ee-slot`;
@@ -1177,13 +1220,13 @@ document.addEventListener("DOMContentLoaded", () => {
         if (emb.file) {
           slot.innerHTML = `
             <div class="emblem-patch has-image">
-              <img src="img/emblemas/${emb.file}" alt="${emb.name}" class="emblem-img" loading="lazy">
+              <img src="img/emblemas/${emb.file}" alt="${emb.name}" class="emblem-img" loading="lazy" decoding="async">
             </div>
           `;
         } else if (emb.spriteIndex !== undefined && slicedEmblems[emb.spriteIndex]) {
           slot.innerHTML = `
             <div class="emblem-patch has-image">
-              <img src="${slicedEmblems[emb.spriteIndex]}" alt="${emb.name}" class="emblem-img" loading="lazy">
+              <img src="${slicedEmblems[emb.spriteIndex]}" alt="${emb.name}" class="emblem-img" loading="lazy" decoding="async">
             </div>
           `;
         } else {
@@ -1193,8 +1236,9 @@ document.addEventListener("DOMContentLoaded", () => {
             </div>
           `;
         }
-        equippedGrid.appendChild(slot);
+        eqFrag.appendChild(slot);
       });
+      equippedGrid.appendChild(eqFrag);
     }
 
     // Renderizar links oficiais e da comunidade do jogo
@@ -1204,6 +1248,7 @@ document.addEventListener("DOMContentLoaded", () => {
       linksGrid.innerHTML = '';
       if (data.officialLinks && data.officialLinks.length > 0) {
         if (linksSection) linksSection.style.display = 'block';
+        const linksFrag = document.createDocumentFragment();
         data.officialLinks.forEach(link => {
           const labelLower = link.label.toLowerCase();
           let iconClass = 'fas fa-external-link-alt'; // default
@@ -1227,8 +1272,9 @@ document.addEventListener("DOMContentLoaded", () => {
           a.target = '_blank';
           a.rel = 'noopener noreferrer';
           a.innerHTML = `<i class="${iconClass}"></i> <span>${link.label.toUpperCase()}</span>`;
-          linksGrid.appendChild(a);
+          linksFrag.appendChild(a);
         });
+        linksGrid.appendChild(linksFrag);
       } else {
         if (linksSection) linksSection.style.display = 'none';
       }
@@ -1239,6 +1285,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById('detailsHeader').textContent = `${detailsLabel} ${data.name.toUpperCase()}`;
     const detailsGrid = document.getElementById('dfDetailsGrid');
     detailsGrid.innerHTML = '';
+    const detailsFrag = document.createDocumentFragment();
     data.detailsStats.forEach(stat => {
       const row = document.createElement('div');
       row.className = 'pd-row';
@@ -1246,8 +1293,9 @@ document.addEventListener("DOMContentLoaded", () => {
         <span class="pd-key">${stat.key.toUpperCase()}</span>
         <span class="pd-val">${stat.val}</span>
       `;
-      detailsGrid.appendChild(row);
+      detailsFrag.appendChild(row);
     });
+    detailsGrid.appendChild(detailsFrag);
 
     // Atualizar gráfico de radar SVG
     const radarPoly = document.getElementById('dfRadarPoly');
