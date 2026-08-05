@@ -940,51 +940,107 @@ body::before {
   gap: 16px;
 }
 
-.df-hours-only-card {
-  background: rgba(18, 14, 11, 0.75);
-  border: 1px solid var(--border);
-  border-left: 3.5px solid var(--primary);
+/* Card Tático Premium de Horas (Compacto e Elegante) */
+.df-hours-tactical-card {
+  background: linear-gradient(135deg, rgba(200, 130, 66, 0.08) 0%, rgba(12, 10, 9, 0.85) 100%);
+  border: 1px solid rgba(200, 130, 66, 0.3);
+  border-left: 4px solid var(--primary);
   border-radius: 10px;
-  padding: 12px 20px;
-  display: flex;
+  padding: 10px 18px;
+  display: inline-flex;
   align-items: center;
   justify-content: space-between;
-  width: 100%;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  gap: 28px;
+  max-width: 380px;
+  width: auto;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   transition: var(--transition);
 }
 
-.df-hours-only-card:hover {
-  border-color: rgba(200, 130, 66, 0.4);
-  box-shadow: 0 8px 25px rgba(200, 130, 66, 0.15);
+.df-hours-tactical-card:hover {
+  border-color: var(--primary);
+  box-shadow: 0 10px 30px rgba(200, 130, 66, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
 }
 
-.df-ho-label {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 11px;
-  font-weight: 800;
-  color: var(--text-mid);
-  letter-spacing: 2px;
-  text-transform: uppercase;
+.df-ht-left {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
 }
 
-.df-ho-label i {
+.df-ht-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: rgba(200, 130, 66, 0.15);
+  border: 1px solid rgba(200, 130, 66, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: var(--primary);
-  font-size: 12px;
+  font-size: 15px;
+  box-shadow: 0 0 10px rgba(200, 130, 66, 0.2);
 }
 
-.df-ho-val {
+.df-ht-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.df-ht-label {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 11px;
+  font-weight: 850;
+  color: #ffffff;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.df-ht-sub {
+  font-size: 8.5px;
+  color: var(--text-dim);
+  letter-spacing: 0.8px;
+  margin-top: 1px;
+}
+
+.df-ht-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.df-ht-val {
   font-family: 'Oxanium', sans-serif;
   font-size: 22px;
   font-weight: 900;
-  color: #ffffff;
-  text-shadow: 0 0 10px rgba(200, 130, 66, 0.5);
+  color: var(--orange);
+  text-shadow: 0 0 12px rgba(255, 140, 0, 0.4);
   letter-spacing: 1px;
+  line-height: 1;
+}
+
+.df-ht-status {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 8.5px;
+  font-weight: 700;
+  color: var(--green);
+  letter-spacing: 1px;
+  margin-top: 4px;
+}
+
+.pulse-green-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 6px var(--green);
+  animation: redDotPulse 1.8s infinite ease-in-out;
 }
 
 .df-rank-badge-card {
