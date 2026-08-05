@@ -459,6 +459,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Tooltip Helper
   const tooltipEl = document.getElementById('hudTooltip');
+
+  // Auto-hide tooltip on scroll, touchmove, or touching outside so it never gets stuck on screen
+  const hideHudTooltip = () => {
+    if (tooltipEl) tooltipEl.classList.remove('active');
+  };
+
+  window.addEventListener('scroll', hideHudTooltip, { passive: true });
+  window.addEventListener('touchmove', hideHudTooltip, { passive: true });
+  document.addEventListener('touchstart', (e) => {
+    if (!e.target.closest('.df-ee-slot') && !e.target.closest('.emblem-card') && !e.target.closest('[data-tooltip-title]') && !e.target.closest('.title-card')) {
+      hideHudTooltip();
+    }
+  }, { passive: true });
+
   const setupTooltip = (element, title, desc, status) => {
     if (!tooltipEl || !element) return;
 
@@ -467,7 +481,12 @@ document.addEventListener("DOMContentLoaded", () => {
       let clientX = e.clientX;
       let clientY = e.clientY;
 
-      // Fallback para getBoundingClientRect caso clientX/Y sejam nulos ou zero (comum em testes automatizados)
+      if (e.touches && e.touches.length > 0) {
+        clientX = e.touches[0].clientX;
+        clientY = e.touches[0].clientY;
+      }
+
+      // Fallback para getBoundingClientRect caso clientX/Y sejam nulos ou zero
       if (clientX === undefined || clientY === undefined || (clientX === 0 && clientY === 0)) {
         const rect = element.getBoundingClientRect();
         clientX = rect.left + rect.width / 2;
@@ -492,44 +511,28 @@ document.addEventListener("DOMContentLoaded", () => {
         finalY = clientY - tooltipH - offset;
       }
 
-      // Limitar a área útil ao container .tabs-card para que não passe da linha limitadora do painel
       const tabsCard = document.querySelector('.tabs-card');
       if (tabsCard) {
         const cardRect = tabsCard.getBoundingClientRect();
 
-        if (finalX < cardRect.left + 10) {
-          finalX = cardRect.left + 10;
-        }
-        if (finalX + tooltipW > cardRect.right - 10) {
-          finalX = cardRect.right - tooltipW - 10;
-        }
-        if (finalY < cardRect.top + 10) {
-          finalY = cardRect.top + 10;
-        }
-        if (finalY + tooltipH > cardRect.bottom - 10) {
-          finalY = cardRect.bottom - tooltipH - 10;
-        }
+        if (finalX < cardRect.left + 10) finalX = cardRect.left + 10;
+        if (finalX + tooltipW > cardRect.right - 10) finalX = cardRect.right - tooltipW - 10;
+        if (finalY < cardRect.top + 10) finalY = cardRect.top + 10;
+        if (finalY + tooltipH > cardRect.bottom - 10) finalY = cardRect.bottom - tooltipH - 10;
       } else {
-        // Fallback para os limites gerais da viewport
-        if (finalX < 10) {
-          finalX = 10;
-        }
-        if (finalX + tooltipW > windowW - 10) {
-          finalX = windowW - tooltipW - 10;
-        }
-        if (finalY < 10) {
-          finalY = 10;
-        }
-        if (finalY + tooltipH > windowH - 10) {
-          finalY = windowH - tooltipH - 10;
-        }
+        if (finalX < 10) finalX = 10;
+        if (finalX + tooltipW > windowW - 10) finalX = windowW - tooltipW - 10;
+        if (finalY < 10) finalY = 10;
+        if (finalY + tooltipH > windowH - 10) finalY = windowH - tooltipH - 10;
       }
 
       tooltipEl.style.left = `${finalX}px`;
       tooltipEl.style.top = `${finalY}px`;
     };
 
-    element.addEventListener('mouseenter', (e) => {
+    let touchHideTimeout = null;
+
+    const showTooltipAction = (e) => {
       let statusHtml = '';
       if (status) {
         statusHtml = `<div class="tooltip-status ${status.toLowerCase()}">${status}</div>`;
@@ -541,7 +544,15 @@ document.addEventListener("DOMContentLoaded", () => {
       `;
       tooltipEl.classList.add('active');
       positionTooltip(e);
-    });
+
+      if (touchHideTimeout) clearTimeout(touchHideTimeout);
+      if (e.type === 'touchstart') {
+        touchHideTimeout = setTimeout(hideHudTooltip, 2500);
+      }
+    };
+
+    element.addEventListener('mouseenter', showTooltipAction);
+    element.addEventListener('touchstart', showTooltipAction, { passive: true });
 
     let tooltipRafId = null;
     element.addEventListener('mousemove', (e) => {
@@ -551,8 +562,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     element.addEventListener('mouseleave', () => {
       if (tooltipRafId) cancelAnimationFrame(tooltipRafId);
-      tooltipEl.classList.remove('active');
+      hideHudTooltip();
     });
+    element.addEventListener('touchend', () => {
+      if (touchHideTimeout) clearTimeout(touchHideTimeout);
+      touchHideTimeout = setTimeout(hideHudTooltip, 2000);
+    }, { passive: true });
   };
 
 
@@ -587,14 +602,16 @@ document.addEventListener("DOMContentLoaded", () => {
       // Foto de perfil oficial (local)
       avatarUrl: "img/deltaforce_avatar.jpg",
 
-      // 6 emblemas equipados com shapes e cores (reduzido para economizar espaço e evitar overflow)
       equippedEmblems: [
         { name: "Welcome to FD", icon: "fa-crosshairs", shape: "shape-shield", color: "cyan-emb", spriteIndex: 0 },
         { name: "Rescue Wings", icon: "fa-helicopter", shape: "shape-shield", color: "cyan-emb", spriteIndex: 1 },
         { name: "Frontline Pioneer", icon: "fa-medal", shape: "shape-triangle", color: "gold-emb", spriteIndex: 2 },
         { name: "Teamwork", icon: "fa-users", shape: "shape-shield", color: "gold-emb", spriteIndex: 3 },
         { name: "Black Rose", icon: "fa-spa", shape: "shape-diamond", color: "blue-emb", spriteIndex: 4 },
-        { name: "Combat Elite", icon: "fa-skull-crossbones", shape: "shape-shield", color: "red-emb", spriteIndex: 5 }
+        { name: "Combat Elite", icon: "fa-skull-crossbones", shape: "shape-shield", color: "red-emb", spriteIndex: 5 },
+        { name: "Heart of Africa", icon: "fa-shield-halved", shape: "shape-shield", color: "green-emb", spriteIndex: 6 },
+        { name: "Pearl of the Sea", icon: "fa-gem", shape: "shape-circle", color: "gold-emb", spriteIndex: 7 },
+        { name: "Marine Sniper", icon: "fa-bullseye", shape: "shape-shield", color: "blue-emb", spriteIndex: 8 }
       ],
 
       // Todos os 16 emblemas com formas 3D e cores correspondentes à imagem do jogo
@@ -666,7 +683,11 @@ document.addEventListener("DOMContentLoaded", () => {
         { name: "Armaments Artisan I", file: "emblemaRust3.png" },
         { name: "Map Pathfinder", file: "emblemaRust4.png" },
         { name: "Legendary Architect", file: "emblemaRust5.png" },
-        { name: "First Steps", file: "emblemaRust6.png" }
+        { name: "First Steps", file: "emblemaRust6.png" },
+        { name: "Master Lumberjack", file: "emblemaRust7.png" },
+        { name: "Master Hunter", file: "emblemaRust8.png" },
+        { name: "Barrel Destroyer", file: "emblemaRust9.png" },
+        { name: "Valiant Vanguard I", file: "emblemaRust10.png" }
       ],
       allEmblems: [
         { name: "Demolition Expert III", file: "emblemaRust1.png", equipped: true, desc: "Destroy 10 tool cupboards in a single match." },

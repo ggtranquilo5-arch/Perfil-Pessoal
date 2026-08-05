@@ -1013,13 +1013,14 @@ body::before {
 }
 
 .df-ht-val {
-  font-family: 'Oxanium', sans-serif;
-  font-size: 22px;
-  font-weight: 900;
-  color: var(--orange);
-  text-shadow: 0 0 12px rgba(255, 140, 0, 0.4);
+  font-family: 'Space Grotesk', 'Oxanium', sans-serif;
+  font-size: 14px;
+  font-weight: 750;
+  color: var(--text-mid);
   letter-spacing: 1px;
-  line-height: 1;
+  line-height: 1.2;
+  text-transform: uppercase;
+  text-shadow: none;
 }
 
 .df-ht-status {
@@ -1178,7 +1179,9 @@ body::before {
 
 .df-ee-grid {
   display: flex;
-  gap: 5px;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
 }
 
 .df-ee-slot {
@@ -4180,7 +4183,8 @@ body {
   }
 
   .df-ht-val {
-    font-size: 19px;
+    font-size: 13px;
+    color: var(--text-mid);
   }
 
   .df-playstyle-card {
