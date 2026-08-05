@@ -1129,13 +1129,20 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Grid de emblemas equipados com design de patch militar real
-    const equippedEmblemsContainer = document.querySelector('.df-equipped-emblems');
-    if (equippedEmblemsContainer) {
-      if (data.equippedEmblems && data.equippedEmblems.length > 0) {
-        equippedEmblemsContainer.style.display = 'block';
-      } else {
-        equippedEmblemsContainer.style.display = 'none';
-      }
+    const equippedSection = document.querySelector('.df-equipped-section');
+    const opLevelMiniItem = document.getElementById('dfOpLevelMiniItem');
+    const opLevelMiniVal = document.getElementById('dfOpLevelMiniVal');
+
+    if (opLevelMiniVal && data.opLevel) {
+      opLevelMiniVal.textContent = `Nível ${data.opLevel}`;
+    }
+
+    if (data.equippedEmblems && data.equippedEmblems.length > 0) {
+      if (equippedSection) equippedSection.style.display = 'flex';
+      if (opLevelMiniItem) opLevelMiniItem.style.display = 'none';
+    } else {
+      if (equippedSection) equippedSection.style.display = 'none';
+      if (opLevelMiniItem) opLevelMiniItem.style.display = 'flex';
     }
 
     const equippedGrid = document.getElementById('dfEquippedGrid');
