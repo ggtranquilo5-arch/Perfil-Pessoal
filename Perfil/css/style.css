@@ -1029,18 +1029,33 @@ body::before {
   font-family: 'Space Grotesk', sans-serif;
   font-size: 8.5px;
   font-weight: 700;
-  color: var(--green);
+  color: var(--primary);
   letter-spacing: 1px;
   margin-top: 4px;
 }
 
-.pulse-green-dot {
+.pulse-green-dot,
+.pulse-primary-dot {
   width: 5px;
   height: 5px;
   border-radius: 50%;
-  background: var(--green);
-  box-shadow: 0 0 6px var(--green);
-  animation: redDotPulse 1.8s infinite ease-in-out;
+  background: var(--primary);
+  box-shadow: 0 0 6px var(--primary);
+  animation: primaryDotPulse 1.8s infinite ease-in-out;
+}
+
+@keyframes primaryDotPulse {
+
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.4;
+    transform: scale(0.75);
+  }
 }
 
 .df-rank-badge-card {
