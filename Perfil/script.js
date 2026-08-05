@@ -1113,6 +1113,45 @@ document.addEventListener("DOMContentLoaded", () => {
       profileTitleEl.textContent = data.titleName || '';
     }
 
+    // Atualizar avatar na aba Perfil
+    const charAvatar = document.querySelector('#tab-perfil .char-avatar-render');
+    if (charAvatar) {
+      charAvatar.src = data.avatarUrl;
+    }
+
+    // Carregar Briefing/Playstyle & Vídeo de Gameplay 4K
+    const playstyleCard = document.getElementById('dfPlaystyleCard');
+    const playstyleText = document.getElementById('dfPlaystyleText');
+    const gameplayVideo = document.getElementById('gameplayVideo');
+    const gameplayVideoSource = document.getElementById('gameplayVideoSource');
+    const vhoGameTitle = document.getElementById('vhoGameTitle');
+
+    if (playstyleCard && playstyleText) {
+      if (data.playstyle) {
+        playstyleText.textContent = data.playstyle;
+        playstyleCard.style.display = 'block';
+      } else {
+        playstyleCard.style.display = 'none';
+      }
+    }
+
+    if (gameplayVideo && gameplayVideoSource) {
+      const targetVideo = data.videoUrl || 'img/Videos/deltaforce.mp4';
+      const currentSrc = gameplayVideoSource.getAttribute('src');
+      if (currentSrc !== targetVideo) {
+        gameplayVideoSource.setAttribute('src', targetVideo);
+        const ext = targetVideo.split('.').pop().toLowerCase();
+        gameplayVideoSource.setAttribute('type', ext === 'webm' ? 'video/webm' : 'video/mp4');
+        gameplayVideo.load();
+        gameplayVideo.play().catch(err => console.log("Gameplay video autoplay blocked:", err));
+      } else if (gameplayVideo.paused) {
+        gameplayVideo.play().catch(err => console.log("Gameplay video play blocked:", err));
+      }
+      if (vhoGameTitle) {
+        vhoGameTitle.textContent = `${data.name.toUpperCase()} 4K GAMEPLAY`;
+      }
+    }
+
     const equippedGrid = document.getElementById('dfEquippedGrid');
     equippedGrid.innerHTML = '';
     if (data.equippedEmblems && data.equippedEmblems.length > 0) {
