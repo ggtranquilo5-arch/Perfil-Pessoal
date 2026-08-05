@@ -940,6 +940,53 @@ body::before {
   gap: 16px;
 }
 
+.df-hours-only-card {
+  background: rgba(18, 14, 11, 0.75);
+  border: 1px solid var(--border);
+  border-left: 3.5px solid var(--primary);
+  border-radius: 10px;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: var(--transition);
+}
+
+.df-hours-only-card:hover {
+  border-color: rgba(200, 130, 66, 0.4);
+  box-shadow: 0 8px 25px rgba(200, 130, 66, 0.15);
+}
+
+.df-ho-label {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--text-mid);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.df-ho-label i {
+  color: var(--primary);
+  font-size: 12px;
+}
+
+.df-ho-val {
+  font-family: 'Oxanium', sans-serif;
+  font-size: 22px;
+  font-weight: 900;
+  color: #ffffff;
+  text-shadow: 0 0 10px rgba(200, 130, 66, 0.5);
+  letter-spacing: 1px;
+}
+
 .df-rank-badge-card {
   background: rgba(255, 140, 0, 0.04);
   border: 1.5px solid rgba(255, 140, 0, 0.25);

@@ -1050,99 +1050,67 @@ document.addEventListener("DOMContentLoaded", () => {
     // 2. Carregar informações reais na aba PERFIL
     const opLabel = currentLang === 'pt' ? '// DADOS DO OPERADOR:' : '// OPERATOR DATA:';
     document.getElementById('profileHeader').textContent = `${opLabel} ${data.name.toUpperCase()}`;
-    document.getElementById('dfRankTitle').textContent = data.rankTitle;
-    document.getElementById('dfRankScore').textContent = data.rankScore;
-    document.getElementById('dfHours').textContent = data.hours;
-    document.getElementById('dfBattles').textContent = data.battles;
-    const assetsEl = document.getElementById('dfAssets');
-    const extractRateEl = document.getElementById('dfExtractRate');
 
-    if (assetsEl) {
-      const parent = assetsEl.closest('.df-sm-item');
-      if (parent) {
-        if (data.assets) {
-          assetsEl.textContent = data.assets;
-          parent.style.display = 'flex';
-        } else {
-          parent.style.display = 'none';
+    const isFullGame = (gameId === 'deltaforce' || gameId === 'rust');
+    const fullStatsRow = document.getElementById('dfFullStatsRow');
+    const hoursOnlyRow = document.getElementById('dfHoursOnlyRow');
+    const hoursOnlyVal = document.getElementById('dfHoursOnlyVal');
+    const equippedSection = document.querySelector('.df-equipped-section');
+
+    if (isFullGame) {
+      if (fullStatsRow) fullStatsRow.style.display = 'flex';
+      if (equippedSection) equippedSection.style.display = 'flex';
+      if (hoursOnlyRow) hoursOnlyRow.style.display = 'none';
+
+      const rankTitleEl = document.getElementById('dfRankTitle');
+      if (rankTitleEl) rankTitleEl.textContent = data.rankTitle || '';
+      const rankScoreEl = document.getElementById('dfRankScore');
+      if (rankScoreEl) rankScoreEl.textContent = data.rankScore || '';
+      const hoursEl = document.getElementById('dfHours');
+      if (hoursEl) hoursEl.textContent = data.hours || '';
+      const battlesEl = document.getElementById('dfBattles');
+      if (battlesEl) battlesEl.textContent = data.battles || '';
+
+      const assetsEl = document.getElementById('dfAssets');
+      const extractRateEl = document.getElementById('dfExtractRate');
+
+      if (assetsEl) {
+        const parent = assetsEl.closest('.df-sm-item');
+        if (parent) {
+          if (data.assets) {
+            assetsEl.textContent = data.assets;
+            parent.style.display = 'flex';
+          } else {
+            parent.style.display = 'none';
+          }
         }
       }
-    }
 
-    if (extractRateEl) {
-      const parent = extractRateEl.closest('.df-sm-item');
-      if (parent) {
-        if (data.extractionRate) {
-          extractRateEl.textContent = data.extractionRate;
-          parent.style.display = 'flex';
-        } else {
-          parent.style.display = 'none';
+      if (extractRateEl) {
+        const parent = extractRateEl.closest('.df-sm-item');
+        if (parent) {
+          if (data.extractionRate) {
+            extractRateEl.textContent = data.extractionRate;
+            parent.style.display = 'flex';
+          } else {
+            parent.style.display = 'none';
+          }
         }
       }
+      const opLevelEl = document.getElementById('dfOpLevel');
+      if (opLevelEl) {
+        opLevelEl.textContent = `Lv ${data.opLevel || 60}`;
+      }
+    } else {
+      if (fullStatsRow) fullStatsRow.style.display = 'none';
+      if (equippedSection) equippedSection.style.display = 'none';
+      if (hoursOnlyRow) hoursOnlyRow.style.display = 'flex';
+      if (hoursOnlyVal) hoursOnlyVal.textContent = data.hours || '';
     }
-    const opLevelEl = document.getElementById('dfOpLevel');
-    if (opLevelEl) {
-      opLevelEl.textContent = `Lv ${data.opLevel}`;
-    }
+
     const profileTitleEl = document.getElementById('dfProfileTitle');
     if (profileTitleEl) {
-      profileTitleEl.textContent = data.titleName;
-    }
-
-    // Atualizar avatar na aba Perfil
-    const charAvatar = document.querySelector('#tab-perfil .char-avatar-render');
-    if (charAvatar) {
-      charAvatar.src = data.avatarUrl;
-    }
-
-    // Carregar Briefing/Playstyle & Vídeo de Gameplay 4K
-    const playstyleCard = document.getElementById('dfPlaystyleCard');
-    const playstyleText = document.getElementById('dfPlaystyleText');
-    const gameplayVideo = document.getElementById('gameplayVideo');
-    const gameplayVideoSource = document.getElementById('gameplayVideoSource');
-    const vhoGameTitle = document.getElementById('vhoGameTitle');
-
-    if (playstyleCard && playstyleText) {
-      if (data.playstyle) {
-        playstyleText.textContent = data.playstyle;
-        playstyleCard.style.display = 'block';
-      } else {
-        playstyleCard.style.display = 'none';
-      }
-    }
-
-    if (gameplayVideo && gameplayVideoSource) {
-      const targetVideo = data.videoUrl || 'img/Videos/deltaforce.mp4';
-      const currentSrc = gameplayVideoSource.getAttribute('src');
-      if (currentSrc !== targetVideo) {
-        gameplayVideoSource.setAttribute('src', targetVideo);
-        const ext = targetVideo.split('.').pop().toLowerCase();
-        gameplayVideoSource.setAttribute('type', ext === 'webm' ? 'video/webm' : 'video/mp4');
-        gameplayVideo.load();
-        gameplayVideo.play().catch(err => console.log("Gameplay video autoplay blocked:", err));
-      } else if (gameplayVideo.paused) {
-        gameplayVideo.play().catch(err => console.log("Gameplay video play blocked:", err));
-      }
-      if (vhoGameTitle) {
-        vhoGameTitle.textContent = `${data.name.toUpperCase()} 4K GAMEPLAY`;
-      }
-    }
-
-    // Grid de emblemas equipados com design de patch militar real
-    const equippedSection = document.querySelector('.df-equipped-section');
-    const opLevelMiniItem = document.getElementById('dfOpLevelMiniItem');
-    const opLevelMiniVal = document.getElementById('dfOpLevelMiniVal');
-
-    if (opLevelMiniVal && data.opLevel) {
-      opLevelMiniVal.textContent = `Nível ${data.opLevel}`;
-    }
-
-    if (data.equippedEmblems && data.equippedEmblems.length > 0) {
-      if (equippedSection) equippedSection.style.display = 'flex';
-      if (opLevelMiniItem) opLevelMiniItem.style.display = 'none';
-    } else {
-      if (equippedSection) equippedSection.style.display = 'none';
-      if (opLevelMiniItem) opLevelMiniItem.style.display = 'flex';
+      profileTitleEl.textContent = data.titleName || '';
     }
 
     const equippedGrid = document.getElementById('dfEquippedGrid');
