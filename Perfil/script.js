@@ -1174,23 +1174,35 @@ document.addEventListener("DOMContentLoaded", () => {
         gameplayVideo.load();
       }
 
+      const mobilePlayOverlay = document.getElementById('mobilePlayBtnOverlay');
+      const videoContainer = document.getElementById('gameplayVideoContainer');
+
+      const handleVideoTapPlay = () => {
+        gameplayVideo.muted = true;
+        gameplayVideo.play().then(() => {
+          if (mobilePlayOverlay) mobilePlayOverlay.style.display = 'none';
+        }).catch(() => { });
+      };
+
+      if (videoContainer && !videoContainer.hasAttribute('data-tap-init')) {
+        videoContainer.setAttribute('data-tap-init', 'true');
+        videoContainer.addEventListener('click', handleVideoTapPlay);
+        videoContainer.addEventListener('touchstart', handleVideoTapPlay, { passive: true });
+      }
+
       const attemptPlay = () => {
         const p = gameplayVideo.play();
         if (p !== undefined) {
-          p.catch(err => {
-            console.log("Mobile video autoplay catch:", err);
-            const playOnUserGesture = () => {
-              gameplayVideo.play().catch(() => { });
-            };
-            document.addEventListener('touchstart', playOnUserGesture, { once: true });
-            document.addEventListener('click', playOnUserGesture, { once: true });
+          p.then(() => {
+            if (mobilePlayOverlay) mobilePlayOverlay.style.display = 'none';
+          }).catch(err => {
+            console.log("Mobile video autoplay handled for Xiaomi/HyperOS:", err);
+            if (mobilePlayOverlay) mobilePlayOverlay.style.display = 'flex';
           });
         }
       };
 
-      if (gameplayVideo.paused) {
-        attemptPlay();
-      }
+      attemptPlay();
 
       if (vhoGameTitle) {
         vhoGameTitle.textContent = `${data.name.toUpperCase()} 4K GAMEPLAY`;

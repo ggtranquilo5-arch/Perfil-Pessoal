@@ -463,13 +463,13 @@
                     </div>
 
                     <!-- Gameplay 4K Video Screen Container -->
-                    <div class="gameplay-video-screen" id="gameplayVideoContainer">
+                    <div class="gameplay-video-screen" id="gameplayVideoContainer" style="cursor: pointer;">
                       <div class="hud-corner top-left"></div>
                       <div class="hud-corner top-right"></div>
                       <div class="hud-corner bottom-left"></div>
                       <div class="hud-corner bottom-right"></div>
 
-                      <video id="gameplayVideo" autoplay loop muted playsinline webkit-playsinline preload="metadata">
+                      <video id="gameplayVideo" autoplay loop muted playsinline webkit-playsinline preload="auto">
                         <source id="gameplayVideoSource" src="img/Videos/deltaforce.mp4" type="video/mp4">
                         Seu navegador não suporta vídeos HTML5.
                       </video>
@@ -479,6 +479,12 @@
                         <div class="vho-status">
                           <i class="fas fa-play-circle"></i> <span id="vhoGameTitle">DELTA FORCE 4K GAMEPLAY</span>
                         </div>
+                      </div>
+
+                      <!-- Overlay Central para Celulares (Poco X6 Pro / Xiaomi / Android) -->
+                      <div class="mobile-play-btn-overlay" id="mobilePlayBtnOverlay" style="display: none;">
+                        <div class="mpb-circle"><i class="fas fa-play"></i></div>
+                        <span class="mpb-text">TOCAR VÍDEO</span>
                       </div>
                     </div>
 
