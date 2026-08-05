@@ -706,18 +706,6 @@ document.addEventListener("DOMContentLoaded", () => {
       // Foto de perfil do Valorant (local)
       avatarUrl: "img/valorant_avatar.jpg",
 
-      equippedEmblems: [
-        { name: "Precision", icon: "fa-crosshairs", shape: "shape-shield", color: "red-emb" },
-        { name: "Support", icon: "fa-shield-halved", shape: "shape-shield", color: "cyan-emb" },
-        { name: "MVP", icon: "fa-trophy", shape: "shape-circle", color: "gold-emb" },
-        { name: "Duelist", icon: "fa-skull", shape: "shape-diamond", color: "blue-emb" }
-      ],
-      allEmblems: [
-        { name: "Precision", icon: "fa-crosshairs", equipped: true, desc: "Headshot rate above 28%.", shape: "shape-shield", color: "red-emb" },
-        { name: "Support", icon: "fa-shield-halved", equipped: true, desc: "Provided 150 assists.", shape: "shape-shield", color: "cyan-emb" },
-        { name: "MVP", icon: "fa-trophy", equipped: true, desc: "Earned MVP in ranked matches.", shape: "shape-circle", color: "gold-emb" },
-        { name: "Duelist", icon: "fa-skull", equipped: true, desc: "Eliminated 30 enemies in a single match.", shape: "shape-diamond", color: "blue-emb" }
-      ],
       detailsStats: [
         { key: "Competitive Matches", val: "380" },
         { key: "Hours Played", val: "450h" },
@@ -745,18 +733,6 @@ document.addEventListener("DOMContentLoaded", () => {
       // Foto de perfil do CS2 (local)
       avatarUrl: "img/Cs2 perfil.jpg",
 
-      equippedEmblems: [
-        { name: "Tactical", icon: "fa-bomb", shape: "shape-circle", color: "gold-emb" },
-        { name: "Sharpshooter", icon: "fa-bullseye", shape: "shape-shield", color: "red-emb" },
-        { name: "Leader", icon: "fa-crown", shape: "shape-shield", color: "cyan-emb" },
-        { name: "Defender", icon: "fa-shield", shape: "shape-diamond", color: "green-emb" }
-      ],
-      allEmblems: [
-        { name: "Tactical", icon: "fa-bomb", equipped: true, desc: "Defused 100 bombs.", shape: "shape-circle", color: "gold-emb" },
-        { name: "Sharpshooter", icon: "fa-bullseye", equipped: true, desc: "AWP ace in a single round.", shape: "shape-shield", color: "red-emb" },
-        { name: "Leader", icon: "fa-crown", equipped: true, desc: "Lobby leader in Premier.", shape: "shape-shield", color: "cyan-emb" },
-        { name: "Defender", icon: "fa-shield", equipped: true, desc: "Held critical positions at Bomb Site B.", shape: "shape-diamond", color: "green-emb" }
-      ],
       detailsStats: [
         { key: "Premier Matches", val: "290" },
         { key: "Premier Hours", val: "350h" },
@@ -781,18 +757,6 @@ document.addEventListener("DOMContentLoaded", () => {
       playstyle: "Professional getaway driver and tactical planner for elite heists. Focus on high-performance police/corporate roleplay.",
       videoUrl: "img/Videos/gta5.mp4",
       avatarUrl: "img/Gta 5 avatar.jpg",
-      equippedEmblems: [
-        { name: "Driver", icon: "fa-car", shape: "shape-circle", color: "gold-emb" },
-        { name: "Gunslinger", icon: "fa-gun", shape: "shape-shield", color: "red-emb" },
-        { name: "Planner", icon: "fa-mask", shape: "shape-shield", color: "cyan-emb" },
-        { name: "Tycoon", icon: "fa-money-bill-wave", shape: "shape-diamond", color: "green-emb" }
-      ],
-      allEmblems: [
-        { name: "Driver", icon: "fa-car", equipped: true, desc: "Won 50 street races.", shape: "shape-circle", color: "gold-emb" },
-        { name: "Gunslinger", icon: "fa-gun", equipped: true, desc: "Eliminated 200 enemies with headshots.", shape: "shape-shield", color: "red-emb" },
-        { name: "Planner", icon: "fa-mask", equipped: true, desc: "Planned and executed heist without triggering alarms.", shape: "shape-shield", color: "cyan-emb" },
-        { name: "Tycoon", icon: "fa-money-bill-wave", equipped: true, desc: "Accumulated over $100M in bank.", shape: "shape-diamond", color: "green-emb" }
-      ],
       detailsStats: [
         { key: "Heists Completed", val: "150" },
         { key: "Hours Played", val: "250h" },
@@ -819,25 +783,6 @@ document.addEventListener("DOMContentLoaded", () => {
       videoUrl: "img/Videos/missionevo.mp4",
       avatarUrl: "img/Mission evo Avatar.jpg",
 
-      titles: [
-        { name: "Evo Mastermind", id: "t_me1", desc: "Established dominance on Emberland island." },
-        { name: "Apex Predator", id: "t_me2", desc: "Eliminated over 500 rival survivors in high-tier zones." },
-        { name: "Fortress Architect", id: "t_me3", desc: "Built an impenetrable steel shelter during the outbreak." }
-      ],
-      activeTitleId: "t_me1",
-
-      equippedEmblems: [
-        { name: "Emberland Pioneer", icon: "fa-fire-flame-curved", shape: "shape-shield", color: "gold-emb" },
-        { name: "Shelter Builder", icon: "fa-house-shield", shape: "shape-shield", color: "cyan-emb" },
-        { name: "Survival Instinct", icon: "fa-biohazard", shape: "shape-triangle", color: "red-emb" },
-        { name: "Tactical Scavenger", icon: "fa-box-open", shape: "shape-diamond", color: "blue-emb" }
-      ],
-      allEmblems: [
-        { name: "Emberland Pioneer", icon: "fa-fire-flame-curved", equipped: true, desc: "Pioneered early exploration of Emberland.", shape: "shape-shield", color: "gold-emb" },
-        { name: "Shelter Builder", icon: "fa-house-shield", equipped: true, desc: "Constructed high-tier fortified shelters.", shape: "shape-shield", color: "cyan-emb" },
-        { name: "Survival Instinct", icon: "fa-biohazard", equipped: true, desc: "Survived bio-hazard radiation surges.", shape: "shape-triangle", color: "red-emb" },
-        { name: "Tactical Scavenger", icon: "fa-box-open", equipped: true, desc: "Extracted high-tier blueprint crates.", shape: "shape-diamond", color: "blue-emb" }
-      ],
       detailsStats: [
         { key: "Total Matches", val: "620" },
         { key: "Survival Hours", val: "1,420h" },
@@ -863,18 +808,6 @@ document.addEventListener("DOMContentLoaded", () => {
       videoUrl: "img/Videos/fortnite.mp4",
       avatarUrl: "img/fortnite avatar.jpeg",
 
-      equippedEmblems: [
-        { name: "Crown Victory", icon: "fa-crown", shape: "shape-shield", color: "gold-emb" },
-        { name: "Box Fighter", icon: "fa-cube", shape: "shape-shield", color: "cyan-emb" },
-        { name: "Sniper Ace", icon: "fa-bullseye", shape: "shape-triangle", color: "red-emb" },
-        { name: "Storm Master", icon: "fa-bolt", shape: "shape-diamond", color: "blue-emb" }
-      ],
-      allEmblems: [
-        { name: "Crown Victory", icon: "fa-crown", equipped: true, desc: "Won 50 Victory Royales with Victory Crown.", shape: "shape-shield", color: "gold-emb" },
-        { name: "Box Fighter", icon: "fa-cube", equipped: true, desc: "Eliminated 100 players inside close-range boxes.", shape: "shape-shield", color: "cyan-emb" },
-        { name: "Sniper Ace", icon: "fa-bullseye", equipped: true, desc: "200m+ headshot elimination with sniper rifle.", shape: "shape-triangle", color: "red-emb" },
-        { name: "Storm Master", icon: "fa-bolt", equipped: true, desc: "Survived 500 storm phases without taking damage.", shape: "shape-diamond", color: "blue-emb" }
-      ],
       detailsStats: [
         { key: "Total Matches", val: "1,240" },
         { key: "Victory Royales", val: "512" },
@@ -1107,7 +1040,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (tabAmigoBtn) tabAmigoBtn.classList.add('hidden');
     if (backToGamesBtn) backToGamesBtn.classList.remove('hidden');
     gameTabs.forEach(tab => {
-      if (tab.getAttribute('data-tab') === 'conquistas' && !data.allEmblems && !data.titles) {
+      if (tab.getAttribute('data-tab') === 'conquistas' && (!data.allEmblems || data.allEmblems.length === 0) && (!data.titles || data.titles.length === 0)) {
         tab.classList.add('hidden');
       } else {
         tab.classList.remove('hidden');
