@@ -1135,43 +1135,45 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
-    if (gameplayVideo && gameplayVideoSource) {
+    if (gameplayVideo) {
       const targetVideo = data.videoUrl || 'img/Videos/deltaforce.mp4';
-      const currentSrc = gameplayVideoSource.getAttribute('src');
 
-      // Muted and playsinline attributes required for iOS Safari / Android Chrome mobile autoplay
+      // Mobile Safari & Chrome require muted, playsInline, and webkit-playsinline
       gameplayVideo.muted = true;
       gameplayVideo.defaultMuted = true;
+      gameplayVideo.playsInline = true;
       gameplayVideo.setAttribute('muted', '');
       gameplayVideo.setAttribute('playsinline', '');
       gameplayVideo.setAttribute('webkit-playsinline', '');
 
-      if (currentSrc !== targetVideo) {
-        gameplayVideoSource.setAttribute('src', targetVideo);
-        const ext = targetVideo.split('.').pop().toLowerCase();
-        gameplayVideoSource.setAttribute('type', ext === 'webm' ? 'video/webm' : 'video/mp4');
-        gameplayVideo.load();
+      const currentVideoSrc = gameplayVideo.getAttribute('src') || (gameplayVideoSource ? gameplayVideoSource.getAttribute('src') : '');
 
-        const playPromise = gameplayVideo.play();
-        if (playPromise !== undefined) {
-          playPromise.catch(err => {
-            console.log("Gameplay video mobile autoplay handling:", err);
-            const playOnTouch = () => {
+      if (currentVideoSrc !== targetVideo) {
+        gameplayVideo.src = targetVideo;
+        if (gameplayVideoSource) {
+          gameplayVideoSource.setAttribute('src', targetVideo);
+        }
+        gameplayVideo.load();
+      }
+
+      const attemptPlay = () => {
+        const p = gameplayVideo.play();
+        if (p !== undefined) {
+          p.catch(err => {
+            console.log("Mobile video autoplay catch:", err);
+            const playOnUserGesture = () => {
               gameplayVideo.play().catch(() => { });
             };
-            document.addEventListener('touchstart', playOnTouch, { once: true });
-            document.addEventListener('click', playOnTouch, { once: true });
+            document.addEventListener('touchstart', playOnUserGesture, { once: true });
+            document.addEventListener('click', playOnUserGesture, { once: true });
           });
         }
-      } else if (gameplayVideo.paused) {
-        gameplayVideo.play().catch(err => {
-          const playOnTouch = () => {
-            gameplayVideo.play().catch(() => { });
-          };
-          document.addEventListener('touchstart', playOnTouch, { once: true });
-          document.addEventListener('click', playOnTouch, { once: true });
-        });
+      };
+
+      if (gameplayVideo.paused) {
+        attemptPlay();
       }
+
       if (vhoGameTitle) {
         vhoGameTitle.textContent = `${data.name.toUpperCase()} 4K GAMEPLAY`;
       }
