@@ -772,8 +772,8 @@ document.addEventListener("DOMContentLoaded", () => {
       name: "Mission Evo",
       rankTitle: "Apex Survivor ⚡",
       rankScore: "Score: 8,850",
-      hours: "1,420h",
-      battles: "620",
+      hours: "6,358h",
+      battles: "53 Wipes",
       assets: "180.5M",
       extractionRate: "42.5%",
       opLevel: "78",
@@ -784,12 +784,12 @@ document.addEventListener("DOMContentLoaded", () => {
       avatarUrl: "img/Mission evo Avatar.jpg",
 
       detailsStats: [
-        { key: "Total Matches", val: "620" },
-        { key: "Survival Hours", val: "1,420h" },
-        { key: "PVP Eliminations", val: "2,150" },
-        { key: "Base Raids Defended", val: "94" },
+        { key: "Total Wipes (Servidores)", val: "53" },
+        { key: "Survival Hours", val: "6,358h" },
+        { key: "PVP Eliminations", val: "8,950" },
+        { key: "Base Raids Defended", val: "142" },
         { key: "Extraction Rate", val: "42.5%" },
-        { key: "Bosses Defeated", val: "48" }
+        { key: "Bosses Defeated", val: "184" }
       ],
 
       radarPoints: "100,35 160,80 142,150 64,148 30,78",
