@@ -4067,3 +4067,194 @@ select.hud-input option {
 img {
   content-visibility: auto;
 }
+
+/* ═══════════════════════════════════════════════════
+   RESPONSIVIDADE MOBILE COMPLETA (SEM CORTE DE TELA)
+   ═══════════════════════════════════════════════════ */
+html,
+body {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 10px 8px;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  .df-profile-layout {
+    grid-template-columns: 1fr !important;
+    gap: 16px;
+    width: 100%;
+  }
+
+  .df-profile-char {
+    justify-content: center;
+    width: 100%;
+    order: -1;
+  }
+
+  .char-hud-frame {
+    width: 160px;
+  }
+
+  .char-image-container {
+    height: 180px;
+  }
+
+  .df-quick-stats-row {
+    flex-direction: column;
+    width: 100%;
+    gap: 12px;
+  }
+
+  .df-rank-badge-card {
+    width: 100%;
+  }
+
+  .df-stats-mini-grid {
+    width: 100%;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .df-equipped-section {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    width: 100%;
+  }
+
+  .df-op-level-card {
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 14px;
+  }
+
+  .df-op-lbl {
+    margin-bottom: 0;
+  }
+
+  .df-equipped-emblems {
+    width: 100%;
+  }
+
+  .df-ee-grid {
+    flex-wrap: wrap;
+    gap: 6px;
+    justify-content: flex-start;
+    width: 100%;
+  }
+
+  .df-ee-slot {
+    width: 36px;
+    height: 36px;
+  }
+
+  .df-hours-tactical-card {
+    width: 100%;
+    max-width: 100%;
+    padding: 10px 12px;
+    gap: 12px;
+    box-sizing: border-box;
+  }
+
+  .df-ht-val {
+    font-size: 19px;
+  }
+
+  .df-playstyle-card {
+    width: 100%;
+    padding: 12px;
+    box-sizing: border-box;
+  }
+
+  .playstyle-header {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .playstyle-header-title {
+    font-size: 10px;
+    word-break: break-word;
+  }
+
+  .gameplay-video-screen {
+    height: auto;
+    max-height: 200px;
+    aspect-ratio: 16 / 9;
+    width: 100%;
+  }
+
+  .hud-tab-header,
+  .hud-tabs-navigation {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .hud-tab-btn {
+    padding: 8px 12px;
+    font-size: 10px;
+  }
+
+  .hud-header-title,
+  #profileHeader,
+  #detailsHeader,
+  #conquistasHeader {
+    font-size: 11px !important;
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .hud-lang-switcher {
+    top: 8px;
+    right: 8px;
+    padding: 3px 6px;
+  }
+}
+
+@media (max-width: 480px) {
+  .df-ht-label {
+    font-size: 9.5px;
+    letter-spacing: 1px;
+  }
+
+  .df-ht-sub {
+    font-size: 7.5px;
+  }
+
+  .df-ht-val {
+    font-size: 17px;
+  }
+
+  .df-ee-grid {
+    gap: 4px;
+  }
+
+  .df-ee-slot {
+    width: 32px;
+    height: 32px;
+  }
+
+  .df-stats-mini-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+  }
+
+  .df-sm-item {
+    padding: 6px 8px;
+  }
+
+  .df-sm-lbl {
+    font-size: 6.5px;
+  }
+
+  .df-sm-val {
+    font-size: 10px;
+  }
+}
