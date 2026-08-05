@@ -610,8 +610,7 @@ document.addEventListener("DOMContentLoaded", () => {
         { name: "Black Rose", icon: "fa-spa", shape: "shape-diamond", color: "blue-emb", spriteIndex: 4 },
         { name: "Combat Elite", icon: "fa-skull-crossbones", shape: "shape-shield", color: "red-emb", spriteIndex: 5 },
         { name: "Heart of Africa", icon: "fa-shield-halved", shape: "shape-shield", color: "green-emb", spriteIndex: 6 },
-        { name: "Pearl of the Sea", icon: "fa-gem", shape: "shape-circle", color: "gold-emb", spriteIndex: 7 },
-        { name: "Marine Sniper", icon: "fa-bullseye", shape: "shape-shield", color: "blue-emb", spriteIndex: 8 }
+        { name: "Pearl of the Sea", icon: "fa-gem", shape: "shape-circle", color: "gold-emb", spriteIndex: 7 }
       ],
 
       // Todos os 16 emblemas com formas 3D e cores correspondentes à imagem do jogo
@@ -685,9 +684,7 @@ document.addEventListener("DOMContentLoaded", () => {
         { name: "Legendary Architect", file: "emblemaRust5.png" },
         { name: "First Steps", file: "emblemaRust6.png" },
         { name: "Master Lumberjack", file: "emblemaRust7.png" },
-        { name: "Master Hunter", file: "emblemaRust8.png" },
-        { name: "Barrel Destroyer", file: "emblemaRust9.png" },
-        { name: "Valiant Vanguard I", file: "emblemaRust10.png" }
+        { name: "Master Hunter", file: "emblemaRust8.png" }
       ],
       allEmblems: [
         { name: "Demolition Expert III", file: "emblemaRust1.png", equipped: true, desc: "Destroy 10 tool cupboards in a single match." },
